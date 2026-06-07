@@ -9,7 +9,7 @@
   <meta name="theme-color" content="#1E1E1E" />
   <title>Velkor — Tu huella digital, construida para durar</title>
 
-  <!-- Social sharing — URL absoluta del preview (GitHub Pages) -->
+  <!-- Social sharing. Al deployar: anteponer el dominio absoluto a og:url y og:image -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://carcamval2025-cyber.github.io/velkor-landing-preview/" />
   <meta property="og:title" content="Velkor — Tu huella digital, construida para durar" />
@@ -29,7 +29,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2" />
 
   <!-- Preload del wordmark de navbar (LCP above-the-fold) -->
-  <link rel="preload" as="image" href="velkor-logo-light.png" />
+  <link rel="preload" as="image" type="image/webp" href="velkor-logo-light.webp" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -199,6 +199,13 @@
       min-height: 44px;
       cursor: pointer;
       will-change: transform;
+    }
+    /* Fallback global de focus visible (coral) — cubre la región scrollable de la
+       tabla, los links de la tira de marca y cualquier elemento sin regla propia.
+       Las reglas por componente (mayor especificidad) ajustan el offset donde aplica. */
+    :focus-visible {
+      outline: 2px solid var(--coral);
+      outline-offset: 2px;
     }
     .btn:focus-visible {
       outline: 2px solid var(--coral);
@@ -1134,9 +1141,10 @@
     }
     .brand-svc__rounds::before { content: '· '; }
     .brand-svc__cta {
-      display: inline-block;
-      margin-top: var(--space-4);
-      padding: 6px 0;
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px; /* tap target accesible (≥44px) sin romper el layout de la card */
+      margin-top: var(--space-2);
       font-family: var(--font-mono);
       font-size: 13px;
       letter-spacing: 0.04em;
@@ -1436,7 +1444,7 @@
       font-size: 11px;
       letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: var(--coral);
+      color: var(--coral-dark); /* coral puro daba 3.98:1 a 11px sobre pearl; coral-dark cumple ≥4.5:1 */
     }
     .client__role {
       font-size: 14.5px;
@@ -2182,7 +2190,7 @@
   <nav class="nav" id="nav" aria-label="Navegación principal">
     <div class="container nav__inner">
       <a href="#top" class="nav__logo" aria-label="Velkor — inicio">
-        <img src="velkor-logo-light.png" alt="Velkor" class="nav__logo-img" width="192" height="42" fetchpriority="high" />
+        <img src="velkor-logo-light.webp" alt="Velkor" class="nav__logo-img" width="192" height="42" fetchpriority="high" />
       </a>
 
       <ul class="nav__links" id="navLinks" role="menubar">
@@ -2215,6 +2223,7 @@
     </span>
   </aside>
 
+  <main id="main">
   <!-- ============================================
        HERO
        ============================================ -->
@@ -2337,9 +2346,9 @@
       <div class="showcase reveal">
         <span class="showcase__cap" aria-hidden="true">[ ejemplos ilustrativos ]</span>
         <div class="showcase__devices">
-          <img class="showcase__browser" src="mock-browser.png" width="620" height="420" loading="lazy"
+          <img class="showcase__browser" src="mock-browser.webp" width="620" height="420" loading="lazy"
                alt="Ejemplo ilustrativo: landing de una cafetería con menú, ubicación y botón de WhatsApp" />
-          <img class="showcase__phone" src="mock-phone.png" width="300" height="610" loading="lazy"
+          <img class="showcase__phone" src="mock-phone.webp" width="300" height="610" loading="lazy"
                alt="Ejemplo ilustrativo: menú digital QR en el teléfono, para ver el menú al instante" />
         </div>
       </div>
@@ -2563,7 +2572,7 @@
         </p>
       </div>
 
-      <div class="compare__wrap reveal">
+      <div class="compare__wrap reveal" tabindex="0" role="region" aria-label="Tabla comparativa, desplázate horizontalmente">
         <table>
           <thead>
             <tr>
@@ -2758,7 +2767,7 @@
   <section class="proceso" id="proceso" aria-labelledby="proceso-title">
     <div class="container">
       <div class="proceso__layout">
-        <aside class="proceso__aside reveal">
+        <div class="proceso__aside reveal">
           <div class="section-head">
             <span class="eyebrow">Proceso</span>
             <h2 id="proceso-title">Así trabajamos.</h2>
@@ -2785,7 +2794,7 @@
             <span class="pp-progress" id="ppProgress" style="left:18%;top:82%"></span>
             <span class="pp-readout" id="ppReadout">[ 0.00 ]</span>
           </div>
-        </aside>
+        </div>
 
         <div class="trajectory reveal-stagger">
         <div class="step">
@@ -2875,7 +2884,7 @@
   <section class="nosotros" id="nosotros" aria-labelledby="nosotros-title">
     <div class="container">
       <div class="section-head reveal">
-        <img src="velkor-logo-dark.png" alt="Velkor" class="brand-mark--feature" width="288" height="64" />
+        <img src="velkor-logo-dark.webp" alt="Velkor" class="brand-mark--feature" width="288" height="64" />
         <span class="eyebrow">Nosotros</span>
         <h2 id="nosotros-title">Somos Velkor.</h2>
       </div>
@@ -3120,6 +3129,7 @@
       <p class="cta-close__reassure">Cotización gratis · Sin compromiso · Te respondemos hoy</p>
     </div>
   </section>
+  </main>
 
   <!-- ============================================
        FOOTER
@@ -3127,7 +3137,7 @@
   <footer class="footer">
     <div class="container footer__inner">
       <a href="#top" class="footer__logo" aria-label="Velkor — volver arriba">
-        <img src="velkor-logo-light.png" alt="Velkor" class="footer__logo-img" width="219" height="48" loading="lazy" />
+        <img src="velkor-logo-light.webp" alt="Velkor" class="footer__logo-img" width="219" height="48" loading="lazy" />
       </a>
       <nav class="footer__nav" aria-label="Navegación de pie de página">
         <a href="#servicios">Servicios</a>
@@ -3141,7 +3151,7 @@
   </footer>
 
   <!-- CTA WhatsApp sticky (solo móvil) — se muestra/oculta vía JS -->
-  <div class="wa-sticky" id="waSticky" aria-hidden="true">
+  <div class="wa-sticky" id="waSticky" inert>
     <div class="wa-sticky__inner">
       <span class="wa-sticky__text">
         <strong>¿Hablamos?</strong>
@@ -3178,7 +3188,9 @@
         function updateSticky() {
           const show = !heroVisible && !nearClose;
           waSticky.classList.toggle('is-visible', show);
-          waSticky.setAttribute('aria-hidden', show ? 'false' : 'true');
+          // inert (no aria-hidden): cuando está oculta sale del árbol de accesibilidad
+          // Y del orden de tabulación, evitando el conflicto aria-hidden-focus.
+          waSticky.inert = !show;
         }
 
         if (heroEl) {

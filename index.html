@@ -166,8 +166,8 @@
       margin: 0;
       text-wrap: balance;
     }
-    h1 { font-size: clamp(2.7rem, 7vw + 0.4rem, 5.6rem); }
-    h2 { font-size: clamp(2.2rem, 5vw + 0.4rem, 4rem); }
+    h1 { font-size: clamp(2.8rem, 7.5vw + 0.3rem, 6rem); }
+    h2 { font-size: clamp(2.3rem, 5.4vw + 0.3rem, 4.3rem); }
     h3 { font-size: clamp(1.25rem, 1.4vw + 0.8rem, 1.6rem); }
     p { margin: 0; }
     .lead {
@@ -437,16 +437,16 @@
       width: 100%;
       height: 100%;
       display: block;
-      opacity: 0.72;
-      -webkit-mask-image: radial-gradient(ellipse 130% 115% at 68% 52%, #000 30%, transparent 96%);
-      mask-image: radial-gradient(ellipse 130% 115% at 68% 52%, #000 30%, transparent 96%);
+      opacity: 0.85;
+      -webkit-mask-image: radial-gradient(ellipse 150% 130% at 64% 50%, #000 42%, transparent 100%);
+      mask-image: radial-gradient(ellipse 150% 130% at 64% 50%, #000 42%, transparent 100%);
     }
     /* Velo que mantiene legible la zona del texto (izquierda/arriba): el grid solo respira a la derecha */
     .hero__bg::after {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(100deg, var(--deep-charcoal) 20%, rgba(30, 30, 30, 0.55) 44%, rgba(30, 30, 30, 0) 74%);
+      background: linear-gradient(100deg, var(--deep-charcoal) 14%, rgba(30, 30, 30, 0.40) 40%, rgba(30, 30, 30, 0) 70%);
       pointer-events: none;
     }
     @media (max-width: 700px) {
@@ -463,7 +463,8 @@
     /* Subtle film grain on dark sections */
     .hero::after,
     .paquetes::after,
-    .contacto::after {
+    .contacto::after,
+    .cta-close::after {
       content: '';
       position: absolute;
       inset: 0;
@@ -499,6 +500,7 @@
        la coma nunca queda huérfana al inicio de una línea */
     .hero h1 .hero__line {
       display: block;
+      text-shadow: 0 2px 22px rgba(0, 0, 0, 0.45); /* legibilidad sobre el grid más presente */
     }
     .hero h1 .hero__line--accent {
       color: var(--coral);
@@ -1813,33 +1815,53 @@
     /* =====================================================
        CIERRE — CTA repetido (banda clara entre el form oscuro y el footer)
        ===================================================== */
+    /* Momento "drenched": la sección de cierre bañada en coral (coral = acción, justo
+       en el CTA final). Bg coral-dark → texto blanco ≥6:1 (mantiene A11y). */
     .cta-close {
-      background: var(--pearl-gray);
+      background: var(--coral-dark);
       text-align: center;
+      position: relative;
+      overflow: hidden;
     }
     .cta-close__inner {
-      max-width: 640px;
+      max-width: 720px;
       display: flex;
       flex-direction: column;
       align-items: center;
+      position: relative;
+      z-index: 1;
     }
+    .cta-close .eyebrow { color: rgba(255, 255, 255, 0.92); }
+    .cta-close .eyebrow::before,
+    .cta-close .eyebrow::after { color: var(--white); opacity: 0.75; }
     .cta-close h2 {
+      color: var(--white);
       margin-top: var(--space-2);
       margin-bottom: var(--space-3);
     }
     .cta-close__sub {
-      color: var(--charcoal);
-      font-size: 1.05rem;
+      color: rgba(255, 255, 255, 0.92);
+      font-size: 1.08rem;
       line-height: 1.6;
       max-width: 48ch;
       margin-bottom: var(--space-6);
+    }
+    /* Botón inverso: blanco sobre coral, máximo pop para la acción */
+    .cta-close .btn--primary {
+      background: var(--white);
+      color: var(--coral-dark);
+    }
+    .cta-close .btn--primary:hover {
+      background: var(--pearl-gray);
+      color: var(--coral-dark);
+      transform: translateY(-1px);
     }
     .cta-close__reassure {
       margin-top: var(--space-4);
       font-family: var(--font-mono);
       font-size: 13px;
       letter-spacing: 0.02em;
-      color: var(--ink-muted);
+      color: rgba(255, 255, 255, 0.82);
     }
 
     /* =====================================================
@@ -3152,7 +3174,7 @@
   </footer>
 
   <!-- CTA WhatsApp sticky (solo móvil) — se muestra/oculta vía JS -->
-  <div class="wa-sticky" id="waSticky" inert>
+  <div class="wa-sticky" id="waSticky" role="complementary" aria-label="Atajo de contacto por WhatsApp" inert>
     <div class="wa-sticky__inner">
       <span class="wa-sticky__text">
         <strong>¿Hablamos?</strong>
@@ -3393,7 +3415,7 @@
           const m = matrixAt(t);
           // 1. grid de referencia (identidad, sin transformar) — la deformación se LEE contra él
           ctx.lineWidth = 1;
-          ctx.strokeStyle = 'rgba(' + PINK + ',0.05)';
+          ctx.strokeStyle = 'rgba(' + PINK + ',0.11)';
           ctx.beginPath();
           for (let i = -R; i <= R; i++) {
             ctx.moveTo(ox + i * unit, oy - R * unit); ctx.lineTo(ox + i * unit, oy + R * unit);
@@ -3401,7 +3423,7 @@
           }
           ctx.stroke();
           // 2. grid transformado por la matriz (líneas rectas: la transformación es lineal)
-          ctx.strokeStyle = 'rgba(' + CORAL + ',0.24)';
+          ctx.strokeStyle = 'rgba(' + CORAL + ',0.34)';
           ctx.beginPath();
           for (let i = -R; i <= R; i++) {
             const v1 = tp(i, -R, m), v2 = tp(i, R, m);
@@ -3422,9 +3444,9 @@
           const _i = tp(1, 0, m), _j = tp(0, 1, m), _ij = tp(1, 1, m);
           ctx.beginPath();
           ctx.moveTo(ox, oy); ctx.lineTo(_i[0], _i[1]); ctx.lineTo(_ij[0], _ij[1]); ctx.lineTo(_j[0], _j[1]); ctx.closePath();
-          ctx.fillStyle = 'rgba(' + CORAL + ',0.14)';
+          ctx.fillStyle = 'rgba(' + CORAL + ',0.20)';
           ctx.fill();
-          ctx.strokeStyle = 'rgba(' + CORAL + ',0.46)';
+          ctx.strokeStyle = 'rgba(' + CORAL + ',0.55)';
           ctx.lineWidth = 1.2;
           ctx.stroke();
           // 4. vectores base (columnas de la matriz) con glow

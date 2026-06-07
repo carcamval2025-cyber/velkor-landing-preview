@@ -572,10 +572,12 @@
        ===================================================== */
     .problema { background: var(--pearl-gray); }
     .section-head {
-      max-width: 720px;
-      margin-bottom: var(--space-8);
+      max-width: 760px;
+      margin-bottom: var(--space-9);
     }
     .section-head h2 { color: var(--deep-charcoal); margin-bottom: var(--space-4); }
+    /* Lane B — la eyebrow funciona como etiqueta de eje del plano: más cuerpo y tracking */
+    .section-head .eyebrow { font-size: 14px; letter-spacing: 0.12em; }
     .section-head--center {
       margin-left: auto;
       margin-right: auto;
@@ -851,15 +853,22 @@
     }
     .service-tier--soon .service__tag { display: none; }
     /* Showcase ilustrativo: mockups de lo que se construye (demos, no clientes reales) */
-    .showcase { margin: var(--space-5) 0 var(--space-8); text-align: center; }
+    /* Lane B — el showcase rompe el contenedor (full-bleed) y crece: los mockups
+       como evidencia a tamaño dramático, no una miniatura centrada. */
+    .showcase {
+      margin: var(--space-6) 0 var(--space-9);
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+      text-align: center;
+    }
     .showcase__cap {
       display: inline-block; font-family: var(--font-mono); font-size: 11px;
-      letter-spacing: 0.08em; color: var(--ink-muted); margin-bottom: var(--space-4); white-space: nowrap;
+      letter-spacing: 0.08em; color: var(--ink-muted); margin-bottom: var(--space-5); white-space: nowrap;
     }
     .showcase__devices { display: flex; align-items: flex-end; justify-content: center; }
-    .showcase__browser { width: min(560px, 64vw); height: auto; border-radius: 14px; }
+    .showcase__browser { width: min(740px, 72vw); height: auto; border-radius: 16px; }
     .showcase__phone {
-      width: 150px; height: auto; margin-left: -80px; margin-bottom: -8px;
+      width: 196px; height: auto; margin-left: -108px; margin-bottom: -8px;
       position: relative; z-index: 2;
     }
     @media (max-width: 700px) {

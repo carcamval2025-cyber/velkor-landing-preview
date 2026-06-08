@@ -1492,15 +1492,7 @@
        NOSOTROS
        ===================================================== */
     .nosotros { background: var(--pink); }
-    .nosotros__grid {
-      display: grid;
-      grid-template-columns: 1fr 1.2fr;
-      gap: var(--space-8);
-      align-items: start;
-    }
-    @media (max-width: 900px) {
-      .nosotros__grid { grid-template-columns: 1fr; gap: var(--space-6); }
-    }
+    /* Nosotros fluye en vertical: intro (copy + valores) + bloque de equipo full-width */
     .nosotros__copy p {
       color: var(--charcoal);
       font-size: 1.05rem;
@@ -1523,57 +1515,81 @@
       color: var(--charcoal);
       background: rgba(255, 255, 255, 0.4);
     }
-    .team {
+    /* Intro de Nosotros (texto a ancho legible) */
+    .nosotros__copy { max-width: 64ch; margin-bottom: var(--space-9); }
+    .nosotros__copy .values { margin-top: var(--space-6); }
+
+    /* ── Bloque de equipo: caras + calidez (prueba social). El equipo ES el núcleo. ── */
+    .team-block__head { max-width: 620px; margin-bottom: var(--space-7); }
+    .team-block__title {
+      font-family: var(--font-heading);
+      color: var(--deep-charcoal);
+      font-size: clamp(1.5rem, 2vw + 1rem, 2.2rem);
+      line-height: 1.12;
+      margin: var(--space-3) 0;
+    }
+    .team-block__lead {
+      color: var(--charcoal);
+      font-size: 1.05rem;
+      line-height: 1.6;
+      max-width: 56ch;
+    }
+    .team-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--space-3);
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-4);
     }
-    @media (max-width: 600px) {
-      .team { grid-template-columns: 1fr; }
-    }
-    .role {
+    @media (max-width: 860px) { .team-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 460px) { .team-grid { grid-template-columns: 1fr; } }
+    .person {
       background: var(--white);
       border-radius: var(--radius-md);
       padding: var(--space-5);
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--dur-base) var(--ease), box-shadow var(--dur-base) var(--ease);
+    }
+    .person:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    /* Avatar = placeholder de iniciales en marco de corchetes [ ] (lenguaje de .service__icon).
+       Swap a foto real: reemplazar el <span> por <img class="person__photo" src="…" alt="Nombre">. */
+    .person__avatar {
+      position: relative;
+      width: 60px;
+      height: 60px;
       display: flex;
       align-items: center;
-      gap: var(--space-4);
-      transition: transform var(--dur-base) var(--ease);
-    }
-    .role:hover { transform: translateX(4px); }
-    .role__icon {
-      position: relative;
-      flex-shrink: 0;
-      width: 50px;
-      height: 50px;
-      color: var(--coral);
-      display: inline-flex;
-      align-items: center;
       justify-content: center;
+      margin-bottom: var(--space-4);
+      background: rgba(201, 79, 56, 0.08);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
     }
-    .role__icon::before,
-    .role__icon::after {
+    .person__avatar::before,
+    .person__avatar::after {
       content: '';
       position: absolute;
-      width: 10px;
-      height: 10px;
+      width: 11px;
+      height: 11px;
       border: 1.6px solid var(--coral);
     }
-    .role__icon::before { top: 0; left: 0; border-right: 0; border-bottom: 0; }
-    .role__icon::after { bottom: 0; right: 0; border-left: 0; border-top: 0; }
-    .role__icon svg { width: 26px; height: 26px; }
-    .role h3 {
+    .person__avatar::before { top: 0; left: 0; border-right: 0; border-bottom: 0; }
+    .person__avatar::after { bottom: 0; right: 0; border-left: 0; border-top: 0; }
+    .person__initials {
+      font-family: var(--font-heading);
+      font-size: 1.35rem;
+      color: var(--coral-dark);
+      letter-spacing: 0.02em;
+    }
+    .person__photo { width: 100%; height: 100%; object-fit: cover; }
+    .person__name {
       font-family: var(--font-heading);
       color: var(--deep-charcoal);
-      font-size: 1.18rem;
-      margin-bottom: 4px;
+      font-size: 1.12rem;
+      margin-bottom: var(--space-2);
     }
-    .role__meta {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      letter-spacing: 0.1em;
-      color: var(--ink-muted);
-      text-transform: uppercase;
+    .person__role {
+      color: var(--charcoal);
+      font-size: 13.5px;
+      line-height: 1.5;
     }
 
     /* =====================================================
@@ -2927,67 +2943,59 @@
         <h2 id="nosotros-title">Somos Velkor.</h2>
       </div>
 
-      <div class="nosotros__grid">
-        <div class="nosotros__copy reveal">
-          <p>
-            Somos cuatro salvadoreños con habilidades técnicas avanzadas, comprensión profunda
-            de marca e IA integrada en nuestro proceso. Construimos más rápido, con más identidad
-            y a menor costo que cualquier agencia tradicional.
-          </p>
-          <p>
-            Trabajamos con dueños de negocios reales — no con departamentos de marketing —
-            y eso lo cambia todo: hablamos claro, entregamos rápido y nos importa que tu inversión rinda.
-          </p>
+      <div class="nosotros__copy reveal">
+        <p>
+          Somos cuatro salvadoreños con habilidades técnicas avanzadas, comprensión profunda
+          de marca e IA integrada en nuestro proceso. Construimos más rápido, con más identidad
+          y a menor costo que cualquier agencia tradicional.
+        </p>
+        <p>
+          Trabajamos con dueños de negocios reales — no con departamentos de marketing —
+          y eso lo cambia todo: hablamos claro, entregamos rápido y nos importa que tu inversión rinda.
+        </p>
 
-          <div class="values" role="list" aria-label="Nuestros valores">
-            <span class="value" role="listitem">Velocidad</span>
-            <span class="value" role="listitem">Ingeniería</span>
-            <span class="value" role="listitem">Excelencia</span>
-            <span class="value" role="listitem">Integridad</span>
-            <span class="value" role="listitem">Trabajo en equipo</span>
-            <span class="value" role="listitem">Resiliencia</span>
-          </div>
+        <div class="values" role="list" aria-label="Nuestros valores">
+          <span class="value" role="listitem">Velocidad</span>
+          <span class="value" role="listitem">Ingeniería</span>
+          <span class="value" role="listitem">Excelencia</span>
+          <span class="value" role="listitem">Integridad</span>
+          <span class="value" role="listitem">Trabajo en equipo</span>
+          <span class="value" role="listitem">Resiliencia</span>
         </div>
+      </div>
 
-        <div class="team reveal-stagger">
-          <article class="role">
-            <div class="role__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
-            </div>
-            <div>
-              <h3>Carlos Navas</h3>
-              <p class="role__meta">Estrategia y Negocios</p>
-            </div>
+      <!-- Bloque de equipo: caras + calidez (prueba social). El equipo ES el núcleo (kor/core).
+           Avatares = iniciales en marco [ ]; listos para swap a foto real (un <img> por tarjeta). -->
+      <div class="team-block reveal">
+        <header class="team-block__head">
+          <span class="eyebrow">equipo</span>
+          <h3 class="team-block__title">Cuatro salvadoreños, un núcleo técnico.</h3>
+          <p class="team-block__lead">No somos una agencia anónima. Estas son las personas que construyen y cuidan tu huella digital.</p>
+        </header>
+
+        <div class="team-grid reveal-stagger">
+          <article class="person">
+            <div class="person__avatar" role="img" aria-label="Carlos Navas"><span class="person__initials" aria-hidden="true">CN</span></div>
+            <h4 class="person__name">Carlos Navas</h4>
+            <p class="person__role">Estrategia y negocio. Traduce lo que tu negocio necesita en un plan que vende.</p>
           </article>
 
-          <article class="role">
-            <div class="role__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-            </div>
-            <div>
-              <h3>Joel Elías</h3>
-              <p class="role__meta">Ingeniería · Frontend y producto</p>
-            </div>
+          <article class="person">
+            <div class="person__avatar" role="img" aria-label="Joel Elías"><span class="person__initials" aria-hidden="true">JE</span></div>
+            <h4 class="person__name">Joel Elías</h4>
+            <p class="person__role">Ingeniería y producto. Construye la cara de tu sitio, rápido y bien.</p>
           </article>
 
-          <article class="role">
-            <div class="role__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v6c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 11v6c0 1.66 4 3 9 3s9-1.34 9-3v-6"/></svg>
-            </div>
-            <div>
-              <h3>Cristian Gónzalez</h3>
-              <p class="role__meta">Ingeniería · Backend, datos e IA</p>
-            </div>
+          <article class="person">
+            <div class="person__avatar" role="img" aria-label="Cristian Gónzalez"><span class="person__initials" aria-hidden="true">CG</span></div>
+            <h4 class="person__name">Cristian Gónzalez</h4>
+            <p class="person__role">Ingeniería, datos e IA. El motor que hace que todo funcione por dentro.</p>
           </article>
 
-          <article class="role">
-            <div class="role__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.9 0 1.5-.6 1.5-1.5 0-.4-.2-.8-.5-1.1-.3-.3-.5-.7-.5-1.1 0-.9.7-1.6 1.6-1.6H16c3.3 0 6-2.7 6-6 0-4.7-4.5-8.7-10-8.7z"/><circle cx="13.5" cy="6.5" r="0.7" fill="currentColor" stroke="none"/><circle cx="17.5" cy="10.5" r="0.7" fill="currentColor" stroke="none"/><circle cx="8.5" cy="7.5" r="0.7" fill="currentColor" stroke="none"/><circle cx="6.5" cy="12.5" r="0.7" fill="currentColor" stroke="none"/></svg>
-            </div>
-            <div>
-              <h3>Paulina Turcios</h3>
-              <p class="role__meta">Branding · Comprensión de marca</p>
-            </div>
+          <article class="person">
+            <div class="person__avatar" role="img" aria-label="Paulina Turcios"><span class="person__initials" aria-hidden="true">PT</span></div>
+            <h4 class="person__name">Paulina Turcios</h4>
+            <p class="person__role">Marca e identidad. Cuida que todo se vea y se sienta fiel a tu negocio.</p>
           </article>
         </div>
       </div>

@@ -726,6 +726,30 @@
     @media (max-width: 600px) {
       .service-tier { grid-template-columns: 1fr; }
     }
+    /* Categorías "Próximamente" como acordeón nativo <details> (mismo patrón que el FAQ, sin JS).
+       Colapsadas por defecto → los 12 servicios roadmap dejan de inflar el alto, lo vendible
+       (Presencia/Base) domina. display:block hace que el hide nativo de <details> funcione. */
+    .service-group--soon { display: block; }
+    .service-group--soon > .service-tier { margin-top: var(--space-5); }
+    .service-cat--toggle { list-style: none; cursor: pointer; }
+    .service-cat--toggle::-webkit-details-marker { display: none; }
+    .service-cat--toggle::before {
+      content: '[+]'; order: -1; flex-shrink: 0;
+      font-family: var(--font-mono); font-size: 0.82em; color: var(--coral);
+    }
+    .service-group--soon[open] .service-cat--toggle::before { content: '[−]'; }
+    .service-cat--toggle:focus-visible {
+      outline: 2px solid var(--coral); outline-offset: 3px; border-radius: var(--radius-sm);
+    }
+    .service-cat--toggle:hover .service-cat__name { color: var(--coral-dark); }
+    .service-cat__hint {
+      margin-left: auto;
+      font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em;
+      text-transform: lowercase; color: var(--ink-muted);
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .service-group--soon[open] .service-tier { animation: faqReveal 260ms ease; }
+    }
     .service {
       background: var(--white);
       border-radius: var(--radius-md);
@@ -1492,82 +1516,98 @@
        NOSOTROS
        ===================================================== */
     .nosotros { background: var(--pink); }
-    /* Nosotros fluye en vertical: intro (copy + valores) + bloque de equipo full-width */
-    .nosotros__copy p {
-      color: var(--charcoal);
-      font-size: 1.05rem;
-      line-height: 1.7;
-      margin-bottom: var(--space-5);
-    }
-    .values {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--space-2);
-    }
-    .value {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 8px 14px;
-      border: 1px solid var(--muted-gray);
-      border-radius: var(--radius-pill);
-      color: var(--charcoal);
-      background: rgba(255, 255, 255, 0.4);
-    }
-    /* Intro de Nosotros: texto + pull-quote (rellena el lado derecho, refuerza el diferenciador) */
-    .nosotros__intro {
+    /* Nosotros = "el equipo es el núcleo (kor)". Header único + lede condensada +
+       la MATRIZ (4 founders entre corchetes coral, motivo matriz a escala) + tira de valores. */
+    /* Top asimétrico: header (logo+eyebrow+h2) a la izquierda, lede a la derecha → llena el ancho
+       junto al logo Velkor (antes la mitad derecha quedaba vacía). */
+    .nosotros__top {
       display: grid;
-      grid-template-columns: 1.3fr 1fr;
+      grid-template-columns: 1.05fr 0.95fr;
       gap: var(--space-8);
       align-items: center;
       margin-bottom: var(--space-9);
     }
+    .nosotros__top .section-head { margin-bottom: 0; max-width: none; }
     @media (max-width: 820px) {
-      .nosotros__intro { grid-template-columns: 1fr; gap: var(--space-6); }
+      .nosotros__top {
+        grid-template-columns: 1fr;
+        gap: var(--space-5);
+        align-items: start;
+        margin-bottom: var(--space-7);
+      }
     }
-    .nosotros__copy { max-width: 60ch; }
-    .nosotros__copy .values { margin-top: var(--space-6); }
-    .nosotros__pull {
-      font-family: var(--font-heading);
-      color: var(--deep-charcoal);
-      font-size: clamp(1.6rem, 2.2vw + 1rem, 2.6rem);
-      line-height: 1.16;
-      letter-spacing: -0.01em;
-    }
-    .nosotros__pull span { display: block; }
-    .nosotros__pull .pull-accent { color: var(--coral); }
-
-    /* ── Bloque de equipo: caras + calidez (prueba social). El equipo ES el núcleo. ── */
-    .team-block__head { max-width: 620px; margin-bottom: var(--space-7); }
-    .team-block__title {
-      font-family: var(--font-heading);
-      color: var(--deep-charcoal);
-      font-size: clamp(1.5rem, 2vw + 1rem, 2.2rem);
-      line-height: 1.12;
-      margin: var(--space-3) 0;
-    }
-    .team-block__lead {
+    .nosotros__lede { max-width: 52ch; margin-bottom: 0; }
+    .nosotros__lede p {
       color: var(--charcoal);
       font-size: 1.05rem;
-      line-height: 1.6;
-      max-width: 56ch;
+      line-height: 1.7;
     }
-    .team-grid {
+    .nosotros__lede p + p { margin-top: var(--space-4); }
+
+    /* ── La matriz del núcleo: los 4 founders dentro de un plano ENMARCADO con esquinas tipo
+       corchete (mismo dispositivo que .case-zero en Clientes → ancla la sección y entona con
+       su vecina). El equipo ES el núcleo; el marco = "matriz del álgebra lineal". ── */
+    .team-frame {
+      position: relative;
+      border: 1px solid rgba(58, 58, 58, 0.16);
+      border-radius: var(--radius-lg);
+      background-color: var(--pearl-gray);
+      padding: clamp(var(--space-6), 4vw, var(--space-8));
+      margin-bottom: var(--space-7);
+    }
+    .team-frame__bracket {
+      position: absolute; width: 18px; height: 18px; pointer-events: none;
+      border-color: rgba(201, 79, 56, 0.45);
+    }
+    .team-frame__bracket--tl { top: 16px; left: 16px; border-top: 1.6px solid; border-left: 1.6px solid; }
+    .team-frame__bracket--br { right: 16px; bottom: 16px; border-bottom: 1.6px solid; border-right: 1.6px solid; }
+    .team-frame__cols {
+      list-style: none;
+      margin: 0;
+      padding: 0;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: var(--space-4);
+      gap: var(--space-5);
     }
-    @media (max-width: 860px) { .team-grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 460px) { .team-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 860px) {
+      .team-frame__cols { grid-template-columns: repeat(2, 1fr); row-gap: var(--space-6); }
+    }
+    @media (max-width: 460px) {
+      .team-frame { padding: var(--space-6) var(--space-5); }
+      .team-frame__cols { grid-template-columns: 1fr; row-gap: var(--space-5); }
+    }
+    /* Founder = celda plana dentro del plano (sin tarjeta blanca). Separación = gap + el marco. */
     .person {
-      background: var(--white);
-      border-radius: var(--radius-md);
-      padding: var(--space-5);
-      box-shadow: var(--shadow-sm);
-      transition: transform var(--dur-base) var(--ease), box-shadow var(--dur-base) var(--ease);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 0 var(--space-2);
     }
-    .person:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    @media (hover: hover) {
+      .person__avatar { transition: background var(--dur-base) var(--ease); }
+      .person:hover .person__avatar { background: rgba(201, 79, 56, 0.14); }
+    }
+
+    /* Valores = chips [ valor ] mono (lenguaje de eyebrow / trust-seal del sitio, no middots). */
+    .values {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: var(--space-2) var(--space-4);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .value {
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      letter-spacing: 0.06em;
+      text-transform: lowercase;
+      color: var(--ink-muted);
+    }
+    .value::before { content: '[ '; color: var(--coral); }
+    .value::after  { content: ' ]'; color: var(--coral); }
     /* Avatar = placeholder de iniciales en marco de corchetes [ ] (lenguaje de .service__icon).
        Swap a foto real: reemplazar el <span> por <img class="person__photo" src="…" alt="Nombre">. */
     .person__avatar {
@@ -1602,7 +1642,8 @@
     .person__name {
       font-family: var(--font-heading);
       color: var(--deep-charcoal);
-      font-size: 1.12rem;
+      font-size: 1.05rem;
+      line-height: 1.2;
       margin-bottom: var(--space-2);
     }
     .person__role {
@@ -2477,12 +2518,13 @@
         </div>
 
         <!-- ⭐ REPUTACIÓN & DIFUSIÓN · te eligen -->
-        <div class="service-group reveal">
-          <header class="service-cat">
+        <details class="service-group service-group--soon reveal">
+          <summary class="service-cat service-cat--toggle">
             <span class="service-cat__name">Reputación &amp; Difusión</span>
             <span class="service-cat__verb">te eligen</span>
-          </header>
-          <div class="service-tier service-tier--soon reveal-stagger">
+            <span class="service-cat__hint">Próximamente · 4</span>
+          </summary>
+          <div class="service-tier service-tier--soon">
 
         <article class="service">
           <div class="service__icon" aria-hidden="true">
@@ -2524,15 +2566,16 @@
           <span class="service__tag">Google · WhatsApp Business</span>
         </article>
           </div>
-        </div>
+        </details>
 
         <!-- 💳 COBRO & VENTAS · te pagan -->
-        <div class="service-group reveal">
-          <header class="service-cat">
+        <details class="service-group service-group--soon reveal">
+          <summary class="service-cat service-cat--toggle">
             <span class="service-cat__name">Cobro &amp; Ventas</span>
             <span class="service-cat__verb">te pagan</span>
-          </header>
-          <div class="service-tier service-tier--soon reveal-stagger">
+            <span class="service-cat__hint">Próximamente · 4</span>
+          </summary>
+          <div class="service-tier service-tier--soon">
 
         <article class="service">
           <div class="service__icon" aria-hidden="true">
@@ -2574,15 +2617,16 @@
           <span class="service__tag">Analítica · KPIs</span>
         </article>
           </div>
-        </div>
+        </details>
 
         <!-- ⚙️ OPERACIÓN & DATOS · te organizas -->
-        <div class="service-group reveal">
-          <header class="service-cat">
+        <details class="service-group service-group--soon reveal">
+          <summary class="service-cat service-cat--toggle">
             <span class="service-cat__name">Operación &amp; Datos</span>
             <span class="service-cat__verb">te organizas</span>
-          </header>
-          <div class="service-tier service-tier--soon reveal-stagger">
+            <span class="service-cat__hint">Próximamente · 4</span>
+          </summary>
+          <div class="service-tier service-tier--soon">
 
         <article class="service">
           <div class="service__icon" aria-hidden="true">
@@ -2624,7 +2668,7 @@
           <span class="service__tag">IA · Automatización</span>
         </article>
           </div>
-        </div>
+        </details>
       </div>
     </div>
   </section>
@@ -2956,77 +3000,72 @@
        ============================================ -->
   <section class="nosotros" id="nosotros" aria-labelledby="nosotros-title">
     <div class="container">
-      <div class="section-head reveal">
-        <img src="velkor-logo-dark.webp" alt="Velkor" class="brand-mark--feature" width="288" height="64" />
-        <span class="eyebrow">Nosotros</span>
-        <h2 id="nosotros-title">Somos Velkor.</h2>
-      </div>
-
-      <div class="nosotros__intro reveal">
-        <div class="nosotros__copy">
-          <p>
-            Somos cuatro salvadoreños con habilidades técnicas avanzadas, comprensión profunda
-            de marca e IA integrada en nuestro proceso. Construimos más rápido, con más identidad
-            y a menor costo que cualquier agencia tradicional.
-          </p>
-          <p>
-            Trabajamos con dueños de negocios reales — no con departamentos de marketing —
-            y eso lo cambia todo: hablamos claro, entregamos rápido y nos importa que tu inversión rinda.
-          </p>
-
-          <div class="values" role="list" aria-label="Nuestros valores">
-            <span class="value" role="listitem">Velocidad</span>
-            <span class="value" role="listitem">Ingeniería</span>
-            <span class="value" role="listitem">Excelencia</span>
-            <span class="value" role="listitem">Integridad</span>
-            <span class="value" role="listitem">Trabajo en equipo</span>
-            <span class="value" role="listitem">Resiliencia</span>
-          </div>
+      <!-- Top asimétrico: header a la izquierda + lede a la derecha (llena el ancho;
+           mismo lenguaje que las cabeceras de Problema/Proceso). -->
+      <div class="nosotros__top reveal">
+        <div class="section-head">
+          <img src="velkor-logo-dark.webp" alt="Velkor" class="brand-mark--feature" width="288" height="64" />
+          <span class="eyebrow">Nosotros</span>
+          <h2 id="nosotros-title">Somos el núcleo.</h2>
         </div>
 
-        <!-- Pull-quote: condensa el diferenciador (decorativo, el claim completo está en el párrafo) -->
-        <p class="nosotros__pull" aria-hidden="true">
-          <span>Más rápido.</span>
-          <span>Más identidad.</span>
-          <span class="pull-accent">Menor costo.</span>
-        </p>
+        <!-- Lede condensada: el diferenciador (fuente de verdad: Velkor — Overview.md) en 2 párrafos -->
+        <div class="nosotros__lede">
+          <p>
+            Cuatro salvadoreños con habilidades técnicas avanzadas, comprensión profunda de marca
+            e IA integrada en el proceso. Más rápido, más identidad y menor costo que cualquier
+            agencia tradicional.
+          </p>
+          <p>
+            No somos una agencia anónima — estas son las personas que construyen y cuidan tu huella digital.
+          </p>
+        </div>
       </div>
 
-      <!-- Bloque de equipo: caras + calidez (prueba social). El equipo ES el núcleo (kor/core).
-           Avatares = iniciales en marco [ ]; listos para swap a foto real (un <img> por tarjeta). -->
-      <div class="team-block reveal">
-        <header class="team-block__head">
-          <span class="eyebrow">equipo</span>
-          <h3 class="team-block__title">Cuatro salvadoreños, un núcleo técnico.</h3>
-          <p class="team-block__lead">No somos una agencia anónima. Estas son las personas que construyen y cuidan tu huella digital.</p>
-        </header>
+      <!-- El equipo ES el núcleo (kor/core): los 4 founders como matriz dentro de un plano
+           ENMARCADO con esquinas tipo corchete (mismo lenguaje que el plano de Clientes,
+           no rieles laterales). Avatares = iniciales en marco [ ]; swap a foto real =
+           <img class="person__photo" src="…" alt="Nombre"> por celda. -->
+      <div class="team-frame reveal">
+        <span class="team-frame__bracket team-frame__bracket--tl" aria-hidden="true"></span>
+        <span class="team-frame__bracket team-frame__bracket--br" aria-hidden="true"></span>
 
-        <div class="team-grid reveal-stagger">
-          <article class="person">
+        <ul class="team-frame__cols reveal-stagger" role="list">
+          <li class="person">
             <div class="person__avatar" role="img" aria-label="Carlos Navas"><span class="person__initials" aria-hidden="true">CN</span></div>
-            <h4 class="person__name">Carlos Navas</h4>
+            <h3 class="person__name">Carlos Navas</h3>
             <p class="person__role">Estrategia y negocio. Traduce lo que tu negocio necesita en un plan que vende.</p>
-          </article>
+          </li>
 
-          <article class="person">
+          <li class="person">
             <div class="person__avatar" role="img" aria-label="Joel Elías"><span class="person__initials" aria-hidden="true">JE</span></div>
-            <h4 class="person__name">Joel Elías</h4>
+            <h3 class="person__name">Joel Elías</h3>
             <p class="person__role">Ingeniería y producto. Construye la cara de tu sitio, rápido y bien.</p>
-          </article>
+          </li>
 
-          <article class="person">
+          <li class="person">
             <div class="person__avatar" role="img" aria-label="Cristian Gónzalez"><span class="person__initials" aria-hidden="true">CG</span></div>
-            <h4 class="person__name">Cristian Gónzalez</h4>
+            <h3 class="person__name">Cristian Gónzalez</h3>
             <p class="person__role">Ingeniería, datos e IA. El motor que hace que todo funcione por dentro.</p>
-          </article>
+          </li>
 
-          <article class="person">
+          <li class="person">
             <div class="person__avatar" role="img" aria-label="Paulina Turcios"><span class="person__initials" aria-hidden="true">PT</span></div>
-            <h4 class="person__name">Paulina Turcios</h4>
+            <h3 class="person__name">Paulina Turcios</h3>
             <p class="person__role">Marca e identidad. Cuida que todo se vea y se sienta fiel a tu negocio.</p>
-          </article>
-        </div>
+          </li>
+        </ul>
       </div>
+
+      <!-- Valores: tira mono centrada (antes pills) — caption de la matriz -->
+      <ul class="values" role="list" aria-label="Nuestros valores">
+        <li class="value" role="listitem">velocidad</li>
+        <li class="value" role="listitem">ingeniería</li>
+        <li class="value" role="listitem">excelencia</li>
+        <li class="value" role="listitem">integridad</li>
+        <li class="value" role="listitem">trabajo en equipo</li>
+        <li class="value" role="listitem">resiliencia</li>
+      </ul>
     </div>
   </section>
 

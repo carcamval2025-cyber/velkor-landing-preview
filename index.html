@@ -87,6 +87,7 @@
 
       /* Motion */
       --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+      --ease-expo: cubic-bezier(0.16, 1, 0.3, 1); /* ease-out-expo: entradas más decididas (Lane A) */
       --dur-fast: 180ms;
       --dur-base: 320ms;
       --dur-slow: 540ms;
@@ -216,7 +217,7 @@
       color: var(--white);
       box-shadow: var(--shadow-coral);
     }
-    .btn--primary:hover { background: var(--coral-dark); transform: translateY(-1px); }
+    .btn--primary:hover { background: var(--coral-dark); transform: translateY(-1px); box-shadow: 0 10px 30px rgba(201, 79, 56, 0.35); }
     .btn--secondary {
       background: transparent;
       color: var(--white);
@@ -1092,7 +1093,8 @@
       background: rgba(255, 255, 255, 0.03);
       transition: border-color var(--dur-base) var(--ease), transform var(--dur-base) var(--ease);
     }
-    .brand-svc:hover { border-color: rgba(255, 255, 255, 0.32); transform: translateY(-4px); }
+    .brand-svc:hover { border-color: rgba(255, 255, 255, 0.32); transform: translateY(-4px); box-shadow: 0 18px 42px rgba(0, 0, 0, 0.30); }
+    .brand-svc:hover::after { border-right-color: var(--coral); border-bottom-color: var(--coral); }
     /* esquina de corchete [ ] inferior-derecha (mismo valor coral-alpha que .service::after) */
     .brand-svc::after {
       content: '';
@@ -1930,7 +1932,7 @@
     .reveal {
       opacity: 0;
       transform: translateY(18px);
-      transition: opacity 700ms var(--ease), transform 700ms var(--ease);
+      transition: opacity 600ms var(--ease-expo), transform 600ms var(--ease-expo);
       will-change: transform, opacity;
     }
     .reveal.is-visible {
@@ -1940,7 +1942,7 @@
     .reveal-stagger > * {
       opacity: 0;
       transform: translateY(20px);
-      transition: opacity 600ms var(--ease), transform 600ms var(--ease);
+      transition: opacity 540ms var(--ease-expo), transform 540ms var(--ease-expo);
     }
     .reveal-stagger.is-visible > * { opacity: 1; transform: translateY(0); }
     .reveal-stagger.is-visible > *:nth-child(1) { transition-delay: 0ms; }
@@ -1957,7 +1959,7 @@
       opacity: 0;
       transform: translateY(14px) skewX(-3.5deg) scaleX(0.99);
       transform-origin: left center;
-      transition: opacity 760ms var(--ease), transform 760ms var(--ease);
+      transition: opacity 760ms var(--ease-expo), transform 760ms var(--ease-expo);
     }
     .reveal-hero.is-visible > * { opacity: 1; transform: none; }
     .reveal-hero.is-visible > *:nth-child(1) { transition-delay: 80ms; }

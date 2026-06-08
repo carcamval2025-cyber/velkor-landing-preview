@@ -1515,9 +1515,28 @@
       color: var(--charcoal);
       background: rgba(255, 255, 255, 0.4);
     }
-    /* Intro de Nosotros (texto a ancho legible) */
-    .nosotros__copy { max-width: 64ch; margin-bottom: var(--space-9); }
+    /* Intro de Nosotros: texto + pull-quote (rellena el lado derecho, refuerza el diferenciador) */
+    .nosotros__intro {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: var(--space-8);
+      align-items: center;
+      margin-bottom: var(--space-9);
+    }
+    @media (max-width: 820px) {
+      .nosotros__intro { grid-template-columns: 1fr; gap: var(--space-6); }
+    }
+    .nosotros__copy { max-width: 60ch; }
     .nosotros__copy .values { margin-top: var(--space-6); }
+    .nosotros__pull {
+      font-family: var(--font-heading);
+      color: var(--deep-charcoal);
+      font-size: clamp(1.6rem, 2.2vw + 1rem, 2.6rem);
+      line-height: 1.16;
+      letter-spacing: -0.01em;
+    }
+    .nosotros__pull span { display: block; }
+    .nosotros__pull .pull-accent { color: var(--coral); }
 
     /* ── Bloque de equipo: caras + calidez (prueba social). El equipo ES el núcleo. ── */
     .team-block__head { max-width: 620px; margin-bottom: var(--space-7); }
@@ -2943,25 +2962,34 @@
         <h2 id="nosotros-title">Somos Velkor.</h2>
       </div>
 
-      <div class="nosotros__copy reveal">
-        <p>
-          Somos cuatro salvadoreños con habilidades técnicas avanzadas, comprensión profunda
-          de marca e IA integrada en nuestro proceso. Construimos más rápido, con más identidad
-          y a menor costo que cualquier agencia tradicional.
-        </p>
-        <p>
-          Trabajamos con dueños de negocios reales — no con departamentos de marketing —
-          y eso lo cambia todo: hablamos claro, entregamos rápido y nos importa que tu inversión rinda.
-        </p>
+      <div class="nosotros__intro reveal">
+        <div class="nosotros__copy">
+          <p>
+            Somos cuatro salvadoreños con habilidades técnicas avanzadas, comprensión profunda
+            de marca e IA integrada en nuestro proceso. Construimos más rápido, con más identidad
+            y a menor costo que cualquier agencia tradicional.
+          </p>
+          <p>
+            Trabajamos con dueños de negocios reales — no con departamentos de marketing —
+            y eso lo cambia todo: hablamos claro, entregamos rápido y nos importa que tu inversión rinda.
+          </p>
 
-        <div class="values" role="list" aria-label="Nuestros valores">
-          <span class="value" role="listitem">Velocidad</span>
-          <span class="value" role="listitem">Ingeniería</span>
-          <span class="value" role="listitem">Excelencia</span>
-          <span class="value" role="listitem">Integridad</span>
-          <span class="value" role="listitem">Trabajo en equipo</span>
-          <span class="value" role="listitem">Resiliencia</span>
+          <div class="values" role="list" aria-label="Nuestros valores">
+            <span class="value" role="listitem">Velocidad</span>
+            <span class="value" role="listitem">Ingeniería</span>
+            <span class="value" role="listitem">Excelencia</span>
+            <span class="value" role="listitem">Integridad</span>
+            <span class="value" role="listitem">Trabajo en equipo</span>
+            <span class="value" role="listitem">Resiliencia</span>
+          </div>
         </div>
+
+        <!-- Pull-quote: condensa el diferenciador (decorativo, el claim completo está en el párrafo) -->
+        <p class="nosotros__pull" aria-hidden="true">
+          <span>Más rápido.</span>
+          <span>Más identidad.</span>
+          <span class="pull-accent">Menor costo.</span>
+        </p>
       </div>
 
       <!-- Bloque de equipo: caras + calidez (prueba social). El equipo ES el núcleo (kor/core).

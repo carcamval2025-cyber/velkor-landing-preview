@@ -540,33 +540,37 @@
     .hero__meta {
       display: flex;
       flex-wrap: wrap;
-      gap: var(--space-2) var(--space-5);
+      gap: var(--space-3) var(--space-4);
       padding-top: var(--space-5);
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      border-top: 1px solid rgba(255, 255, 255, 0.10);
       font-family: var(--font-mono);
     }
+    /* Cada dato como un readout entre corchetes (sistema [ ]) — anotaciones del plano,
+       no el "stat-strip" de SaaS (número gigante + label apilado). */
     .hero__meta-item {
-      display: flex;
-      flex-direction: row;
+      display: inline-flex;
       align-items: baseline;
-      gap: var(--space-2);
+      gap: 0.55ch;
     }
+    .hero__meta-item::before { content: '['; color: var(--coral); opacity: 0.7; }
+    .hero__meta-item::after  { content: ']'; color: var(--coral); opacity: 0.7; }
     .hero__meta-num {
       font-family: var(--font-mono);
-      font-size: 15px;
+      font-size: 13px;
       color: var(--coral);
       letter-spacing: 0.04em;
     }
     .hero__meta-label {
-      font-size: 12.5px;
-      color: rgba(255, 255, 255, 0.55);
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.62);
     }
-    /* Marca de la 3ra micro-prueba (sin número): check coral en línea con los readouts mono */
+    /* 3ra micro-prueba (sin número): check coral en línea con los readouts mono */
     .hero__meta-mark {
       display: inline-flex;
       color: var(--coral);
+      transform: translateY(1px);
     }
-    .hero__meta-mark svg { width: 15px; height: 15px; }
+    .hero__meta-mark svg { width: 14px; height: 14px; }
 
     /* =====================================================
        PROBLEMA

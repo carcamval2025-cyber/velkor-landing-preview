@@ -671,9 +671,19 @@
       line-height: 1.6;
       max-width: 52ch;
     }
+    .pain-list__closer {
+      padding: var(--space-6) var(--space-4) 0 0;
+      font-size: 1.0625rem;
+      line-height: 1.55;
+      color: var(--charcoal);
+      max-width: 52ch;
+      text-wrap: pretty;
+    }
+    .pain-list__closer strong { color: var(--coral-dark); font-weight: 600; }
     @media (max-width: 540px) {
       .pain { grid-template-columns: auto 1fr; column-gap: var(--space-4); }
       .pain__index { display: none; }
+      .pain-list__closer { padding-left: 0; }
     }
 
     /* =====================================================
@@ -1076,6 +1086,94 @@
     .price .btn--secondary:hover {
       border-color: var(--white);
       background: rgba(255, 255, 255, 0.06);
+    }
+
+    /* =====================================================
+       MANTENIMIENTO — mini comparativo bajo las cards de planes (sobre charcoal).
+       Números en pink (rol "mantenimiento"; coral a este tamaño sobre charcoal
+       no pasa AA). Coral solo en la esquina-corchete decorativa.
+       ===================================================== */
+    .maint {
+      margin: var(--space-7) auto 0;
+      max-width: 560px;
+      text-align: center;
+    }
+    .maint__intro {
+      font-size: 15px;
+      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.74);
+      text-wrap: pretty;
+    }
+    .maint__intro strong { color: var(--pink); font-weight: 600; }
+    .maint__table {
+      position: relative;
+      width: 100%;
+      margin-top: var(--space-5);
+      border-collapse: collapse;
+      font-size: 15px;
+    }
+    .maint__table th,
+    .maint__table td {
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .maint__table tbody tr:last-child th,
+    .maint__table tbody tr:last-child td { border-bottom: 0; }
+    .maint__table thead th {
+      font-family: var(--font-mono);
+      font-weight: 400;
+      font-size: 11.5px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted-gray);
+      text-align: right;
+      border-bottom-color: rgba(255, 255, 255, 0.22);
+    }
+    .maint__table tbody th {
+      font-family: var(--font-heading);
+      font-weight: 400;
+      font-size: 1rem;
+      color: var(--white);
+      text-align: left;
+    }
+    .maint__table td {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      color: var(--pink);
+      text-align: right;
+      white-space: nowrap;
+    }
+    .maint__per { font-size: 11px; color: var(--muted-gray); margin-left: 2px; }
+    .maint__table::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      bottom: 6px;
+      width: 9px;
+      height: 9px;
+      border-right: 1.5px solid rgba(201, 79, 56, 0.55);
+      border-bottom: 1.5px solid rgba(201, 79, 56, 0.55);
+      pointer-events: none;
+    }
+    .maint__note {
+      margin-top: var(--space-3);
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      letter-spacing: 0.06em;
+      color: var(--muted-gray);
+    }
+    .maint__smart {
+      margin-top: var(--space-5);
+      font-family: var(--font-mono);
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      color: var(--muted-gray);
+    }
+    .maint__smart strong { color: var(--pink); font-weight: 400; }
+    @media (max-width: 420px) {
+      .maint__table th,
+      .maint__table td { padding-left: var(--space-2); padding-right: var(--space-2); }
+      .maint__table { font-size: 14px; }
     }
 
     /* =====================================================
@@ -2262,12 +2360,12 @@
           {
             "@type": "Question",
             "name": "¿Qué pasa si quiero cambiar mi menú o mis precios?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Lo cubre tu plan de mantenimiento: incluye ajustes mensuales según tu plan (de 3 a 10 al mes, e ilimitados en Infinite con dominio propio) para que tu menú, precios o textos siempre estén al día. Nos escribes el cambio y lo hacemos. Ilimitado bajo uso razonable: cubre la operación normal del negocio, no rediseños encubiertos ni pedidos abusivos." }
+            "acceptedAnswer": { "@type": "Answer", "text": "Tu plan de mantenimiento es una cuota fija que cubre los ajustes de contenido que tu negocio necesita, sin cobrarte por cada cambio. En Velkor Base, además, editas tú mismo tu menú, precios y promos cuando quieras. Bajo uso justo: cubre la operación normal (menú, precios, fotos, textos, horarios), no rediseños completos ni cargas masivas, que se cotizan aparte como proyecto." }
           },
           {
             "@type": "Question",
             "name": "¿El dominio y la página son míos?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Sí. Empiezas con un subdominio de Velkor (incluido en tu plan de mantenimiento, desde $25/mes) y, cuando quieras, migramos a tu dominio propio (desde $40/mes). La página es tuya en ambos casos." }
+            "acceptedAnswer": { "@type": "Answer", "text": "Sí. Empiezas con un subdominio de Velkor (incluido en tu plan de mantenimiento, desde $60/mes) y, cuando quieras, migramos a tu dominio propio (desde $90/mes). La página es tuya en ambos casos." }
           },
           {
             "@type": "Question",
@@ -2282,7 +2380,7 @@
           {
             "@type": "Question",
             "name": "¿Qué incluye el precio y qué cuesta aparte?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Pagas un setup único de $200 por tu proyecto y un plan de mantenimiento fijo (desde $25/mes) que cubre hosting, ajustes mensuales y tu dashboard. Precio cerrado, sin sorpresas." }
+            "acceptedAnswer": { "@type": "Answer", "text": "Pagas un setup único de $600 por tu proyecto y un plan de mantenimiento fijo (desde $60/mes) que cubre hosting, ajustes mensuales y tu dashboard. Precio cerrado, sin sorpresas." }
           },
           {
             "@type": "Question",
@@ -2371,7 +2469,7 @@
           <span class="hero__meta-label">días de entrega</span>
         </div>
         <div class="hero__meta-item">
-          <span class="hero__meta-num">$200</span>
+          <span class="hero__meta-num">$600</span>
           <span class="hero__meta-label">desde, sin sorpresas</span>
         </div>
         <div class="hero__meta-item">
@@ -2397,10 +2495,11 @@
         <div class="problema__head reveal">
           <div class="section-head">
             <span class="eyebrow">El problema</span>
-            <h2 id="problema-title">¿Tu negocio existe en internet?</h2>
+            <h2 id="problema-title">Estás perdiendo clientes sin darte cuenta</h2>
             <p class="lead">
-              Si la respuesta es "más o menos", estás dejando clientes sobre la mesa.
-              Hoy, antes de visitarte, te buscan en Google, Instagram y WhatsApp.
+              No es que tu negocio vaya mal. Es que cada día alguien te busca en Google,
+              no te encuentra y se va con otro. No lo ves porque esos clientes nunca llegaron,
+              y te acostumbraste a trabajar así. Se puede arreglar.
             </p>
           </div>
         </div>
@@ -2412,8 +2511,8 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="4.6" y1="4.6" x2="19.4" y2="19.4"/></svg>
             </div>
             <div class="pain__body">
-              <h3>No tienes sitio web</h3>
-              <p>Tu negocio es invisible para quienes te buscan en Google. Pierdes clientes antes de que sepan que existes.</p>
+              <h3>Te buscan y no te encuentran</h3>
+              <p>Si no estás en Google, para el que te busca no existes. Se va con el que sí aparece.</p>
             </div>
           </article>
 
@@ -2423,8 +2522,8 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             </div>
             <div class="pain__body">
-              <h3>Tu menú es un PDF</h3>
-              <p>Lento de cargar, imposible de actualizar y poco profesional. Tus clientes esperan algo mejor.</p>
+              <h3>Tu menú espanta clientes</h3>
+              <p>Un PDF lento que no se actualiza y se ve poco serio. El cliente se cansa antes de pedir.</p>
             </div>
           </article>
 
@@ -2434,10 +2533,12 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 21 22 21 12 2"/><line x1="12" y1="10" x2="12" y2="14"/><circle cx="12" cy="17.5" r="0.8" fill="currentColor"/></svg>
             </div>
             <div class="pain__body">
-              <h3>No tienes presencia digital</h3>
-              <p>Tu competencia ya vende online y tú dependes de quien pase por la puerta. Es hora de cambiar eso.</p>
+              <h3>Tu competencia ya vende sin ti</h3>
+              <p>Ellos venden online y tú dependes de quien pase por la puerta. Un competidor más chico, pero digital, te está ganando mercado.</p>
             </div>
           </article>
+
+          <p class="pain-list__closer">Lo más caro no es lo que pagas. <strong>Es lo que dejas de vender por no estar.</strong></p>
         </div>
       </div>
     </div>
@@ -2704,7 +2805,7 @@
               <th scope="row">Costo</th>
               <td>Tu tiempo</td>
               <td>Alto, por proyecto</td>
-              <td class="compare__col-velkor">Desde $200</td>
+              <td class="compare__col-velkor">Desde $600</td>
             </tr>
             <tr>
               <th scope="row">Tiempo de entrega</th>
@@ -2760,12 +2861,13 @@
           <p class="price__tagline">Te encuentran: tu huella digital completa, lista en días.</p>
 
           <div class="price__amount">
-            <span class="price__setup"><strong>$200</strong> setup único</span>
-            <span class="price__monthly">+ mantenimiento desde <strong>$25</strong> / mes</span>
+            <span class="price__setup"><strong>$600</strong> setup único</span>
+            <span class="price__monthly">+ mantenimiento desde <strong>$60</strong> / mes</span>
           </div>
 
           <ul class="price__features">
             <li class="price__feature">Menú digital QR</li>
+            <li class="price__feature">Autoservicio de contenido (menú, precios, promos)</li>
             <li class="price__feature">Landing page profesional</li>
             <li class="price__feature">Configuración Google Maps + SEO</li>
             <li class="price__feature">Capacitación incluida</li>
@@ -2782,7 +2884,7 @@
           <p class="price__tagline">Te pagan: cobro en línea y mejor operación.</p>
 
           <div class="price__amount">
-            <span class="price__setup"><strong>$350</strong> setup · bajo demanda</span>
+            <span class="price__setup"><strong>$1800</strong> setup · bajo demanda</span>
             <span class="price__monthly">se activa con Base rodando</span>
           </div>
 
@@ -2802,7 +2904,7 @@
           <p class="price__tagline">Te automatiza: el negocio completo, potenciado con IA.</p>
 
           <div class="price__amount">
-            <span class="price__setup"><strong>$450</strong> setup · bajo demanda</span>
+            <span class="price__setup"><strong>$3000</strong> setup · bajo demanda</span>
             <span class="price__monthly">se activa con Base rodando</span>
           </div>
 
@@ -2817,16 +2919,40 @@
         </article>
       </div>
 
-      <div class="reveal" style="margin-top: var(--space-7); text-align: center;">
-        <p style="font-size: 15px; line-height: 1.7; color: rgba(255,255,255,0.74); max-width: 660px; margin: 0 auto;">
-          Cada proyecto se mantiene vivo con el <strong style="color: var(--pink);">plan de mantenimiento</strong>:
-          hosting, ajustes mensuales y un dashboard con tus resultados (visitas y búsquedas en Maps).
-          Escala con tu plan <span style="font-family: var(--font-mono);">(subdominio Velkor / dominio propio)</span>:
-          <span style="font-family: var(--font-mono); white-space: nowrap;">Base $25 / $40</span> ·
-          <span style="font-family: var(--font-mono); white-space: nowrap;">Expand $35 / $50</span> ·
-          <span style="font-family: var(--font-mono); white-space: nowrap;">Infinite $40 / $55</span> al mes.
+      <div class="maint reveal">
+        <p class="maint__intro">
+          Cada proyecto se mantiene vivo con el <strong>plan de mantenimiento</strong>:
+          hosting, ajustes y un dashboard con tus resultados.
         </p>
-        <p style="margin-top: var(--space-4); font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; color: var(--muted-gray);">[ ¿Necesitas algo distinto? <strong style="color: var(--pink); font-weight: 400;">Velkor Smart</strong>: armamos tu paquete ]</p>
+        <table class="maint__table">
+          <caption class="sr-only">Cuota mensual de mantenimiento por plan, según subdominio Velkor o dominio propio</caption>
+          <thead>
+            <tr>
+              <th scope="col"><span class="sr-only">Plan</span></th>
+              <th scope="col">Subdominio Velkor</th>
+              <th scope="col">Dominio propio</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Base</th>
+              <td>$60<span class="maint__per">/mes</span></td>
+              <td>$90<span class="maint__per">/mes</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Expand</th>
+              <td>$180<span class="maint__per">/mes</span></td>
+              <td>$270<span class="maint__per">/mes</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Infinite</th>
+              <td>$300<span class="maint__per">/mes</span></td>
+              <td>$450<span class="maint__per">/mes</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="maint__note">10% del setup con subdominio · 15% con dominio propio</p>
+        <p class="maint__smart">[ ¿Necesitas algo distinto? <strong>Velkor Smart</strong>: armamos tu paquete ]</p>
       </div>
 
       <!-- SERVICIOS DE MARCA — fuera de los 3 planes (branding, territorio Paulina). No es 4º plan ni add-on. -->
@@ -2847,7 +2973,7 @@
             <h3 class="brand-svc__name">Velkor Restyle</h3>
             <p class="brand-svc__desc">Refresca tu logo y tu paleta sin perder la esencia. Para una marca que quedó anclada en el tiempo y necesita verse al día.</p>
             <div class="brand-svc__meta">
-              <span class="brand-svc__price">Desde $150</span>
+              <span class="brand-svc__price">Desde $700</span>
               <span class="brand-svc__rounds">2 rondas de revisión</span>
             </div>
             <a class="brand-svc__cta" href="#contacto">Cotizar mi marca →</a>
@@ -2860,14 +2986,14 @@
             <h3 class="brand-svc__name">Velkor Rebrand</h3>
             <p class="brand-svc__desc">Identidad nueva completa: concepto, naming, sistema visual y posicionamiento. Para negocios que necesitan reinventarse, no solo refrescarse.</p>
             <div class="brand-svc__meta">
-              <span class="brand-svc__price">Desde $400</span>
+              <span class="brand-svc__price">Desde $1500</span>
               <span class="brand-svc__rounds">3 rondas de revisión</span>
             </div>
             <a class="brand-svc__cta" href="#contacto">Cotizar mi marca →</a>
           </article>
         </div>
 
-        <p class="brand-strip__bundle">[ Bundle con <strong>Velkor Base</strong> · Restyle −$30 · Rebrand −$50 ]</p>
+        <p class="brand-strip__bundle">[ Bundle con <strong>Velkor Base</strong> · Restyle −$100 · Rebrand −$250 ]</p>
       </div>
     </div>
   </section>
@@ -3080,15 +3206,15 @@
         <details class="faq-item">
           <summary class="faq-item__q">¿Qué pasa si quiero cambiar mi menú o mis precios?</summary>
           <div class="faq-item__a">
-            <p>Lo cubre tu plan de mantenimiento: incluye ajustes mensuales según tu plan (de 3 a 10 al mes, e ilimitados en Infinite con dominio propio) para que tu menú, precios o textos siempre estén al día. Nos escribes el cambio y lo hacemos.</p>
-            <p class="faq__fineprint">Ilimitado bajo uso razonable: cubre la operación normal de tu negocio, no rediseños encubiertos ni pedidos abusivos.</p>
+            <p>Tu plan de mantenimiento es una cuota fija que cubre los ajustes de contenido que tu negocio necesita, sin cobrarte por cada cambio. En Velkor Base, además, editas tú mismo tu menú, precios y promos cuando quieras.</p>
+            <p class="faq__fineprint">Bajo uso justo: cubre la operación normal de tu negocio (menú, precios, fotos, textos), no rediseños completos ni cargas masivas, que se cotizan aparte como proyecto.</p>
           </div>
         </details>
 
         <details class="faq-item">
           <summary class="faq-item__q">¿El dominio y la página son míos?</summary>
           <div class="faq-item__a">
-            <p>Sí. Empiezas con un subdominio de Velkor (incluido en tu plan de mantenimiento, desde $25/mes) y, cuando quieras, migramos a tu dominio propio (desde $40/mes). La página es tuya en ambos casos.</p>
+            <p>Sí. Empiezas con un subdominio de Velkor (incluido en tu plan de mantenimiento, desde $60/mes) y, cuando quieras, migramos a tu dominio propio (desde $90/mes). La página es tuya en ambos casos.</p>
           </div>
         </details>
 
@@ -3109,7 +3235,7 @@
         <details class="faq-item">
           <summary class="faq-item__q">¿Qué incluye el precio y qué cuesta aparte?</summary>
           <div class="faq-item__a">
-            <p>Pagas un setup único de $200 por tu proyecto y un plan de mantenimiento fijo (desde $25/mes) que cubre hosting, ajustes mensuales y tu dashboard. Precio cerrado, sin sorpresas.</p>
+            <p>Pagas un setup único de $600 por tu proyecto y un plan de mantenimiento fijo (desde $60/mes) que cubre hosting, ajustes mensuales y tu dashboard. Precio cerrado, sin sorpresas.</p>
           </div>
         </details>
 

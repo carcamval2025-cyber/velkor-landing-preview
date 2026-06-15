@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- PREVIEW INTERNO (GitHub Pages) — NO es producción. noindex para que Google no lo levante. -->
   <meta name="robots" content="noindex, nofollow" />
   <meta name="description" content="Velkor — Desarrollamos la huella digital de pequeños negocios en El Salvador. Rápido, con estrategia y con resultados que se ven." />
   <meta name="theme-color" content="#1E1E1E" />
@@ -11,22 +10,21 @@
 
   <!-- Social sharing. Al deployar: anteponer el dominio absoluto a og:url y og:image -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://carcamval2025-cyber.github.io/velkor-landing-preview/" />
   <meta property="og:title" content="Velkor — Tu huella digital, construida para durar" />
   <meta property="og:description" content="Desarrollamos la huella digital de pequeños negocios en El Salvador. Software a tu medida, en días y a un precio accesible." />
-  <meta property="og:image" content="https://carcamval2025-cyber.github.io/velkor-landing-preview/og-image.png" />
+  <meta property="og:image" content="og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:locale" content="es_SV" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Velkor — Tu huella digital, construida para durar" />
   <meta name="twitter:description" content="Desarrollamos la huella digital de pequeños negocios en El Salvador." />
-  <meta name="twitter:image" content="https://carcamval2025-cyber.github.io/velkor-landing-preview/og-image.png" />
+  <meta name="twitter:image" content="og-image.png" />
 
-  <link rel="icon" type="image/x-icon" href="favicon.ico?v=2" />
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2" />
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png?v=2" />
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
 
   <!-- Preload del wordmark de navbar (LCP above-the-fold) -->
   <link rel="preload" as="image" type="image/webp" href="velkor-logo-light.webp" />
@@ -37,6 +35,484 @@
     href="https://fonts.googleapis.com/css2?family=Nova+Square&family=Hanken+Grotesk:wght@400;500;600;700&family=Share+Tech+Mono&display=swap"
     rel="stylesheet"
   />
+
+  <!-- Animación + rediseño (incrustado) -->
+  <style>
+/* =====================================================================
+   VELKOR — CAPA DE ANIMACIÓN (demo)
+   Movimiento audaz, premium, fiel a la tesis de álgebra lineal.
+   Todo aquí es aditivo: el index.html original no se reescribe.
+   Sistema de intensidad: [data-intensity] en <html> escala --mo (motion).
+   ===================================================================== */
+
+:root {
+  --mo: 1.15;              /* multiplicador de movimiento (audaz por defecto) */
+  --vk-ease-spring: cubic-bezier(0.22, 1.2, 0.32, 1);
+  --vk-ease-expo:   cubic-bezier(0.16, 1, 0.3, 1);
+}
+html[data-intensity="sutil"] { --mo: 0.45; }
+html[data-intensity="vivo"]  { --mo: 0.8; }
+html[data-intensity="audaz"] { --mo: 1.15; }
+
+/* Toggles globales (clases en <html>) — apagan sistemas individuales */
+html.vk-no-parallax [data-vk-par] { transform: none !important; }
+
+/* =====================================================================
+   1. CURSOR — corchete [ ] NATIVO sobre elementos clickeables
+   Imagen de cursor CSS (sin JS/rAF/transiciones) para que SIEMPRE aparezca
+   y siga el puntero, incluso cuando el iframe de preview está throttleado.
+   ===================================================================== */
+.vk-cursor,
+.vk-cursor-ring { display: none !important; }   /* legacy: cursor JS desactivado */
+
+/* En reposo: cursor nativo del sistema.
+   Sobre algo clickeable: el corchete coral reemplaza al puntero. */
+html.vk-cursor-on.vk-pointer-fine a,
+html.vk-cursor-on.vk-pointer-fine button,
+html.vk-cursor-on.vk-pointer-fine summary,
+html.vk-cursor-on.vk-pointer-fine label,
+html.vk-cursor-on.vk-pointer-fine [role="button"],
+html.vk-cursor-on.vk-pointer-fine .service,
+html.vk-cursor-on.vk-pointer-fine .price {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg fill='none' stroke='%23C94F38' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 11V4h7'/%3E%3Cpath d='M21 4h7v7'/%3E%3Cpath d='M28 21v7h-7'/%3E%3Cpath d='M11 28H4v-7'/%3E%3C/g%3E%3Ccircle cx='16' cy='16' r='1.7' fill='%23C94F38'/%3E%3C/svg%3E") 16 16, pointer;
+}
+
+/* El panel de Tweaks es chrome de UI: siempre cursor nativo normal */
+html.vk-cursor-on .vk-tweaks,
+html.vk-cursor-on .vk-tweaks * { cursor: auto !important; }
+html.vk-cursor-on .vk-tweaks button,
+html.vk-cursor-on .vk-tweaks .vk-toggle,
+html.vk-cursor-on .vk-tweaks input { cursor: pointer !important; }
+
+/* =====================================================================
+   2. HERO — coreografía de entrada elaborada
+   ===================================================================== */
+/* Las líneas del titular suben tras una máscara (clip-reveal) */
+.hero h1 .hero__line {
+  display: block;
+  clip-path: inset(-0.25em -0.1em 110% -0.1em);
+  transform: translateY(0.42em);
+  opacity: 0;
+  transition: clip-path 900ms var(--vk-ease-expo), transform 900ms var(--vk-ease-expo),
+              opacity 700ms ease;
+}
+html.vk-loaded .hero h1 .hero__line {
+  clip-path: inset(-0.25em -0.1em -0.25em -0.1em);
+  transform: translateY(0);
+  opacity: 1;
+}
+html.vk-loaded .hero h1 .hero__line { transition-delay: 360ms; }
+html.vk-loaded .hero h1 .hero__line--accent { transition-delay: 540ms; }
+
+/* El acento coral "respira" su sombra 3D al entrar */
+@keyframes vkAccentSettle {
+  0%   { text-shadow: 0 0 0 #5A2418; transform: translate(-3px, -3px); }
+  60%  { text-shadow: 7px 7px 0 #5A2418; transform: translate(2px, 2px); }
+  100% { text-shadow: 4px 4px 0 #5A2418; transform: translate(0, 0); }
+}
+html.vk-loaded .hero h1 .hero__line--accent .bracket-emph {
+  animation: vkAccentSettle 1100ms 900ms var(--vk-ease-spring) both;
+}
+
+/* La tira mono del hero: cada readout entra como un parpadeo de terminal */
+@keyframes vkMetaBlink {
+  0% { opacity: 0; }
+  40% { opacity: 0.4; }
+  50% { opacity: 0.1; }
+  100% { opacity: 1; }
+}
+html.vk-loaded .hero__meta-item {
+  animation: vkMetaBlink 600ms calc(1100ms + var(--i, 0) * 120ms) ease both;
+}
+
+/* Velo radial del hero late suave (núcleo vivo) */
+@keyframes vkCorePulse {
+  0%, 100% { opacity: 0.85; transform: scale(1); }
+  50%      { opacity: 1; transform: scale(1.06); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero__bg::before { animation: vkCorePulse 7s ease-in-out infinite; }
+}
+
+/* Indicador de scroll del hero */
+.vk-scrollcue {
+  position: absolute;
+  left: 50%; bottom: 26px;
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px; letter-spacing: 0.22em; text-transform: lowercase;
+  color: rgba(255, 255, 255, 0.5);
+  z-index: 4;
+  opacity: 0;
+  transition: opacity 600ms ease 1600ms;
+}
+html.vk-loaded .vk-scrollcue { opacity: 1; }
+.vk-scrollcue__track {
+  width: 1px; height: 40px;
+  background: rgba(255, 255, 255, 0.18);
+  position: relative; overflow: hidden;
+}
+.vk-scrollcue__track::after {
+  content: ''; position: absolute; left: 0; top: 0;
+  width: 1px; height: 14px; background: var(--coral);
+  animation: vkScrollDrop 1.9s var(--vk-ease-expo) infinite;
+}
+@keyframes vkScrollDrop {
+  0% { transform: translateY(-16px); opacity: 0; }
+  30% { opacity: 1; }
+  100% { transform: translateY(40px); opacity: 0; }
+}
+.vk-scrollcue.is-hidden { opacity: 0 !important; transition: opacity 300ms ease; }
+
+/* =====================================================================
+   3. SECCIONES — entrada con barrido de plano (scan) al revelarse
+   ===================================================================== */
+/* Cada sección reciba un overlay de cuadrícula que barre y se desvanece */
+.vk-sec { position: relative; }
+.vk-sec > .container { position: relative; z-index: 1; }
+.vk-sec__scan {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  background-image:
+    linear-gradient(to right, rgba(201, 79, 56, 0.10) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(201, 79, 56, 0.10) 1px, transparent 1px);
+  background-size: 44px 44px;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0, transparent 16%);
+  mask-image: linear-gradient(to bottom, #000 0, transparent 16%);
+}
+.vk-sec.is-revealing .vk-sec__scan {
+  animation: vkScan 1200ms var(--vk-ease-expo) both;
+}
+@keyframes vkScan {
+  0%   { opacity: 0; -webkit-mask-position: 0 -40%; mask-position: 0 -40%; }
+  30%  { opacity: 1; }
+  100% { opacity: 0; -webkit-mask-position: 0 120%; mask-position: 0 120%; }
+}
+
+/* Línea-eje coral que se dibuja en el borde superior de secciones oscuras */
+.vk-sec__axis {
+  position: absolute; top: 0; left: 0; height: 2px; width: 100%;
+  transform: scaleX(0); transform-origin: left;
+  background: linear-gradient(to right, var(--coral), transparent 78%);
+  z-index: 2;
+}
+.vk-sec.is-revealing .vk-sec__axis { animation: vkAxisDraw 900ms 120ms var(--vk-ease-expo) both; }
+@keyframes vkAxisDraw { to { transform: scaleX(1); } }
+
+/* =====================================================================
+   4. HOVER — cards con inclinación 3D + destello coral; botones magnéticos
+   ===================================================================== */
+.service, .price, .team-frame, .case-zero {
+  transform-style: preserve-3d;
+}
+/* Destello que sigue al cursor sobre las cards (variables --mx/--my en %) */
+.service::before, .price::after { z-index: 1; }
+.vk-gleam {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  border-radius: inherit;
+  background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 0%),
+              rgba(201, 79, 56, 0.16), transparent 60%);
+  transition: opacity 320ms ease;
+  z-index: 2;
+}
+.service:hover .vk-gleam, .price:hover .vk-gleam { opacity: 1; }
+
+/* Botones magnéticos: el JS aplica --tx/--ty; el lift de hover se compone aparte */
+.btn--primary, .nav__cta, .cta-close .btn--primary {
+  transition: transform 220ms var(--vk-ease-spring),
+              background-color var(--dur-fast) var(--ease),
+              box-shadow var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+.btn[data-vk-mag] { transform: translate(var(--tx, 0px), var(--ty, 0px)); }
+.btn[data-vk-mag]:hover { transform: translate(var(--tx, 0px), calc(var(--ty, 0px) - 1px)); }
+
+/* Links de nav: corchetes que aparecen al hover (refuerzo del sistema [ ]) */
+.nav__link::before {
+  content: '['; position: absolute; left: -0.7em; top: 8px;
+  color: var(--coral); opacity: 0; transform: translateX(4px);
+  transition: opacity 220ms var(--ease), transform 220ms var(--ease);
+  font-family: var(--font-mono); font-size: 0.92em;
+}
+.nav__link:hover::before { opacity: 0.9; transform: translateX(0); }
+
+/* =====================================================================
+   5. PARALLAX — el JS mueve elementos con [data-vk-par] vía --py
+   ===================================================================== */
+[data-vk-par] { will-change: transform; }
+
+/* Mockups del showcase: flotación + deriva suave */
+@media (prefers-reduced-motion: no-preference) {
+  .showcase__phone { animation: vkFloat 6s ease-in-out infinite; }
+  .showcase__browser { animation: vkFloat 7.5s ease-in-out infinite reverse; }
+}
+@keyframes vkFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(calc(-8px * var(--mo))); }
+}
+
+/* =====================================================================
+   6. PANEL DE TWEAKS (vanilla, marca Velkor)
+   ===================================================================== */
+.vk-tweaks {
+  position: fixed; right: 18px; bottom: 18px;
+  z-index: 2147483646;
+  width: 264px;
+  font-family: var(--font-body);
+  color: var(--white);
+  background: rgba(24, 24, 24, 0.86);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  backdrop-filter: blur(20px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-md);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  display: none;
+}
+.vk-tweaks.is-open { display: block; animation: vkPanelIn 320ms var(--vk-ease-spring) both; }
+@keyframes vkPanelIn { from { opacity: 0; transform: translateY(10px) scale(0.98); } to { opacity: 1; transform: none; } }
+.vk-tweaks__hd {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 12px 12px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.vk-tweaks__hd b {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 400;
+  letter-spacing: 0.12em; text-transform: lowercase; color: var(--white);
+}
+.vk-tweaks__hd b::before { content: '[ '; color: var(--coral); }
+.vk-tweaks__hd b::after  { content: ' ]'; color: var(--coral); }
+.vk-tweaks__x {
+  width: 26px; height: 26px; border-radius: 7px; color: rgba(255, 255, 255, 0.6);
+  display: inline-flex; align-items: center; justify-content: center; font-size: 15px;
+}
+.vk-tweaks__x:hover { background: rgba(255, 255, 255, 0.08); color: var(--white); }
+.vk-tweaks__body { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 14px; }
+.vk-tweaks__sect {
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--muted-gray); margin-bottom: -4px;
+}
+.vk-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.vk-row__lbl { font-size: 13px; color: rgba(255, 255, 255, 0.86); }
+
+/* Segmented (intensidad) */
+.vk-seg { display: flex; gap: 4px; background: rgba(255, 255, 255, 0.06); padding: 3px; border-radius: var(--radius-pill); }
+.vk-seg button {
+  flex: 1; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.04em;
+  text-transform: lowercase; color: rgba(255, 255, 255, 0.6);
+  padding: 7px 4px; border-radius: var(--radius-pill); min-height: 32px;
+  transition: background 200ms var(--ease), color 200ms var(--ease);
+}
+.vk-seg button[data-on="1"] { background: var(--coral); color: var(--white); }
+
+/* Toggle */
+.vk-toggle { position: relative; width: 38px; height: 22px; border-radius: 999px; background: rgba(255, 255, 255, 0.18); transition: background 180ms ease; flex-shrink: 0; }
+.vk-toggle[data-on="1"] { background: var(--coral); }
+.vk-toggle i { position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%; background: #fff; transition: transform 200ms var(--vk-ease-spring); }
+.vk-toggle[data-on="1"] i { transform: translateX(16px); }
+
+/* Slider (densidad del grid) */
+.vk-slider { -webkit-appearance: none; appearance: none; width: 100%; height: 3px; border-radius: 999px; background: rgba(255, 255, 255, 0.18); outline: none; }
+.vk-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 15px; height: 15px; border-radius: 50%; background: var(--coral); cursor: pointer; box-shadow: 0 0 0 4px rgba(201, 79, 56, 0.18); }
+.vk-slider::-moz-range-thumb { width: 15px; height: 15px; border: 0; border-radius: 50%; background: var(--coral); }
+.vk-row--stack { flex-direction: column; align-items: stretch; gap: 8px; }
+.vk-row__val { font-family: var(--font-mono); font-size: 11px; color: var(--coral); }
+
+.vk-tweaks__hint { font-size: 11px; color: rgba(255, 255, 255, 0.45); line-height: 1.4; }
+
+@media (max-width: 600px) { .vk-tweaks { right: 10px; bottom: 10px; width: calc(100vw - 20px); max-width: 300px; } }
+
+/* =====================================================================
+   7. REDUCED MOTION — apaga lo costoso
+   ===================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .vk-cursor, .vk-cursor-ring, .vk-scrollcue { display: none !important; }
+  .hero h1 .hero__line { clip-path: none !important; transform: none !important; opacity: 1 !important; transition: none !important; }
+  .vk-sec__scan, .vk-sec__axis { display: none !important; }
+  .showcase__phone, .showcase__browser { animation: none !important; }
+  .hero__bg::before { animation: none !important; }
+}
+
+/* =====================================================================
+   VELKOR — CAPA DE REDISEÑO (demo)
+   Aditiva sobre index.html + anim.css. Carga DESPUÉS para sobrescribir.
+   Alcance: aligerar Servicios, comparativa mobile-first, ritmo visual.
+   ===================================================================== */
+
+/* =====================================================================
+   SERVICIOS — Base manda; el roadmap se vuelve una lista liviana
+   ===================================================================== */
+/* Más aire entre los 4 de Base (cargados) y el roadmap (quieto) */
+.service-matrix { gap: var(--space-8); }
+
+/* Roadmap: 12 capacidades futuras como lista escaneable en 3 columnas,
+   sin cards, sin iconos, sin acordeones. Quieto y honesto. */
+.roadmap { padding-top: var(--space-7); border-top: 1px solid rgba(58, 58, 58, 0.14); }
+.roadmap__head {
+  display: flex; flex-direction: column; gap: var(--space-2);
+  max-width: 62ch; margin-bottom: var(--space-7);
+}
+.roadmap__label {
+  font-family: var(--font-mono); font-size: 12.5px; letter-spacing: 0.08em;
+  text-transform: lowercase; color: var(--ink-muted);
+}
+.roadmap__label::before { content: '[ '; color: var(--ink-muted); }
+.roadmap__label::after  { content: ' ]'; color: var(--ink-muted); }
+.roadmap__intro {
+  font-size: 1.0625rem; line-height: 1.55; color: var(--charcoal);
+  text-wrap: pretty; margin: 0;
+}
+.roadmap__intro strong { color: var(--deep-charcoal); font-weight: 600; }
+
+.roadmap__grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-7) var(--space-6);
+}
+@media (max-width: 820px) { .roadmap__grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 540px) { .roadmap__grid { grid-template-columns: 1fr; gap: var(--space-6); } }
+
+.roadmap__col h4 {
+  font-family: var(--font-heading); font-weight: 400; font-size: 1.08rem;
+  line-height: 1.15; color: var(--deep-charcoal);
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5em;
+  margin: 0 0 var(--space-4); padding-bottom: var(--space-3);
+  border-bottom: 1px solid rgba(58, 58, 58, 0.16);
+}
+.roadmap__col h4 span {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em;
+  text-transform: lowercase; color: var(--ink-muted); font-weight: 400;
+}
+.roadmap__col ul { display: flex; flex-direction: column; gap: var(--space-3); }
+.roadmap__col li {
+  position: relative; padding-left: 20px;
+  font-size: 14.5px; line-height: 1.4; color: var(--charcoal);
+  transition: color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+}
+/* marcador [ ] neutro (planeado, no activo) que toma coral al hover */
+.roadmap__col li::before {
+  content: ''; position: absolute; left: 0; top: 0.4em;
+  width: 7px; height: 7px;
+  border-left: 1.5px solid var(--ink-muted);
+  border-bottom: 1.5px solid var(--ink-muted);
+  transition: border-color var(--dur-fast) var(--ease);
+}
+.roadmap__col li:hover { color: var(--deep-charcoal); transform: translateX(2px); }
+.roadmap__col li:hover::before { border-color: var(--coral); }
+
+/* =====================================================================
+   COMPARATIVA — mobile-first (sin scroll horizontal)
+   Desktop: tabla. Móvil: cada criterio se apila como bloque con etiquetas.
+   ===================================================================== */
+.compare__wrap { overflow: visible !important; }
+.compare table { min-width: 0 !important; }
+/* La columna Velkor lleva un velo coral tenue = identidad Velkor (no estado) */
+.compare__col-velkor { background: rgba(201, 79, 56, 0.055) !important; }
+.compare thead th.compare__col-velkor { background: rgba(201, 79, 56, 0.09) !important; }
+
+@media (max-width: 640px) {
+  /* el hint de scroll ya no aplica */
+  .compare__hint { display: none !important; }
+  /* cabecera de columnas: oculta a la vista, disponible para lectores de pantalla */
+  .compare thead {
+    position: absolute; width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;
+  }
+  .compare table, .compare tbody, .compare tbody tr,
+  .compare tbody th, .compare tbody td { display: block; width: 100%; }
+
+  .compare tbody tr {
+    background: var(--white);
+    border: 1px solid rgba(58, 58, 58, 0.12);
+    border-radius: var(--radius-md);
+    padding: var(--space-4) var(--space-5);
+    margin-bottom: var(--space-4);
+    box-shadow: var(--shadow-sm);
+  }
+  .compare tbody tr:last-child { margin-bottom: 0; }
+
+  /* criterio = título del bloque */
+  .compare tbody th {
+    font-family: var(--font-heading) !important;
+    font-size: 1.12rem !important;
+    font-weight: 400 !important;
+    color: var(--deep-charcoal) !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+    white-space: normal !important;
+    padding: 0 0 var(--space-3) !important;
+    margin-bottom: var(--space-3);
+    border-bottom: 1px solid rgba(58, 58, 58, 0.12) !important;
+  }
+
+  /* cada celda: etiqueta de columna + valor, alineados a los extremos */
+  .compare tbody td {
+    display: flex !important;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-4);
+    text-align: right;
+    padding: var(--space-3) 0 !important;
+    border: 0 !important;
+    border-bottom: 1px solid rgba(58, 58, 58, 0.08) !important;
+    color: var(--charcoal);
+  }
+  .compare tbody td:last-child { border-bottom: 0 !important; }
+  .compare tbody td::before {
+    content: attr(data-label);
+    flex: 0 0 auto;
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.04em;
+    text-transform: lowercase;
+    color: var(--ink-muted);
+    text-align: left;
+  }
+
+  /* Velkor: la respuesta correcta, resaltada como identidad coral */
+  .compare tbody td.compare__col-velkor {
+    background: rgba(201, 79, 56, 0.07) !important;
+    color: var(--deep-charcoal) !important;
+    font-weight: 700;
+    margin: var(--space-2) calc(-1 * var(--space-4)) 0;
+    padding: var(--space-3) var(--space-4) !important;
+    border-radius: var(--radius-sm);
+    border-bottom: 0 !important;
+  }
+  .compare tbody td.compare__col-velkor::before { color: var(--coral-dark); }
+  .compare tbody td.compare__col-velkor::after { display: none !important; }
+}
+
+/* =====================================================================
+   RITMO VISUAL — un respiro full-bleed entre Servicios y la comparativa
+   No agrega contenido nuevo: reencuadra la promesa central que ya existe.
+   ===================================================================== */
+.breath {
+  background: var(--pink);
+  padding: var(--space-9) var(--space-5);
+  text-align: center;
+}
+.breath__inner { max-width: 920px; margin: 0 auto; }
+.breath__line {
+  font-family: var(--font-heading); font-weight: 400;
+  font-size: clamp(1.6rem, 3.4vw + 0.4rem, 2.9rem);
+  line-height: 1.15; letter-spacing: -0.015em; color: var(--deep-charcoal);
+  text-wrap: balance; margin: 0;
+}
+.breath__line .accent {
+  color: var(--coral);
+  display: inline-block;
+}
+.breath__sub {
+  margin: var(--space-5) auto 0; max-width: 52ch;
+  font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.04em;
+  color: var(--ink-muted); text-transform: lowercase;
+}
+@media (max-width: 600px) { .breath { padding: var(--space-8) var(--space-5); } }
+
+  </style>
 
   <style>
     /* =====================================================
@@ -2457,7 +2933,7 @@
 
       <div class="hero__cta">
         <a class="btn btn--primary" href="https://wa.me/503XXXXXXXX?text=Hola%20Velkor%2C%20quiero%20poner%20mi%20negocio%20en%20internet" target="_blank" rel="noopener">
-          Hablemos por WhatsApp
+          Cuéntanos de tu negocio
           <svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
         </a>
         <a class="btn btn--secondary" href="#paquetes">Ver paquetes</a>
@@ -2552,9 +3028,9 @@
       <div class="section-head reveal">        <span class="eyebrow">Servicios</span>
         <h2 id="servicios-title">Lo que construimos para ti.</h2>
         <p class="lead">
-          Dieciséis servicios en cuatro frentes: que te encuentren, que te elijan, que te
-          paguen y que te organices. Empieza hoy con los cuatro de Velkor Base. El resto
-          se activa cuando tu negocio lo pida.
+          Empieza con <strong>Velkor Base</strong>: los cuatro esenciales para que te
+          encuentren y te elijan, listos en días. El resto de tu huella (doce capacidades
+          más) se activa cuando tu negocio lo pida.
         </p>
       </div>
 
@@ -2618,158 +3094,42 @@
       </div>
         </div>
 
-        <!-- ⭐ REPUTACIÓN & DIFUSIÓN · te eligen -->
-        <details class="service-group service-group--soon reveal">
-          <summary class="service-cat service-cat--toggle">
-            <span class="service-cat__name">Reputación &amp; Difusión</span>
-            <span class="service-cat__verb">te eligen</span>
-            <span class="service-cat__hint">Próximamente · 4</span>
-          </summary>
-          <div class="service-tier service-tier--soon">
-
-        <article class="service">
-          <div class="service__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <!-- ROADMAP · 12 capacidades futuras como lista liviana (rediseño) -->
+        <div class="roadmap reveal">
+          <header class="roadmap__head">
+            <span class="roadmap__label">próximamente</span>
+            <p class="roadmap__intro">Doce capacidades más que se activan cuando tu Base esté rodando. <strong>Creces a tu ritmo, sin rehacer nada.</strong></p>
+          </header>
+          <div class="roadmap__grid">
+            <div class="roadmap__col">
+              <h4>Reputación &amp; Difusión <span>te eligen</span></h4>
+              <ul>
+                <li>Reseñas y reputación</li>
+                <li>Campañas WhatsApp y Email</li>
+                <li>Marketplace WhatsApp y Facebook</li>
+                <li>Perfiles Pro · Google + WhatsApp</li>
+              </ul>
+            </div>
+            <div class="roadmap__col">
+              <h4>Cobro &amp; Ventas <span>te pagan</span></h4>
+              <ul>
+                <li>Cobro en línea / Pasarela</li>
+                <li>Cotizadores</li>
+                <li>E-commerce</li>
+                <li>Dashboard de ventas</li>
+              </ul>
+            </div>
+            <div class="roadmap__col">
+              <h4>Operación &amp; Datos <span>te organizas</span></h4>
+              <ul>
+                <li>POS e inventarios</li>
+                <li>Análisis de afluencia</li>
+                <li>CRM</li>
+                <li>Chatbots con IA</li>
+              </ul>
+            </div>
           </div>
-          <span class="service__status service__status--soon">Próximamente</span>
-          <h3>Reseñas y reputación</h3>
-          <p>Pide reseñas por QR, respóndelas y muestra tus estrellas de Google en la landing.</p>
-          <span class="service__tag">Google · Confianza</span>
-        </article>
-
-        <article class="service">
-          <div class="service__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10v4a1 1 0 0 0 1 1h3l5 4V5L7 9H4a1 1 0 0 0-1 1z"/><path d="M16 9a4 4 0 0 1 0 6"/></svg>
-          </div>
-          <span class="service__status service__status--soon">Próximamente</span>
-          <h3>Campañas WhatsApp y Email</h3>
-          <p>Promos y avisos a tu lista de clientes por WhatsApp y email, sin pagar publicidad.</p>
-          <span class="service__tag">WhatsApp · Email</span>
-        </article>
-
-        <article class="service">
-          <div class="service__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/></svg>
-          </div>
-          <span class="service__status service__status--soon">Próximamente</span>
-          <h3>Marketplace WhatsApp y Facebook</h3>
-          <p>Tu catálogo para vender por WhatsApp Business y Facebook, donde tus clientes ya están.</p>
-          <span class="service__tag">WhatsApp · Facebook</span>
-        </article>
-
-        <article class="service">
-          <div class="service__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V5z"/><polyline points="9 12 11 14 15 10"/></svg>
-          </div>
-          <span class="service__status service__status--soon">Próximamente</span>
-          <h3>Perfiles Pro · Google + WhatsApp</h3>
-          <p>Tu perfil de Google y tu WhatsApp Business optimizados: catálogo, fotos y autorespuestas.</p>
-          <span class="service__tag">Google · WhatsApp Business</span>
-        </article>
-          </div>
-        </details>
-
-        <!-- 💳 COBRO & VENTAS · te pagan -->
-        <details class="service-group service-group--soon reveal">
-          <summary class="service-cat service-cat--toggle">
-            <span class="service-cat__name">Cobro &amp; Ventas</span>
-            <span class="service-cat__verb">te pagan</span>
-            <span class="service-cat__hint">Próximamente · 4</span>
-          </summary>
-          <div class="service-tier service-tier--soon">
-
-        <article class="service">
-          <div class="service__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="6" y1="15" x2="10" y2="15"/></svg>
-          </div>
-          <span class="service__status service__status--soon">Próximamente</span>
-          <h3>Cobro en línea / Pasarela</h3>
-          <p>Link o botón de pago para anticipos y reservas. Integramos la pasarela a tu nombre: el dinero llega a tu cuenta.</p>
-          <span class="service__tag">Pagos · Wompi / N1co</span>
-        </article>
-
-        <article class="service">
-          <div class="service__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-          </div>
-          <span class="service__status service__status--soon">Próximamente</span>
-          <h3>Cotizadores</h3>
-          <p>Tus clientes arman su cotización solos y te llega lista por WhatsApp.</p>
-          <span class="service__tag">Cotizaciones · Ventas</span>
-        </article>
-
-        <article class="service">
-          <div class="service__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-          </div>
-          <span class="service__status service__status--soon">Próximamente</span>
-          <h3>E-commerce</h3>
-          <p>Tienda online con catálogo, carrito y checkout, conectada a tu inventario.</p>
-          <span class="service__tag">Tienda · Ventas</span>
-        </article>
-
-        <article class="service">
-          <div class="service__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="20" x2="4" y2="10"/><line x1="10" y1="20" x2="10" y2="4"/><line x1="16" y1="20" x2="16" y2="14"/><line x1="22" y1="20" x2="2" y2="20"/></svg>
-          </div>
-          <span class="service__status service__status--soon">Próximamente</span>
-          <h3>Dashboard de ventas</h3>
-          <p>Tus ingresos, productos top y horas pico en tiempo real, en un panel claro.</p>
-          <span class="service__tag">Analítica · KPIs</span>
-        </article>
-          </div>
-        </details>
-
-        <!-- ⚙️ OPERACIÓN & DATOS · te organizas -->
-        <details class="service-group service-group--soon reveal">
-          <summary class="service-cat service-cat--toggle">
-            <span class="service-cat__name">Operación &amp; Datos</span>
-            <span class="service-cat__verb">te organizas</span>
-            <span class="service-cat__hint">Próximamente · 4</span>
-          </summary>
-          <div class="service-tier service-tier--soon">
-
-        <article class="service">
-          <div class="service__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M3 3h2l2.4 12.5a2 2 0 0 0 2 1.5h7.7a2 2 0 0 0 2-1.5L21 6H6"/></svg>
-          </div>
-          <span class="service__status service__status--soon">Próximamente</span>
-          <h3>POS e inventarios</h3>
-          <p>Registra ventas y controla tu inventario en un solo lugar.</p>
-          <span class="service__tag">POS · Operación</span>
-        </article>
-
-        <article class="service">
-          <div class="service__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="9"/><line x1="12" y1="3" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="21"/><line x1="3" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="21" y2="12"/></svg>
-          </div>
-          <span class="service__status service__status--soon">Próximamente</span>
-          <h3>Análisis de afluencia</h3>
-          <p>Cuándo y por qué llegan tus clientes, para planificar turnos y promociones.</p>
-          <span class="service__tag">Insights · Operación</span>
-        </article>
-
-        <article class="service">
-          <div class="service__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          </div>
-          <span class="service__status service__status--soon">Próximamente</span>
-          <h3>CRM</h3>
-          <p>Historial, seguimiento y recordatorios de cada cliente en un solo lugar.</p>
-          <span class="service__tag">Clientes · Relación</span>
-        </article>
-
-        <article class="service">
-          <div class="service__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L9 7 4 8l4 4-1 5 5-2 5 2-1-5 4-4-5-1z"/></svg>
-          </div>
-          <span class="service__status service__status--soon">Próximamente</span>
-          <h3>Chatbots con IA</h3>
-          <p>Un asistente que responde dudas, horarios y disponibilidad las 24 horas.</p>
-          <span class="service__tag">IA · Automatización</span>
-        </article>
-          </div>
-        </details>
+        </div>
       </div>
     </div>
   </section>
@@ -2803,38 +3163,48 @@
           <tbody>
             <tr>
               <th scope="row">Costo</th>
-              <td>Tu tiempo</td>
-              <td>Alto, por proyecto</td>
-              <td class="compare__col-velkor">Desde $600</td>
+              <td data-label="Hacerlo solo">Tu tiempo</td>
+              <td data-label="Agencia tradicional">Alto, por proyecto</td>
+              <td data-label="Velkor" class="compare__col-velkor">Desde $600</td>
             </tr>
             <tr>
               <th scope="row">Tiempo de entrega</th>
-              <td>Semanas, si lo terminas</td>
-              <td>1 a 3 meses</td>
-              <td class="compare__col-velkor">En días</td>
+              <td data-label="Hacerlo solo">Semanas, si lo terminas</td>
+              <td data-label="Agencia tradicional">1 a 3 meses</td>
+              <td data-label="Velkor" class="compare__col-velkor">En días</td>
             </tr>
             <tr>
               <th scope="row">Conocimiento técnico</th>
-              <td>Lo pones tú</td>
-              <td>Queda opaco</td>
-              <td class="compare__col-velkor">No, te capacitamos</td>
+              <td data-label="Hacerlo solo">Lo pones tú</td>
+              <td data-label="Agencia tradicional">Queda opaco</td>
+              <td data-label="Velkor" class="compare__col-velkor">No, te capacitamos</td>
             </tr>
             <tr>
               <th scope="row">Soporte después</th>
-              <td>Ninguno</td>
-              <td>Por hora, aparte</td>
-              <td class="compare__col-velkor">Plan mensual incluido</td>
+              <td data-label="Hacerlo solo">Ninguno</td>
+              <td data-label="Agencia tradicional">Por hora, aparte</td>
+              <td data-label="Velkor" class="compare__col-velkor">Plan mensual incluido</td>
             </tr>
             <tr>
               <th scope="row">Identidad de marca</th>
-              <td>Improvisada</td>
-              <td>Genérica</td>
-              <td class="compare__col-velkor">Cuidada por diseño</td>
+              <td data-label="Hacerlo solo">Improvisada</td>
+              <td data-label="Agencia tradicional">Genérica</td>
+              <td data-label="Velkor" class="compare__col-velkor">Cuidada por diseño</td>
             </tr>
           </tbody>
         </table>
       </div>
       <p class="compare__hint" aria-hidden="true">→ desliza para ver la tabla completa</p>
+    </div>
+  </section>
+
+  <!-- ============================================
+       RESPIRO · reencuadre de la huella (rediseño)
+       ============================================ -->
+  <section class="breath reveal" aria-label="Tu huella digital completa">
+    <div class="breath__inner">
+      <p class="breath__line">Tu huella digital completa. <span class="accent">En días, no en meses.</span></p>
+      <p class="breath__sub">menú qr · landing page · google maps + seo · capacitación</p>
     </div>
   </section>
 
@@ -3270,7 +3640,7 @@
             </div>
             <div class="contact-info__item">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg>
-              <a href="mailto:velkorlabs@gmail.com">velkorlabs@gmail.com</a>
+              <a href="/cdn-cgi/l/email-protection#93e5f6fff8fce1fff2f1e0d3f4fef2faffbdf0fcfe"><span class="__cf_email__" data-cfemail="4d3b282126223f212c2f3e0d2a202c2421632e2220">[email&#160;protected]</span></a>
             </div>
             <div class="contact-info__item">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
@@ -3356,7 +3726,7 @@
       <h2 id="cta-close-title">Pon tu negocio en internet.</h2>
       <p class="cta-close__sub">Sin complicarte, sin gastar de más. Escríbenos y te respondemos hoy.</p>
       <a class="btn btn--primary" href="https://wa.me/503XXXXXXXX?text=Hola%20Velkor%2C%20quiero%20poner%20mi%20negocio%20en%20internet" target="_blank" rel="noopener">
-        Quiero mi negocio en internet
+        Escríbenos hoy
         <svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
       </a>
       <p class="cta-close__reassure">Cotización gratis · Sin compromiso · Te respondemos hoy</p>
@@ -3397,7 +3767,7 @@
     </div>
   </div>
 
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     (function () {
       'use strict';
 
@@ -3575,6 +3945,7 @@
          que oscila; los vectores base î/ĵ son sus columnas)
          =================================== */
       (function heroMatrix() {
+        if (true) return; /* superseded by demo/anim.js (canvas reactivo al mouse) */
         const canvas = document.getElementById('heroCanvas');
         if (!canvas || !canvas.getContext) return;
         const ctx = canvas.getContext('2d');
@@ -3892,6 +4263,405 @@
         // }
       });
     })();
+  </script>
+
+  <!-- Motor de animación (incrustado) -->
+  <script>
+/* =====================================================================
+   VELKOR — MOTOR DE ANIMACIÓN (demo)
+   Aditivo sobre index.html. No depende de frameworks.
+   ===================================================================== */
+(function () {
+  'use strict';
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  var html = document.documentElement;
+
+  var MO = { sutil: 0.45, vivo: 0.8, audaz: 1.15 };
+
+  /* ---------------------------------------------------------------
+     ESTADO / TWEAKS
+     --------------------------------------------------------------- */
+  var DEFAULTS = {
+    intensity: 'audaz',
+    cursor: true,
+    parallax: true,
+    heroReact: true,
+    tilt: true,
+    sectionFx: true,
+    gridDensity: 1.0
+  };
+  var state = load();
+  // Producción: configuración aprobada horneada (ignora localStorage).
+  function load() { return Object.assign({}, DEFAULTS); }
+  function save() {}
+
+  window.VK = {
+    mo: MO[state.intensity] || 1,
+    state: state
+  };
+
+  function applyState() {
+    window.VK.mo = MO[state.intensity] || 1;
+    html.setAttribute('data-intensity', state.intensity);
+    html.classList.toggle('vk-cursor-on', state.cursor && finePointer && !reduce);
+    html.classList.toggle('vk-no-parallax', !state.parallax);
+    if (finePointer && !reduce) html.classList.add('vk-pointer-fine');
+    save();
+  }
+  applyState();
+
+  /* ---------------------------------------------------------------
+     CURSOR PERSONALIZADO — pivote coral + anillo con lerp
+     --------------------------------------------------------------- */
+  (function cursor() {
+    return; // El cursor ahora es nativo (imagen SVG en anim.css). JS desactivado.
+    if (!finePointer || reduce) return;
+    var dot = document.createElement('div'); dot.className = 'vk-cursor';
+    var ring = document.createElement('div'); ring.className = 'vk-cursor-ring';
+    document.body.appendChild(dot); document.body.appendChild(ring);
+    var tx = window.innerWidth / 2, ty = window.innerHeight / 2;
+    var rx = tx, ry = ty, dx = tx, dy = ty;
+    window.addEventListener('mousemove', function (e) {
+      tx = e.clientX; ty = e.clientY;
+      var t = e.target;
+      var chrome = !!(t.closest && t.closest('[data-omelette-chrome], .vk-tweaks'));
+      html.classList.toggle('vk-on-chrome', chrome);
+      var hot = !chrome && !!(t.closest && t.closest('a, button, [role="button"], .service, .price, summary, .faq-item, label'));
+      var text = !chrome && !!(t.closest && t.closest('input, textarea, select, p, h1, h2, h3, .lead'));
+      html.classList.toggle('vk-hot', hot);
+      html.classList.toggle('vk-text', text && !hot);
+    }, { passive: true });
+    function tick() {
+      dx += (tx - dx) * 0.9; dy += (ty - dy) * 0.9;     // punto: casi inmediato
+      rx += (tx - rx) * 0.18; ry += (ty - ry) * 0.18;   // anillo: rezagado
+      dot.style.transform = 'translate(' + dx + 'px,' + dy + 'px)';
+      ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px)';
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  })();
+
+  /* ---------------------------------------------------------------
+     HERO — boot + coreografía de entrada
+     --------------------------------------------------------------- */
+  (function heroLoad() {
+    // índices para el blink escalonado de la tira mono
+    var metas = document.querySelectorAll('.hero__meta-item');
+    for (var i = 0; i < metas.length; i++) metas[i].style.setProperty('--i', i);
+
+    // scroll cue
+    var hero = document.querySelector('.hero');
+    if (hero) {
+      var cue = document.createElement('div');
+      cue.className = 'vk-scrollcue';
+      cue.setAttribute('aria-hidden', 'true');
+      cue.innerHTML = 'scroll<span class="vk-scrollcue__track"></span>';
+      hero.appendChild(cue);
+      window.addEventListener('scroll', function () {
+        cue.classList.toggle('is-hidden', window.scrollY > 60);
+      }, { passive: true });
+    }
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { html.classList.add('vk-loaded'); });
+    });
+    // Robustez: que el hero nunca quede oculto aunque rAF se retrase
+    setTimeout(function () { html.classList.add('vk-loaded'); }, 120);
+    window.addEventListener('load', function () { html.classList.add('vk-loaded'); });
+  })();
+
+  /* ---------------------------------------------------------------
+     HERO CANVAS — matriz 2×2 reactiva al mouse (tesis de marca)
+     --------------------------------------------------------------- */
+  (function heroMatrix() {
+    var canvas = document.getElementById('heroCanvas');
+    if (!canvas || !canvas.getContext) return;
+    var ctx = canvas.getContext('2d');
+    var CORAL = '201, 79, 56', PINK = '236, 226, 221';
+    var w = 0, h = 0, raf = null, running = false;
+    var ox = 0, oy = 0, baseOy = 0, unit = 44, R = 8;
+    var scrollY = 0;
+    // mouse normalizado [-1,1] respecto al centro del canvas, con damping
+    var mtx = 0, mty = 0, mx = 0, my = 0;
+    // matriz amortiguada
+    var m = { a: 1, b: 0, c: 0, d: 1 };
+    // progreso de boot 0->1
+    var intro = 0, introStart = 0;
+
+    function resize() {
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var r = canvas.getBoundingClientRect();
+      w = r.width; h = r.height;
+      if (!w || !h) return;
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var dens = (window.VK.state.gridDensity || 1);
+      unit = Math.max(34, Math.min(w, h) / 11) * dens;
+      R = Math.ceil(Math.max(w, h) / unit) + 2;
+      ox = w * (w < 700 ? 0.62 : 0.76);
+      baseOy = h * (w < 700 ? 0.72 : 0.58);
+    }
+
+    function tp(x, y, mm, g) {
+      return [ox + (mm.a * x + mm.b * y) * g, oy - (mm.c * x + mm.d * y) * g];
+    }
+    function targetMatrix(t) {
+      var k = window.VK.mo;
+      var react = window.VK.state.heroReact ? 1 : 0;
+      return {
+        a: 1 + (0.30 * Math.sin(t * 0.00017) + mx * 0.20 * react) * k,
+        b: (0.42 * Math.sin(t * 0.00011 + 1.3) + mx * 0.34 * react) * k,
+        c: (0.22 * Math.sin(t * 0.00015 + 0.6) + my * 0.30 * react) * k,
+        d: 1 + (0.26 * Math.sin(t * 0.00021 + 2.1) + my * 0.18 * react) * k
+      };
+    }
+    function arrow(p, color, lw, g) {
+      var ex = p[0], ey = p[1], ang = Math.atan2(ey - oy, ex - ox), ah = 7;
+      ctx.strokeStyle = color; ctx.lineWidth = lw;
+      ctx.beginPath(); ctx.moveTo(ox, oy); ctx.lineTo(ex, ey); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(ex, ey); ctx.lineTo(ex - Math.cos(ang - 0.42) * ah, ey - Math.sin(ang - 0.42) * ah);
+      ctx.moveTo(ex, ey); ctx.lineTo(ex - Math.cos(ang + 0.42) * ah, ey - Math.sin(ang + 0.42) * ah);
+      ctx.stroke();
+    }
+
+    function render(t) {
+      if (!introStart) introStart = t;
+      var ip = reduce ? 1 : Math.min((t - introStart) / 1300, 1);
+      intro = 1 - Math.pow(1 - ip, 3);              // easeOutCubic
+      var g = unit * (0.18 + 0.82 * intro);         // el grid se expande desde el origen
+
+      // damping del mouse y la matriz
+      mx += (mtx - mx) * 0.05; my += (mty - my) * 0.05;
+      var tg = targetMatrix(t);
+      m.a += (tg.a - m.a) * 0.06; m.b += (tg.b - m.b) * 0.06;
+      m.c += (tg.c - m.c) * 0.06; m.d += (tg.d - m.d) * 0.06;
+
+      // parallax vertical del origen con el scroll
+      oy = baseOy + scrollY * 0.12 * window.VK.mo;
+
+      ctx.clearRect(0, 0, w, h);
+      ctx.globalAlpha = intro;
+
+      // 1. grid de referencia (identidad)
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = 'rgba(' + PINK + ',0.10)';
+      ctx.beginPath();
+      for (var i = -R; i <= R; i++) {
+        ctx.moveTo(ox + i * g, oy - R * g); ctx.lineTo(ox + i * g, oy + R * g);
+        ctx.moveTo(ox - R * g, oy - i * g); ctx.lineTo(ox + R * g, oy - i * g);
+      }
+      ctx.stroke();
+
+      // 2. grid transformado (coral)
+      ctx.strokeStyle = 'rgba(' + CORAL + ',0.34)';
+      ctx.beginPath();
+      for (var j = -R; j <= R; j++) {
+        var v1 = tp(j, -R, m, g), v2 = tp(j, R, m, g);
+        ctx.moveTo(v1[0], v1[1]); ctx.lineTo(v2[0], v2[1]);
+        var hg1 = tp(-R, j, m, g), hg2 = tp(R, j, m, g);
+        ctx.moveTo(hg1[0], hg1[1]); ctx.lineTo(hg2[0], hg2[1]);
+      }
+      ctx.stroke();
+
+      // 3. puntos de la retícula transformada
+      ctx.fillStyle = 'rgba(' + CORAL + ',0.58)';
+      for (var a = -4; a <= 4; a++) {
+        for (var b = -4; b <= 4; b++) {
+          var p = tp(a, b, m, g);
+          ctx.beginPath(); ctx.arc(p[0], p[1], 1.4, 0, Math.PI * 2); ctx.fill();
+        }
+      }
+
+      // 3.5 partículas que viajan por los ejes transformados (vida)
+      var travel = ((t * 0.00016) % 1);
+      ctx.fillStyle = 'rgba(' + CORAL + ',0.85)';
+      for (var s = -3; s <= 3; s++) {
+        if (s === 0) continue;
+        var fp = tp(s + (s > 0 ? -travel : travel), 0, m, g);
+        ctx.beginPath(); ctx.arc(fp[0], fp[1], 1.8, 0, Math.PI * 2); ctx.fill();
+        var fq = tp(0, s + (s > 0 ? -travel : travel), m, g);
+        ctx.beginPath(); ctx.arc(fq[0], fq[1], 1.6, 0, Math.PI * 2); ctx.fill();
+      }
+
+      // 4. paralelogramo (det = área): la tesis literal
+      var _i = tp(1, 0, m, g), _j = tp(0, 1, m, g), _ij = tp(1, 1, m, g);
+      ctx.beginPath();
+      ctx.moveTo(ox, oy); ctx.lineTo(_i[0], _i[1]); ctx.lineTo(_ij[0], _ij[1]); ctx.lineTo(_j[0], _j[1]); ctx.closePath();
+      ctx.fillStyle = 'rgba(' + CORAL + ',0.18)';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(' + CORAL + ',0.5)'; ctx.lineWidth = 1.2; ctx.stroke();
+
+      // 5. vectores base con glow
+      ctx.save();
+      ctx.shadowColor = 'rgba(' + CORAL + ',0.6)'; ctx.shadowBlur = 10;
+      arrow(_i, 'rgba(' + CORAL + ',0.96)', 2.6, g);
+      ctx.shadowColor = 'rgba(' + PINK + ',0.4)';
+      arrow(_j, 'rgba(' + PINK + ',0.74)', 2.0, g);
+      ctx.restore();
+
+      // etiquetas î/ĵ
+      ctx.globalAlpha = intro;
+      ctx.font = '600 13px "Share Tech Mono", ui-monospace, monospace';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = 'rgba(' + CORAL + ',0.95)'; ctx.fillText('î', _i[0] + 9, _i[1] - 2);
+      ctx.fillStyle = 'rgba(' + PINK + ',0.88)'; ctx.fillText('ĵ', _j[0] + 9, _j[1] - 2);
+
+      // 6. pivote en el origen: punto + anillo que late
+      var pulse = 6 + Math.sin(t * 0.0025) * 1.6;
+      ctx.fillStyle = 'rgba(' + CORAL + ',0.92)';
+      ctx.beginPath(); ctx.arc(ox, oy, 3, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = 'rgba(' + CORAL + ',0.8)'; ctx.lineWidth = 1.6;
+      ctx.beginPath(); ctx.arc(ox, oy, pulse, 0, Math.PI * 2); ctx.stroke();
+      ctx.strokeStyle = 'rgba(' + CORAL + ',' + (0.3 * (1 - ((t * 0.0011) % 1))) + ')';
+      ctx.beginPath(); ctx.arc(ox, oy, 6 + ((t * 0.0011) % 1) * 26, 0, Math.PI * 2); ctx.stroke();
+
+      ctx.globalAlpha = 1;
+    }
+
+    function frame(now) { render(now || 0); if (running) raf = requestAnimationFrame(frame); }
+    function start() { if (running) return; running = true; introStart = 0; raf = requestAnimationFrame(frame); }
+    function stop() { running = false; if (raf) cancelAnimationFrame(raf); raf = null; }
+
+    window.addEventListener('mousemove', function (e) {
+      var r = canvas.getBoundingClientRect();
+      mtx = ((e.clientX - r.left) / r.width - 0.5) * 2;
+      mty = -((e.clientY - r.top) / r.height - 0.5) * 2;
+    }, { passive: true });
+    window.addEventListener('scroll', function () { scrollY = window.scrollY; }, { passive: true });
+
+    resize();
+    if (reduce) { render(3000); }
+    else {
+      start();
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (es) {
+          es.forEach(function (e) { e.isIntersecting ? start() : stop(); });
+        }, { threshold: 0 }).observe(canvas);
+      }
+      document.addEventListener('visibilitychange', function () { document.hidden ? stop() : start(); });
+    }
+    var rt;
+    window.addEventListener('resize', function () {
+      clearTimeout(rt); rt = setTimeout(function () { resize(); if (reduce) render(3000); }, 150);
+    }, { passive: true });
+    window.VK._heroResize = resize;   // para que el slider de densidad reajuste
+  })();
+
+  /* ---------------------------------------------------------------
+     SECCIONES — overlay de barrido + eje al revelarse
+     --------------------------------------------------------------- */
+  (function sectionFx() {
+    if (reduce) return;
+    var secs = document.querySelectorAll('main > section');
+    secs.forEach(function (sec) {
+      sec.classList.add('vk-sec');
+      var scan = document.createElement('div'); scan.className = 'vk-sec__scan'; scan.setAttribute('aria-hidden', 'true');
+      var axis = document.createElement('div'); axis.className = 'vk-sec__axis'; axis.setAttribute('aria-hidden', 'true');
+      sec.insertBefore(axis, sec.firstChild);
+      sec.insertBefore(scan, sec.firstChild);
+    });
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting && window.VK.state.sectionFx) {
+          en.target.classList.add('is-revealing');
+          obs.unobserve(en.target);
+        } else if (en.isIntersecting) {
+          obs.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.16 });
+    secs.forEach(function (s) { obs.observe(s); });
+  })();
+
+  /* ---------------------------------------------------------------
+     CARDS — inclinación 3D + destello que sigue al cursor
+     --------------------------------------------------------------- */
+  (function cardTilt() {
+    if (reduce || !finePointer) return;
+    var cards = document.querySelectorAll('.service, .price');
+    cards.forEach(function (card) {
+      var gleam = document.createElement('div'); gleam.className = 'vk-gleam'; gleam.setAttribute('aria-hidden', 'true');
+      card.appendChild(gleam);
+      var lift = card.classList.contains('price') ? -6 : -6;
+      card.addEventListener('mousemove', function (e) {
+        if (!window.VK.state.tilt) return;
+        var r = card.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width;
+        var py = (e.clientY - r.top) / r.height;
+        var k = window.VK.mo;
+        var ry = (px - 0.5) * 10 * k;
+        var rx = -(py - 0.5) * 8 * k;
+        card.style.transform = 'perspective(760px) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg) translateY(' + lift + 'px)';
+        card.style.setProperty('--mx', (px * 100) + '%');
+        card.style.setProperty('--my', (py * 100) + '%');
+      });
+      card.addEventListener('mouseleave', function () { card.style.transform = ''; });
+    });
+  })();
+
+  /* ---------------------------------------------------------------
+     BOTONES MAGNÉTICOS
+     --------------------------------------------------------------- */
+  (function magnetic() {
+    if (reduce || !finePointer) return;
+    var btns = document.querySelectorAll('.btn--primary, .nav__cta');
+    btns.forEach(function (btn) {
+      btn.setAttribute('data-vk-mag', '');
+      btn.addEventListener('mousemove', function (e) {
+        var r = btn.getBoundingClientRect();
+        var k = 0.32 * window.VK.mo;
+        btn.style.setProperty('--tx', ((e.clientX - (r.left + r.width / 2)) * k) + 'px');
+        btn.style.setProperty('--ty', ((e.clientY - (r.top + r.height / 2)) * k) + 'px');
+      });
+      btn.addEventListener('mouseleave', function () {
+        btn.style.setProperty('--tx', '0px'); btn.style.setProperty('--ty', '0px');
+      });
+    });
+  })();
+
+  /* ---------------------------------------------------------------
+     PARALLAX — elementos etiquetados se mueven con el scroll
+     --------------------------------------------------------------- */
+  (function parallax() {
+    if (reduce) return;
+    // etiqueta candidatos con velocidad
+    var items = [];
+    function add(sel, speed) {
+      document.querySelectorAll(sel).forEach(function (el) {
+        el.setAttribute('data-vk-par', '');
+        items.push({ el: el, speed: speed, base: 0 });
+      });
+    }
+    add('.showcase', -0.06);
+    add('.section-head--inverse', 0.05);
+    add('.brand-mark--feature', -0.05);
+    add('.paquetes .price--featured', -0.04);
+
+    var ticking = false;
+    function update() {
+      var vh = window.innerHeight;
+      for (var i = 0; i < items.length; i++) {
+        var it = items[i];
+        if (!window.VK.state.parallax) { it.el.style.transform = ''; continue; }
+        var r = it.el.getBoundingClientRect();
+        var center = r.top + r.height / 2;
+        var off = (center - vh / 2) / vh;         // -1..1 aprox
+        var dy = off * it.speed * 120 * window.VK.mo;
+        it.el.style.transform = 'translate3d(0,' + dy.toFixed(1) + 'px,0)';
+      }
+      ticking = false;
+    }
+    function onScroll() { if (!ticking) { requestAnimationFrame(update); ticking = true; } }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    update();
+    window.VK._parallaxUpdate = update;
+  })();
+})();
+
   </script>
 </body>
 </html>

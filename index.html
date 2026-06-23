@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="noindex, nofollow" />
   <meta name="description" content="Velkor — Desarrollamos la huella digital de pequeños negocios en El Salvador. Rápido, con estrategia y con resultados que se ven." />
   <meta name="theme-color" content="#1E1E1E" />
   <title>Velkor — Tu huella digital, construida para durar</title>
@@ -3343,7 +3342,6 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
             <h3 class="brand-svc__name">Velkor Restyle</h3>
             <p class="brand-svc__desc">Refresca tu logo y tu paleta sin perder la esencia. Para una marca que quedó anclada en el tiempo y necesita verse al día.</p>
             <div class="brand-svc__meta">
-              <span class="brand-svc__price">Desde $700</span>
               <span class="brand-svc__rounds">2 rondas de revisión</span>
             </div>
             <a class="brand-svc__cta" href="#contacto">Cotizar mi marca →</a>
@@ -3356,14 +3354,13 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
             <h3 class="brand-svc__name">Velkor Rebrand</h3>
             <p class="brand-svc__desc">Identidad nueva completa: concepto, naming, sistema visual y posicionamiento. Para negocios que necesitan reinventarse, no solo refrescarse.</p>
             <div class="brand-svc__meta">
-              <span class="brand-svc__price">Desde $1500</span>
               <span class="brand-svc__rounds">3 rondas de revisión</span>
             </div>
             <a class="brand-svc__cta" href="#contacto">Cotizar mi marca →</a>
           </article>
         </div>
 
-        <p class="brand-strip__bundle">[ Bundle con <strong>Velkor Base</strong> · Restyle −$100 · Rebrand −$250 ]</p>
+        <p class="brand-strip__bundle">[ Bundle con <strong>Velkor Base</strong> · precio especial al cotizar ]</p>
       </div>
     </div>
   </section>
@@ -3640,7 +3637,7 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
             </div>
             <div class="contact-info__item">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg>
-              <a href="/cdn-cgi/l/email-protection#93e5f6fff8fce1fff2f1e0d3f4fef2faffbdf0fcfe"><span class="__cf_email__" data-cfemail="4d3b282126223f212c2f3e0d2a202c2421632e2220">[email&#160;protected]</span></a>
+              <a href="mailto:velkorlabs@gmail.com">velkorlabs@gmail.com</a>
             </div>
             <div class="contact-info__item">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
@@ -3825,20 +3822,6 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
 
       function onScroll() {
         const y = window.scrollY;
-        const goingDown = y > lastY;
-        const scrolledEnough = Math.abs(y - lastY) > 6;
-        const pastThreshold = y > 80;
-
-        if (pastThreshold && scrolledEnough) {
-          if (goingDown && !navLinks.classList.contains('is-open')) {
-            nav.classList.add('nav--hidden');
-          } else {
-            nav.classList.remove('nav--hidden');
-          }
-        } else {
-          nav.classList.remove('nav--hidden');
-        }
-
         nav.classList.toggle('nav--scrolled', y > 24);
         lastY = y;
         ticking = false;

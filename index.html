@@ -3,22 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Velkor: Desarrollamos la huella digital de pequeños negocios en El Salvador. Rápido, con estrategia y con resultados que se ven." />
+  <meta name="description" content="Construimos la huella digital de tu negocio en El Salvador: página web, menú digital QR, Google Maps y SEO. Lista en días, no en meses." />
   <meta name="theme-color" content="#1E1E1E" />
-  <title>Velkor: Tu huella digital, construida para durar</title>
+  <title>Páginas web para negocios en El Salvador | Velkor</title>
+  <link rel="canonical" href="https://getvelkor.com/" />
 
-  <!-- Social sharing. Al deployar: anteponer el dominio absoluto a og:url y og:image -->
+  <!-- Social sharing. URLs absolutas a producción (getvelkor.com) también en master:
+       los syncs a velkor-site copian este archivo tal cual — no volver a relativas. -->
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://getvelkor.com/" />
   <meta property="og:title" content="Velkor: Tu huella digital, construida para durar" />
   <meta property="og:description" content="Desarrollamos la huella digital de pequeños negocios en El Salvador. Software a tu medida, en días y a un precio accesible." />
-  <meta property="og:image" content="og-image.png" />
+  <meta property="og:image" content="https://getvelkor.com/og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:locale" content="es_SV" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Velkor: Tu huella digital, construida para durar" />
   <meta name="twitter:description" content="Desarrollamos la huella digital de pequeños negocios en El Salvador." />
-  <meta name="twitter:image" content="og-image.png" />
+  <meta name="twitter:image" content="https://getvelkor.com/og-image.png" />
 
   <link rel="icon" type="image/x-icon" href="favicon.ico" />
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
@@ -244,16 +247,6 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
    ===================================================================== */
 [data-vk-par] { will-change: transform; }
 
-/* Mockups del showcase: flotación + deriva suave */
-@media (prefers-reduced-motion: no-preference) {
-  .showcase__phone { animation: vkFloat 6s ease-in-out infinite; }
-  .showcase__browser { animation: vkFloat 7.5s ease-in-out infinite reverse; }
-}
-@keyframes vkFloat {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(calc(-8px * var(--mo))); }
-}
-
 /* =====================================================================
    6. PANEL DE TWEAKS (vanilla, marca Velkor)
    ===================================================================== */
@@ -332,7 +325,6 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
   .vk-cursor, .vk-cursor-ring, .vk-scrollcue { display: none !important; }
   .hero h1 .hero__line { clip-path: none !important; transform: none !important; opacity: 1 !important; transition: none !important; }
   .vk-sec__scan, .vk-sec__axis { display: none !important; }
-  .showcase__phone, .showcase__browser { animation: none !important; }
   .hero__bg::before { animation: none !important; }
 }
 
@@ -1366,29 +1358,90 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
       text-wrap: pretty;
     }
     .service-tier--soon .service__tag { display: none; }
-    /* Showcase ilustrativo: mockups de lo que se construye (demos, no clientes reales) */
-    /* Lane B — el showcase rompe el contenedor (full-bleed) y crece: los mockups
-       como evidencia a tamaño dramático, no una miniatura centrada. */
-    .showcase {
-      margin: var(--space-6) 0 var(--space-9);
-      width: 100vw;
-      margin-left: calc(50% - 50vw);
-      text-align: center;
+    /* =====================================================
+       DEMOS — sitios de muestra en vivo (ficticios, no clientes)
+       ===================================================== */
+    .demos { background: var(--white); }
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-5);
+      margin-top: var(--space-7);
     }
-    .showcase__cap {
-      display: inline-block; font-family: var(--font-mono); font-size: 11px;
-      letter-spacing: 0.08em; color: var(--ink-muted); margin-bottom: var(--space-5); white-space: nowrap;
+    @media (max-width: 900px) {
+      .demo-grid { grid-template-columns: 1fr; max-width: 560px; margin-inline: auto; }
     }
-    .showcase__devices { display: flex; align-items: flex-end; justify-content: center; }
-    .showcase__browser { width: min(740px, 72vw); height: auto; border-radius: 16px; }
-    .showcase__phone {
-      width: 196px; height: auto; margin-left: -108px; margin-bottom: -8px;
-      position: relative; z-index: 2;
+    .demo {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      background: var(--white);
+      border: 1px solid var(--muted-gray);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--dur-base) var(--ease), box-shadow var(--dur-base) var(--ease);
     }
-    @media (max-width: 700px) {
-      .showcase__browser { display: none; }
-      .showcase__phone { width: 220px; margin: 0; }
+    /* barra coral superior + esquina de corchete [ ] — mismo sistema que .service */
+    .demo::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--coral);
+      transform-origin: left;
+      transform: scaleX(0.32);
+      transition: transform var(--dur-base) var(--ease);
+      z-index: 2;
     }
+    .demo:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); }
+    .demo:hover::before { transform: scaleX(1); }
+    .demo::after {
+      content: '';
+      position: absolute;
+      right: 13px; bottom: 13px;
+      width: 11px; height: 11px;
+      border-right: 1.6px solid rgba(201, 79, 56, 0.4);
+      border-bottom: 1.6px solid rgba(201, 79, 56, 0.4);
+      transition: border-color var(--dur-base) var(--ease);
+    }
+    .demo:hover::after { border-color: var(--coral); }
+    .demo__shot { display: block; }
+    /* mini barra de navegador: 3 puntos + subdominio en mono */
+    .demo__bar {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 9px 14px;
+      background: var(--pearl-gray);
+      border-bottom: 1px solid var(--muted-gray);
+    }
+    .demo__bar i { width: 8px; height: 8px; border-radius: 50%; background: var(--muted-gray); }
+    .demo__bar b {
+      margin-left: 7px;
+      font-family: var(--font-mono);
+      font-weight: 400;
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      color: var(--ink-muted);
+    }
+    .demo__shot img { width: 100%; height: auto; aspect-ratio: 1280 / 900; object-fit: cover; }
+    .demo__body {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-3);
+      flex: 1;
+      padding: var(--space-5) var(--space-6) var(--space-6);
+    }
+    .demo__tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+    }
+    .demo__body .btn { margin-top: var(--space-2); }
 
     /* =====================================================
        PAQUETES
@@ -2817,9 +2870,11 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
         "name": "Velkor",
         "description": "Agencia digital salvadoreña que construye la huella digital de pequeños negocios: menú QR, landing page, Google Maps y SEO. Entrega en días, precio accesible.",
         "slogan": "Tu huella digital, construida para durar.",
+        "url": "https://getvelkor.com/",
+        "telephone": "+503XXXXXXXX",
         "email": "velkorlabs@gmail.com",
-        "logo": "og-image.png",
-        "image": "og-image.png",
+        "logo": "https://getvelkor.com/og-image.png",
+        "image": "https://getvelkor.com/og-image.png",
         "areaServed": { "@type": "Country", "name": "El Salvador" },
         "address": {
           "@type": "PostalAddress",
@@ -2886,6 +2941,7 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
       </a>
 
       <ul class="nav__links" id="navLinks" role="menubar">
+        <li role="none"><a class="nav__link" data-link href="#demos" role="menuitem">Demos</a></li>
         <li role="none"><a class="nav__link" data-link href="#servicios" role="menuitem">Servicios</a></li>
         <li role="none"><a class="nav__link" data-link href="#paquetes" role="menuitem">Paquetes</a></li>
         <li role="none"><a class="nav__link" data-link href="#nosotros" role="menuitem">Nosotros</a></li>
@@ -3025,6 +3081,69 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
   </section>
 
   <!-- ============================================
+       DEMOS — sitios de muestra en vivo (ficticios)
+       ============================================ -->
+  <section class="demos" id="demos" aria-labelledby="demos-title">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Demos en vivo</span>
+        <h2 id="demos-title">Mira cómo queda.</h2>
+        <p class="lead">
+          Tres cafeterías de muestra, tres personalidades distintas del mismo motor.
+          Son sitios reales — entra, navega e imagina el tuyo.
+        </p>
+      </div>
+
+      <div class="demo-grid reveal-stagger">
+        <article class="demo">
+          <a class="demo__shot" href="https://luna.getvelkor.com" target="_blank" rel="noopener"
+             aria-label="Abrir el demo de Café Luna en una pestaña nueva">
+            <span class="demo__bar" aria-hidden="true"><i></i><i></i><i></i><b>luna.getvelkor.com</b></span>
+            <img src="demo-luna.webp" width="1280" height="900" loading="lazy"
+                 alt="Demo Café Luna: portada con barra de café de especialidad, menú y contacto por WhatsApp" />
+          </a>
+          <div class="demo__body">
+            <h3>Café Luna</h3>
+            <span class="demo__tag">Editorial · Café de especialidad</span>
+            <a class="btn btn--ghost" href="https://luna.getvelkor.com" target="_blank" rel="noopener"
+               aria-label="Ver el demo de Café Luna">Ver demo <span class="arrow" aria-hidden="true">→</span></a>
+          </div>
+        </article>
+
+        <article class="demo">
+          <a class="demo__shot" href="https://dontulio.getvelkor.com" target="_blank" rel="noopener"
+             aria-label="Abrir el demo de La Terraza de Don Tulio en una pestaña nueva">
+            <span class="demo__bar" aria-hidden="true"><i></i><i></i><i></i><b>dontulio.getvelkor.com</b></span>
+            <img src="demo-dontulio.webp" width="1280" height="900" loading="lazy"
+                 alt="Demo La Terraza de Don Tulio: portada cálida con tipografía clásica y cafetera moka" />
+          </a>
+          <div class="demo__body">
+            <h3>La Terraza de Don Tulio</h3>
+            <span class="demo__tag">Cálido · Tradición familiar</span>
+            <a class="btn btn--ghost" href="https://dontulio.getvelkor.com" target="_blank" rel="noopener"
+               aria-label="Ver el demo de La Terraza de Don Tulio">Ver demo <span class="arrow" aria-hidden="true">→</span></a>
+          </div>
+        </article>
+
+        <article class="demo">
+          <a class="demo__shot" href="https://manana.getvelkor.com" target="_blank" rel="noopener"
+             aria-label="Abrir el demo de Mañana Coffee en una pestaña nueva">
+            <span class="demo__bar" aria-hidden="true"><i></i><i></i><i></i><b>manana.getvelkor.com</b></span>
+            <img src="demo-manana.webp" width="1280" height="900" loading="lazy"
+                 alt="Demo Mañana Coffee: portada neo-brutalista clara con stickers naranjas y foto de la cafetería" />
+          </a>
+          <div class="demo__body">
+            <h3>Mañana Coffee</h3>
+            <span class="demo__tag">Alternativo · Neo-brutal</span>
+            <a class="btn btn--ghost" href="https://manana.getvelkor.com" target="_blank" rel="noopener"
+               aria-label="Ver el demo de Mañana Coffee">Ver demo <span class="arrow" aria-hidden="true">→</span></a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
        SERVICIOS
        ============================================ -->
   <section class="servicios" id="servicios" aria-labelledby="servicios-title">
@@ -3036,16 +3155,6 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
           encuentren y te elijan, listos en días. El resto de tu huella (doce capacidades
           más) se activa cuando tu negocio lo pida.
         </p>
-      </div>
-
-      <div class="showcase reveal">
-        <span class="showcase__cap" aria-hidden="true">[ ejemplos ilustrativos ]</span>
-        <div class="showcase__devices">
-          <img class="showcase__browser" src="mock-browser.webp" width="620" height="420" loading="lazy"
-               alt="Ejemplo ilustrativo: landing de una cafetería con menú, ubicación y contacto por WhatsApp" />
-          <img class="showcase__phone" src="mock-phone.webp" width="300" height="610" loading="lazy"
-               alt="Ejemplo ilustrativo: menú digital QR en el teléfono, para ver el menú al instante" />
-        </div>
       </div>
 
       <div class="service-matrix">
@@ -3731,11 +3840,13 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
         <img src="velkor-logo-light.webp" alt="Velkor" class="footer__logo-img" width="219" height="48" loading="lazy" />
       </a>
       <nav class="footer__nav" aria-label="Navegación de pie de página">
+        <a href="#demos">Demos</a>
         <a href="#servicios">Servicios</a>
         <a href="#paquetes">Paquetes</a>
         <a href="#nosotros">Nosotros</a>
         <a href="#faq">FAQ</a>
         <a href="#contacto">Contacto</a>
+        <a href="/cafeterias/">Para cafeterías</a>
       </nav>
       <p class="footer__meta">Velkor © 2026 · El Salvador</p>
     </div>
@@ -3876,7 +3987,7 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
       /* ===================================
          ACTIVE LINK ON SCROLL
          =================================== */
-      const sections = ['servicios', 'paquetes', 'nosotros', 'faq', 'contacto']
+      const sections = ['demos', 'servicios', 'paquetes', 'nosotros', 'faq', 'contacto']
         .map(function (id) { return document.getElementById(id); })
         .filter(Boolean);
 
@@ -4609,7 +4720,6 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
         items.push({ el: el, speed: speed, base: 0 });
       });
     }
-    add('.showcase', -0.06);
     add('.section-head--inverse', 0.05);
     add('.brand-mark--feature', -0.05);
     add('.paquetes .price--featured', -0.04);

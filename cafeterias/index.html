@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Página web con menú digital QR, Google Maps y WhatsApp para tu cafetería en El Salvador. Lista en días. Mira tres demos en vivo y cotiza por WhatsApp." />
+  <meta name="theme-color" content="#1E1E1E" />
+  <title>Página web para cafeterías en El Salvador | Velkor</title>
+  <link rel="canonical" href="https://getvelkor.com/cafeterias/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://getvelkor.com/cafeterias/" />
+  <meta property="og:title" content="Página web para cafeterías en El Salvador | Velkor" />
+  <meta property="og:description" content="Menú digital QR, página web, Google Maps y SEO para tu cafetería. Lista en días. Mira tres demos en vivo." />
+  <meta property="og:image" content="https://getvelkor.com/og-image.png" />
+  <meta property="og:locale" content="es_SV" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Página web para cafeterías en El Salvador | Velkor" />
+  <meta name="twitter:image" content="https://getvelkor.com/og-image.png" />
+
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nova+Square&family=Hanken+Grotesk:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Service",
+        "name": "Página web para cafeterías",
+        "serviceType": "Diseño de páginas web para cafeterías",
+        "description": "Página web con menú digital QR, Google Maps optimizado y SEO local para cafeterías en El Salvador. Entrega en días.",
+        "areaServed": { "@type": "Country", "name": "El Salvador" },
+        "provider": {
+          "@type": ["ProfessionalService", "Organization"],
+          "name": "Velkor",
+          "url": "https://getvelkor.com/",
+          "telephone": "+503XXXXXXXX",
+          "email": "velkorlabs@gmail.com"
+        },
+        "url": "https://getvelkor.com/cafeterias/"
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "¿Cuánto tarda mi página web?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Días, no meses. El estándar de Velkor es entregar tu sitio completo en la primera semana: página, menú digital QR, Google Maps optimizado y SEO local." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Puedo actualizar el menú y los precios?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Sí, y lo hacemos por ti. Tu plan de mantenimiento (desde $60 al mes) cubre cambios de menú, precios, promos y fotos: nos mandas el cambio por WhatsApp y nosotros lo publicamos." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Necesito comprar un dominio propio?",
+            "acceptedAnswer": { "@type": "Answer", "text": "No para empezar. Arrancas en un subdominio incluido en tu plan y, cuando quieras, migramos a tu dominio propio. La página es tuya en ambos casos." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Y si ya tengo redes sociales?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Mejor todavía: la página no reemplaza tus redes, las completa. Las redes enganchan; tu web, tu menú en línea y tu Google Maps cierran la decisión con horarios, ubicación y carta al día." }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --coral: #C94F38;
+      --coral-dark: #A8412E;
+      --pink: #ECE2DD;
+      --soft-green: #C8E6C0;
+      --deep-charcoal: #1E1E1E;
+      --charcoal: #3A3A3A;
+      --pearl-gray: #F5F0EB;
+      --white: #FFFFFF;
+      --muted-gray: #C4B8AC;
+      --ink-muted: #6B6157;
+      --font-heading: 'Nova Square', sans-serif;
+      --font-body: 'Hanken Grotesk', sans-serif;
+      --font-mono: 'Share Tech Mono', monospace;
+      --container: 1080px;
+      --radius-md: 14px;
+      --radius-pill: 999px;
+      --shadow-sm: 0 2px 10px rgba(30, 30, 30, 0.07);
+      --shadow-md: 0 10px 30px rgba(30, 30, 30, 0.12);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      color: var(--charcoal);
+      background: var(--pearl-gray);
+      line-height: 1.6;
+      font-size: 16.5px;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    .container { max-width: var(--container); margin: 0 auto; padding: 0 24px; }
+    section { padding: 88px 0; }
+    h1, h2, h3 { font-family: var(--font-heading); font-weight: 400; line-height: 1.12; letter-spacing: -0.01em; text-wrap: balance; }
+    h1 { font-size: clamp(2.2rem, 5.5vw + 0.4rem, 4.2rem); }
+    h2 { font-size: clamp(1.8rem, 3.6vw + 0.4rem, 2.9rem); color: var(--deep-charcoal); }
+    .eyebrow {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      text-transform: lowercase;
+      color: var(--coral-dark);
+      margin-bottom: 18px;
+    }
+    .eyebrow::before { content: '[ '; opacity: 0.85; }
+    .eyebrow::after { content: ' ]'; opacity: 0.85; }
+    .lead { font-size: clamp(1rem, 0.4vw + 0.95rem, 1.16rem); max-width: 58ch; text-wrap: pretty; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 26px;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: var(--radius-pill);
+      min-height: 44px;
+      transition: transform 160ms ease, background-color 160ms ease, color 160ms ease, border-color 160ms ease;
+    }
+    .btn--primary { background: var(--coral); color: var(--white); box-shadow: 0 6px 22px rgba(201, 79, 56, 0.32); }
+    .btn--primary:hover { background: var(--coral-dark); transform: translateY(-1px); }
+    .btn--ghost { background: var(--white); color: var(--deep-charcoal); border: 1px solid var(--muted-gray); }
+    .btn--ghost:hover { border-color: var(--coral); color: var(--coral); }
+    :focus-visible { outline: 2px solid var(--coral); outline-offset: 2px; }
+
+    /* Nav */
+    .nav { background: var(--deep-charcoal); }
+    .nav__inner { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; max-width: var(--container); margin: 0 auto; }
+    .nav__logo img { width: 132px; height: auto; }
+    .nav__back {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--muted-gray);
+    }
+    .nav__back:hover { color: var(--pink); }
+
+    /* Hero */
+    .hero { background: var(--deep-charcoal); color: var(--white); padding: 96px 0 104px; }
+    .hero h1 .accent { color: var(--coral); }
+    .hero .lead { color: rgba(255, 255, 255, 0.82); margin: 22px 0 34px; }
+    .hero__cta { display: flex; gap: 14px; flex-wrap: wrap; }
+    .hero__meta {
+      margin-top: 40px;
+      display: flex;
+      gap: 26px;
+      flex-wrap: wrap;
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      color: var(--muted-gray);
+    }
+    .hero__meta span::before { content: '[ '; color: var(--coral); }
+    .hero__meta span::after { content: ' ]'; color: var(--coral); }
+
+    /* Problema */
+    .problema { background: var(--pearl-gray); }
+    .pains { margin-top: 42px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .pain {
+      background: var(--white);
+      border-radius: var(--radius-md);
+      padding: 26px;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+    }
+    .pain::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--coral); border-radius: var(--radius-md) var(--radius-md) 0 0; }
+    .pain b { display: block; font-size: 17px; color: var(--deep-charcoal); margin-bottom: 8px; }
+    .pain p { font-size: 14.5px; }
+    .pain .dato { font-family: var(--font-mono); color: var(--coral-dark); }
+
+    /* Incluye */
+    .incluye { background: var(--pink); }
+    .features { margin-top: 42px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
+    .feature { background: var(--white); border-radius: var(--radius-md); padding: 26px; box-shadow: var(--shadow-sm); }
+    .feature b { display: block; font-size: 17px; color: var(--deep-charcoal); margin-bottom: 8px; }
+    .feature b::before { content: '[ '; color: var(--coral); font-family: var(--font-mono); font-weight: 400; }
+    .feature b::after { content: ' ]'; color: var(--coral); font-family: var(--font-mono); font-weight: 400; }
+    .feature p { font-size: 14.5px; }
+
+    /* Demos */
+    .demos { background: var(--white); }
+    .demo-grid { margin-top: 42px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .demo {
+      display: flex;
+      flex-direction: column;
+      background: var(--white);
+      border: 1px solid var(--muted-gray);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: transform 200ms ease, box-shadow 200ms ease;
+    }
+    .demo:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+    .demo__bar {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 9px 14px;
+      background: var(--pearl-gray);
+      border-bottom: 1px solid var(--muted-gray);
+    }
+    .demo__bar i { width: 8px; height: 8px; border-radius: 50%; background: var(--muted-gray); }
+    .demo__bar b { margin-left: 7px; font-family: var(--font-mono); font-weight: 400; font-size: 11px; color: var(--ink-muted); }
+    .demo img { width: 100%; height: auto; aspect-ratio: 1280 / 900; object-fit: cover; }
+    .demo__body { padding: 20px 22px 24px; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; flex: 1; }
+    .demo__body h3 { font-size: 1.25rem; color: var(--deep-charcoal); }
+    .demo__tag { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); }
+    .demo__body .btn { margin-top: auto; }
+
+    /* Precio */
+    .precio { background: var(--deep-charcoal); color: var(--white); text-align: center; }
+    .precio h2 { color: var(--white); }
+    .precio .lead { margin: 18px auto 8px; color: rgba(255, 255, 255, 0.82); }
+    .precio__monto { font-family: var(--font-mono); font-size: clamp(2.6rem, 6vw, 4rem); color: var(--coral); margin: 18px 0 6px; font-variant-numeric: tabular-nums; }
+    .precio__nota { font-family: var(--font-mono); font-size: 13px; color: var(--muted-gray); margin-bottom: 30px; }
+    .precio__nota b { color: var(--soft-green); font-weight: 400; }
+
+    /* FAQ */
+    .faq { background: var(--pearl-gray); }
+    .faq__list { margin-top: 36px; max-width: 760px; }
+    .faq details {
+      background: var(--white);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 12px;
+      padding: 0 22px;
+    }
+    .faq summary {
+      cursor: pointer;
+      padding: 18px 0;
+      font-weight: 600;
+      color: var(--deep-charcoal);
+      list-style: none;
+      display: flex;
+      gap: 10px;
+      align-items: baseline;
+    }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary::before { content: '[+]'; font-family: var(--font-mono); font-size: 0.85em; color: var(--coral); flex-shrink: 0; }
+    .faq details[open] summary::before { content: '[−]'; }
+    .faq details p { padding: 0 0 20px 34px; font-size: 15px; }
+
+    /* Cierre */
+    .cierre { background: var(--coral-dark); color: var(--white); text-align: center; }
+    .cierre h2 { color: var(--white); }
+    .cierre .lead { margin: 16px auto 30px; color: rgba(255, 255, 255, 0.88); }
+    .cierre .btn--primary { background: var(--white); color: var(--coral-dark); box-shadow: none; }
+    .cierre .btn--primary:hover { background: var(--pearl-gray); }
+
+    .footer { background: var(--deep-charcoal); padding: 34px 0; text-align: center; }
+    .footer a { font-family: var(--font-mono); font-size: 13px; color: var(--muted-gray); }
+    .footer a:hover { color: var(--pink); }
+
+    @media (max-width: 900px) {
+      section { padding: 64px 0; }
+      .pains, .demo-grid { grid-template-columns: 1fr; max-width: 540px; }
+      .features { grid-template-columns: 1fr; max-width: 540px; }
+    }
+
+    /* Reveal al scroll — mismo patrón que la landing principal */
+    .reveal, .reveal-stagger > * {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 600ms cubic-bezier(0.16, 1, 0.3, 1), transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.is-visible, .reveal-stagger.is-visible > * { opacity: 1; transform: none; }
+    .reveal-stagger.is-visible > *:nth-child(2) { transition-delay: 90ms; }
+    .reveal-stagger.is-visible > *:nth-child(3) { transition-delay: 180ms; }
+    .reveal-stagger.is-visible > *:nth-child(4) { transition-delay: 270ms; }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal, .reveal-stagger > * { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* Pasada de marca: grano, sombra 3D y sistema de corchetes [ ] (mismos valores que la landing) */
+    .hero, .precio, .cierre { position: relative; overflow: hidden; }
+    .hero::after, .precio::after, .cierre::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+      opacity: 0.06;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.7 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 180px 180px;
+    }
+    .hero h1 .accent { text-shadow: 4px 4px 0 #5A2418; }
+    .demo { position: relative; }
+    .pain, .feature { position: relative; overflow: hidden; transition: transform 200ms ease, box-shadow 200ms ease; }
+    .pain:hover, .feature:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .pain::before, .feature::before, .demo::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--coral);
+      border-radius: 0;
+      transform-origin: left;
+      transform: scaleX(0.32);
+      transition: transform 200ms ease;
+      z-index: 2;
+    }
+    .pain:hover::before, .feature:hover::before, .demo:hover::before { transform: scaleX(1); }
+    .pain::after, .feature::after, .demo::after {
+      content: '';
+      position: absolute;
+      right: 13px; bottom: 13px;
+      width: 11px; height: 11px;
+      border-right: 1.6px solid rgba(201, 79, 56, 0.4);
+      border-bottom: 1.6px solid rgba(201, 79, 56, 0.4);
+      transition: border-color 200ms ease;
+      pointer-events: none;
+    }
+    .pain:hover::after, .feature:hover::after, .demo:hover::after { border-color: var(--coral); }
+  </style>
+  <noscript><style>.reveal, .reveal-stagger > * { opacity: 1; transform: none; }</style></noscript>
+</head>
+<body>
+
+  <nav class="nav" aria-label="Navegación">
+    <div class="nav__inner">
+      <a href="/" class="nav__logo" aria-label="Velkor, ir al inicio">
+        <img src="/velkor-logo-light.webp" alt="Velkor" width="132" height="29" fetchpriority="high" />
+      </a>
+      <a href="/" class="nav__back">← getvelkor.com</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="container reveal">
+      <span class="eyebrow" style="color: var(--pink);">página web para cafeterías</span>
+      <h1>Tu cafetería, <span class="accent">en Google</span> y en el teléfono de tu cliente</h1>
+      <p class="lead">
+        Página web propia, menú digital QR, Google Maps bien armado y contacto directo
+        por WhatsApp. Todo lo que alguien necesita para elegirte, en un solo lugar que es tuyo.
+      </p>
+      <div class="hero__cta">
+        <a class="btn btn--primary" href="https://wa.me/503XXXXXXXX?text=Hola%2C%20tengo%20una%20cafeter%C3%ADa%20y%20quiero%20mi%20p%C3%A1gina%20web">Cotiza por WhatsApp</a>
+        <a class="btn btn--ghost" href="#demos">Ver demos en vivo</a>
+      </div>
+      <div class="hero__meta" aria-hidden="true">
+        <span>entrega en días</span>
+        <span>menú qr incluido</span>
+        <span>hecho en el salvador</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+  <section class="problema" aria-labelledby="problema-title">
+    <div class="container">
+      <span class="eyebrow">el problema</span>
+      <h2 class="reveal" id="problema-title">Tu próxima mesa te está buscando en Google.</h2>
+      <p class="lead">Y si no te encuentra completa (menú, fotos, horarios, ubicación), se va a la que sí se dejó ver.</p>
+      <div class="pains reveal-stagger">
+        <article class="pain">
+          <b>El cliente que no es de aquí</b>
+          <p>En una de las cafeterías top de San Salvador, <span class="dato">6 de cada 10</span> visitantes no son locales: turistas y salvadoreños de visita que buscan en Google antes de salir, muchas veces en inglés.</p>
+        </article>
+        <article class="pain">
+          <b>El menú en tierra alquilada</b>
+          <p>Si tu carta solo vive en redes sociales o en apps de delivery, no es tuya. Si la plataforma cambia sus reglas o baja tu alcance, tu menú desaparece con ella.</p>
+        </article>
+        <article class="pain">
+          <b>El pin de Maps a medias</b>
+          <p>Un pin sin fotos, sin menú y sin página no cierra la decisión. El que ya te estaba considerando necesita ver la carta y los horarios para levantarse e ir.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="incluye" aria-labelledby="incluye-title">
+    <div class="container">
+      <span class="eyebrow">qué incluye</span>
+      <h2 class="reveal" id="incluye-title">Los cuatro esenciales, listos en días.</h2>
+      <div class="features reveal-stagger">
+        <article class="feature">
+          <b>Menú digital QR</b>
+          <p>Tu carta en el teléfono del cliente al escanear un código: sin PDF borroso, sin app que descargar. La actualizamos por ti cuando cambian precios o platos.</p>
+        </article>
+        <article class="feature">
+          <b>Página web propia</b>
+          <p>Rápida, con tus fotos, tu historia, horarios y ubicación. Diseñada para tu estilo de cafetería y pensada para el celular, que es donde te buscan.</p>
+        </article>
+        <article class="feature">
+          <b>Google Maps optimizado</b>
+          <p>Fotos, menú, datos completos y enlace a tu web para aparecer bien cuando buscan "café cerca de mí". El pin deja de ser un punto suelto y se vuelve tu vitrina.</p>
+        </article>
+        <article class="feature">
+          <b>SEO local</b>
+          <p>Que te encuentren los de tu zona y también el turista que busca en inglés. Tu página nace lista para Google, no se le agrega después.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="demos" id="demos" aria-labelledby="demos-title">
+    <div class="container">
+      <span class="eyebrow">demos en vivo</span>
+      <h2 class="reveal" id="demos-title">Tres cafeterías de muestra, tres estilos.</h2>
+      <p class="lead">Son sitios reales construidos con el motor de Velkor. Entra, navega e imagina el tuyo.</p>
+      <div class="demo-grid reveal-stagger">
+        <article class="demo">
+          <a href="https://luna.getvelkor.com" target="_blank" rel="noopener" aria-label="Abrir el demo de Café Luna en una pestaña nueva">
+            <span class="demo__bar" aria-hidden="true"><i></i><i></i><i></i><b>luna.getvelkor.com</b></span>
+            <img src="/demo-luna.webp" width="1280" height="900" loading="lazy" alt="Demo Café Luna: portada con barra de café de especialidad, menú y contacto por WhatsApp" />
+          </a>
+          <div class="demo__body">
+            <h3>Café Luna</h3>
+            <span class="demo__tag">Editorial · Café de especialidad</span>
+            <a class="btn btn--ghost" href="https://luna.getvelkor.com" target="_blank" rel="noopener" aria-label="Ver el demo de Café Luna">Ver demo →</a>
+          </div>
+        </article>
+        <article class="demo">
+          <a href="https://dontulio.getvelkor.com" target="_blank" rel="noopener" aria-label="Abrir el demo de La Terraza de Don Tulio en una pestaña nueva">
+            <span class="demo__bar" aria-hidden="true"><i></i><i></i><i></i><b>dontulio.getvelkor.com</b></span>
+            <img src="/demo-dontulio.webp" width="1280" height="900" loading="lazy" alt="Demo La Terraza de Don Tulio: portada cálida con tipografía clásica y cafetera moka" />
+          </a>
+          <div class="demo__body">
+            <h3>La Terraza de Don Tulio</h3>
+            <span class="demo__tag">Cálido · Tradición familiar</span>
+            <a class="btn btn--ghost" href="https://dontulio.getvelkor.com" target="_blank" rel="noopener" aria-label="Ver el demo de La Terraza de Don Tulio">Ver demo →</a>
+          </div>
+        </article>
+        <article class="demo">
+          <a href="https://manana.getvelkor.com" target="_blank" rel="noopener" aria-label="Abrir el demo de Mañana Coffee en una pestaña nueva">
+            <span class="demo__bar" aria-hidden="true"><i></i><i></i><i></i><b>manana.getvelkor.com</b></span>
+            <img src="/demo-manana.webp" width="1280" height="900" loading="lazy" alt="Demo Mañana Coffee: portada neo-brutalista clara con stickers naranjas y foto de la cafetería" />
+          </a>
+          <div class="demo__body">
+            <h3>Mañana Coffee</h3>
+            <span class="demo__tag">Alternativo · Neo-brutal</span>
+            <a class="btn btn--ghost" href="https://manana.getvelkor.com" target="_blank" rel="noopener" aria-label="Ver el demo de Mañana Coffee">Ver demo →</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="precio" aria-labelledby="precio-title">
+    <div class="container reveal">
+      <span class="eyebrow" style="color: var(--pink);">inversión</span>
+      <h2 id="precio-title">Velkor Base, para tu cafetería.</h2>
+      <p class="lead">Los cuatro esenciales (menú QR, página web, Google Maps y SEO) en un solo paquete.</p>
+      <div class="precio__monto">$600</div>
+      <p class="precio__nota">pago único · <b>mantenimiento desde $60/mes</b> · nosotros mantenemos tu menú al día</p>
+      <a class="btn btn--primary" href="https://wa.me/503XXXXXXXX?text=Hola%2C%20tengo%20una%20cafeter%C3%ADa%20y%20quiero%20mi%20p%C3%A1gina%20web">Empieza por WhatsApp</a>
+    </div>
+  </section>
+
+  <section class="faq" aria-labelledby="faq-title">
+    <div class="container">
+      <span class="eyebrow">preguntas frecuentes</span>
+      <h2 class="reveal" id="faq-title">Lo que preguntan los dueños de cafetería.</h2>
+      <div class="faq__list reveal">
+        <details>
+          <summary>¿Cuánto tarda mi página web?</summary>
+          <p>Días, no meses. El estándar de Velkor es entregar tu sitio completo en la primera semana: página, menú digital QR, Google Maps optimizado y SEO local.</p>
+        </details>
+        <details>
+          <summary>¿Puedo actualizar el menú y los precios?</summary>
+          <p>Sí, y lo hacemos por ti. Tu plan de mantenimiento (desde $60 al mes) cubre cambios de menú, precios, promos y fotos: nos mandas el cambio por WhatsApp y nosotros lo publicamos.</p>
+        </details>
+        <details>
+          <summary>¿Necesito comprar un dominio propio?</summary>
+          <p>No para empezar. Arrancas en un subdominio incluido en tu plan y, cuando quieras, migramos a tu dominio propio. La página es tuya en ambos casos.</p>
+        </details>
+        <details>
+          <summary>¿Y si ya tengo redes sociales?</summary>
+          <p>Mejor todavía: la página no reemplaza tus redes, las completa. Las redes enganchan; tu web, tu menú en línea y tu Google Maps cierran la decisión con horarios, ubicación y carta al día.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="cierre" aria-labelledby="cierre-title">
+    <div class="container reveal">
+      <h2 id="cierre-title">Pon tu cafetería en internet.</h2>
+      <p class="lead">Cuéntanos cómo se llama tu café y te respondemos con una propuesta el mismo día.</p>
+      <a class="btn btn--primary" href="https://wa.me/503XXXXXXXX?text=Hola%2C%20tengo%20una%20cafeter%C3%ADa%20y%20quiero%20mi%20p%C3%A1gina%20web">Escríbenos por WhatsApp</a>
+    </div>
+  </section>
+  </main>
+
+  <footer class="footer">
+    <a href="/">Velkor © 2026 · El Salvador · getvelkor.com</a>
+  </footer>
+
+  <script>
+    (function () {
+      var els = document.querySelectorAll('.reveal, .reveal-stagger');
+      if (!('IntersectionObserver' in window)) {
+        els.forEach(function (el) { el.classList.add('is-visible'); });
+        return;
+      }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      els.forEach(function (el) { io.observe(el); });
+    })();
+  </script>
+
+</body>
+</html>

@@ -1679,30 +1679,67 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: var(--space-5);
     }
+    /* Marco chico con esquinas de corchete, el mismo patrón de .service__icon.
+       Más liviano que una .price card a propósito: es promesa, no producto
+       en stock. Coral solo en las esquinas decorativas; el borde va en
+       blanco tenue para no competir con los CTA de arriba. */
     .grow__item {
-      padding-left: var(--space-4);
-      border-left: 1px solid rgba(255, 255, 255, 0.14);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: var(--space-5);
+      border: 1px solid rgba(255, 255, 255, 0.11);
+      border-radius: var(--radius-sm);
+      transition: border-color var(--dur-base) var(--ease);
     }
+    .grow__item:hover { border-color: rgba(255, 255, 255, 0.2); }
+    .grow__item::before,
+    .grow__item::after {
+      content: '';
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border: 1.6px solid rgba(201, 79, 56, 0.55);
+    }
+    .grow__item::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
+    .grow__item::after { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
+    .grow__verb {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      color: var(--muted-gray);
+    }
+    .grow__verb::before { content: '['; color: var(--coral); margin-right: 0.4em; }
+    .grow__verb::after  { content: ']'; color: var(--coral); margin-left: 0.4em; }
     .grow__item h3 {
       font-family: var(--font-heading);
       font-weight: 400;
-      font-size: 1.05rem;
+      font-size: 1.12rem;
       color: var(--white);
-      margin-bottom: 6px;
     }
     .grow__price {
       font-family: var(--font-mono);
-      font-size: 13.5px;
+      font-size: 13px;
       font-variant-numeric: tabular-nums;
       color: var(--muted-gray);
-      margin-bottom: var(--space-3);
+      margin-bottom: var(--space-2);
     }
-    .grow__price strong { color: var(--pink); font-weight: 400; font-size: 17px; }
-    .grow__item p:last-child {
+    .grow__price strong { color: var(--pink); font-weight: 400; font-size: 18px; }
+    .grow__desc {
       font-size: 14.5px;
       line-height: 1.6;
       color: rgba(255, 255, 255, 0.72);
       text-wrap: pretty;
+    }
+    /* margin-top:auto pega las áreas al pie, así los dos marcos cierran parejo */
+    .grow__areas {
+      margin-top: auto;
+      padding-top: var(--space-4);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      color: var(--muted-gray);
     }
     .grow__plazo {
       margin-top: var(--space-5);
@@ -3337,17 +3374,21 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
         <!-- CRECIMIENTO · Expand e Infinite: precio a la vista, peso visual menor
              que los planes vendibles, y el plazo declarado ANTES de vender. -->
         <div class="grow">
-          <span class="grow__label">cuando crezcas</span>
+          <span class="grow__label">el siguiente paso</span>
           <div class="grow__grid">
             <article class="grow__item">
+              <span class="grow__verb">te pagan</span>
               <h3>Velkor Expand</h3>
-              <p class="grow__price"><strong>$1,800</strong> + IVA · soporte $270/mes</p>
-              <p>Eliges 3 herramientas de 9 para cobrar en línea, cotizar, reservar, cuidar tus reseñas y ordenar tu operación.</p>
+              <p class="grow__price"><strong>$1,800</strong> + IVA · soporte $270 + IVA/mes</p>
+              <p class="grow__desc">Todo lo de Base y eliges 3 herramientas de 9: cobrar en línea, cotizar, reservar, cuidar tus reseñas, saber qué se vende.</p>
+              <p class="grow__areas">Ingreso · Reputación · Operación</p>
             </article>
             <article class="grow__item">
+              <span class="grow__verb">te automatiza</span>
               <h3>Velkor Infinite</h3>
-              <p class="grow__price"><strong>$3,400</strong> + IVA · soporte $500/mes</p>
-              <p>Todo lo de Expand, más una herramienta de Escala y una de Autonomía: tienda en línea, clientes que vuelven, respuestas automáticas.</p>
+              <p class="grow__price"><strong>$3,400</strong> + IVA · soporte $500 + IVA/mes</p>
+              <p class="grow__desc">Todo lo de Expand y una herramienta de cada área nueva: tienda en línea, clientes que vuelven, respuestas automáticas.</p>
+              <p class="grow__areas">Escala · Autonomía</p>
             </article>
           </div>
           <p class="grow__plazo">Las herramientas que ya están construidas se entregan en 2 semanas; las que se hacen a tu medida, en 6. Te decimos cuál es cuál antes de firmar.</p>

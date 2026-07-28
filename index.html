@@ -3999,15 +3999,19 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
         const els = document.querySelectorAll('.hero__meta-num, .price__setup strong, .price__monthly strong');
         if (!els.length || !('IntersectionObserver' in window)) return;
         function animate(el) {
-          const m = el.textContent.match(/(\D*)(\d+)(\D*)/);
+          // [\d,]+ para que los miles ($1,800) no se corten en la coma
+          const m = el.textContent.match(/(\D*)([\d,]+)([\s\S]*)/);
           if (!m) return;
-          const pre = m[1], numStr = m[2], suf = m[3], target = parseInt(numStr, 10), len = numStr.length;
+          const pre = m[1], numStr = m[2], suf = m[3];
+          const grouped = numStr.indexOf(',') > -1;  // los agrupados no se rellenan con ceros
+          const target = parseInt(numStr.replace(/,/g, ''), 10), len = numStr.length;
           const dur = 850, start = performance.now();
           function frame(now) {
             const t = Math.min((now - start) / dur, 1);
             const e = 1 - Math.pow(1 - t, 3);
             if (t < 1) {
-              el.textContent = pre + String(Math.round(e * target)).padStart(len, '0') + suf;
+              const n = Math.round(e * target);
+              el.textContent = pre + (grouped ? n.toLocaleString('en-US') : String(n).padStart(len, '0')) + suf;
               window.requestAnimationFrame(frame);
             } else {
               el.textContent = pre + numStr + suf;

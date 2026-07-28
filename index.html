@@ -64,9 +64,6 @@ html.vk-no-parallax [data-vk-par] { transform: none !important; }
    Imagen de cursor CSS (sin JS/rAF/transiciones) para que SIEMPRE aparezca
    y siga el puntero, incluso cuando el iframe de preview está throttleado.
    ===================================================================== */
-.vk-cursor,
-.vk-cursor-ring { display: none !important; }   /* legacy: cursor JS desactivado */
-
 /* En reposo: cursor nativo del sistema.
    Sobre algo clickeable: el corchete coral reemplaza al puntero. */
 html.vk-cursor-on.vk-pointer-fine a,
@@ -322,7 +319,7 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
    7. REDUCED MOTION — apaga lo costoso
    ===================================================================== */
 @media (prefers-reduced-motion: reduce) {
-  .vk-cursor, .vk-cursor-ring, .vk-scrollcue { display: none !important; }
+  .vk-scrollcue { display: none !important; }
   .hero h1 .hero__line { clip-path: none !important; transform: none !important; opacity: 1 !important; transition: none !important; }
   .vk-sec__scan, .vk-sec__axis { display: none !important; }
   .hero__bg::before { animation: none !important; }
@@ -359,8 +356,9 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
 }
 .roadmap__intro strong { color: var(--deep-charcoal); font-weight: 600; }
 
+/* auto-fit: 5 áreas de crecimiento en una fila en desktop, sin breakpoint nuevo */
 .roadmap__grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
   gap: var(--space-7) var(--space-6);
 }
 @media (max-width: 820px) { .roadmap__grid { grid-template-columns: 1fr 1fr; } }
@@ -377,22 +375,17 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
   font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em;
   text-transform: lowercase; color: var(--ink-muted); font-weight: 400;
 }
-.roadmap__col ul { display: flex; flex-direction: column; gap: var(--space-3); }
-.roadmap__col li {
+/* marcador [ ] neutro (área planeada, no servicio activo) */
+.roadmap__col p {
   position: relative; padding-left: 20px;
-  font-size: 14.5px; line-height: 1.4; color: var(--charcoal);
-  transition: color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+  font-size: 14.5px; line-height: 1.45; color: var(--charcoal);
 }
-/* marcador [ ] neutro (planeado, no activo) que toma coral al hover */
-.roadmap__col li::before {
-  content: ''; position: absolute; left: 0; top: 0.4em;
+.roadmap__col p::before {
+  content: ''; position: absolute; left: 0; top: 0.45em;
   width: 7px; height: 7px;
   border-left: 1.5px solid var(--ink-muted);
   border-bottom: 1.5px solid var(--ink-muted);
-  transition: border-color var(--dur-fast) var(--ease);
 }
-.roadmap__col li:hover { color: var(--deep-charcoal); transform: translateX(2px); }
-.roadmap__col li:hover::before { border-color: var(--coral); }
 
 /* =====================================================================
    COMPARATIVA — mobile-first (sin scroll horizontal)
@@ -1469,7 +1462,8 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
     }
     .price-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      /* auto-fit: 4 planes en desktop, 2 en tablet, 1 en móvil, sin breakpoint extra */
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
       gap: var(--space-5);
       position: relative;
       z-index: var(--z-content);
@@ -1620,8 +1614,8 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
     }
 
     /* =====================================================
-       MANTENIMIENTO — mini comparativo bajo las cards de planes (sobre charcoal).
-       Números en pink (rol "mantenimiento"; coral a este tamaño sobre charcoal
+       SOPORTE — mini comparativo bajo las cards de planes (sobre charcoal).
+       Números en pink (rol "soporte"; coral a este tamaño sobre charcoal
        no pasa AA). Coral solo en la esquina-corchete decorativa.
        ===================================================== */
     .maint {
@@ -1707,135 +1701,6 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
       .maint__table { font-size: 14px; }
       .maint__table td { white-space: normal; }
       .maint__per { display: block; }
-    }
-
-    /* =====================================================
-       SERVICIOS DE MARCA — tira fuera de los 3 planes (branding, territorio Paulina).
-       No es 4º plan ni add-on: identidad propia, precio propio. Coral = acción/precio,
-       pink = acento cálido que hila la sección oscura; soft-green NO (ese es el "Base disponible").
-       ===================================================== */
-    .brand-strip {
-      margin-top: var(--space-7);
-      padding-top: var(--space-7);
-      border-top: 1px solid rgba(255, 255, 255, 0.12);
-    }
-    .brand-strip__head { text-align: center; margin-bottom: var(--space-6); }
-    .brand-strip__eyebrow {
-      display: inline-flex;
-      align-items: baseline;
-      gap: 0.45em;
-      font-family: var(--font-mono);
-      font-size: 12.5px;
-      letter-spacing: 0.08em;
-      text-transform: lowercase;
-      color: var(--pink);
-    }
-    .brand-strip__eyebrow::before { content: '['; color: var(--coral); }
-    .brand-strip__eyebrow::after  { content: ']'; color: var(--coral); }
-    .brand-strip__lead {
-      margin: var(--space-3) auto 0;
-      max-width: 560px;
-      font-size: 15px;
-      line-height: 1.6;
-      color: rgba(255, 255, 255, 0.74);
-    }
-    .brand-strip__items {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: var(--space-5);
-    }
-    .brand-svc {
-      position: relative;
-      padding: var(--space-6);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: var(--radius-md);
-      background: rgba(255, 255, 255, 0.03);
-      transition: border-color var(--dur-base) var(--ease), transform var(--dur-base) var(--ease);
-    }
-    .brand-svc:hover { border-color: rgba(255, 255, 255, 0.32); transform: translateY(-4px); box-shadow: 0 18px 42px rgba(0, 0, 0, 0.30); }
-    .brand-svc:hover::after { border-right-color: var(--coral); border-bottom-color: var(--coral); }
-    /* esquina de corchete [ ] inferior-derecha (mismo valor coral-alpha que .service::after) */
-    .brand-svc::after {
-      content: '';
-      position: absolute;
-      right: 13px; bottom: 13px;
-      width: 11px; height: 11px;
-      border-right: 1.6px solid rgba(201, 79, 56, 0.4);
-      border-bottom: 1.6px solid rgba(201, 79, 56, 0.4);
-    }
-    /* Icono enmarcado por esquinas tipo corchete [ ] */
-    .brand-svc__icon {
-      position: relative;
-      width: 42px; height: 42px;
-      color: var(--coral);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: var(--space-4);
-    }
-    .brand-svc__icon::before,
-    .brand-svc__icon::after {
-      content: '';
-      position: absolute;
-      width: 9px; height: 9px;
-      border: 1.6px solid var(--coral);
-    }
-    .brand-svc__icon::before { top: 0; left: 0; border-right: 0; border-bottom: 0; }
-    .brand-svc__icon::after { bottom: 0; right: 0; border-left: 0; border-top: 0; }
-    .brand-svc__icon svg { width: 24px; height: 24px; }
-    .brand-svc__name {
-      font-family: var(--font-heading);
-      font-size: 1.25rem;
-      color: var(--white);
-      margin-bottom: var(--space-3);
-    }
-    .brand-svc__desc {
-      font-size: 14.5px;
-      line-height: 1.6;
-      color: rgba(255, 255, 255, 0.72);
-      margin-bottom: var(--space-4);
-    }
-    .brand-svc__meta {
-      display: flex;
-      align-items: baseline;
-      gap: var(--space-3);
-      flex-wrap: wrap;
-      font-family: var(--font-mono);
-    }
-    .brand-svc__price {
-      font-size: 20px;
-      color: var(--coral);
-      font-variant-numeric: tabular-nums;
-    }
-    .brand-svc__rounds {
-      font-size: 12px;
-      letter-spacing: 0.04em;
-      color: var(--muted-gray);
-    }
-    .brand-svc__rounds::before { content: '· '; }
-    .brand-svc__cta {
-      display: inline-flex;
-      align-items: center;
-      min-height: 44px; /* tap target accesible (≥44px) sin romper el layout de la card */
-      margin-top: var(--space-2);
-      font-family: var(--font-mono);
-      font-size: 13px;
-      letter-spacing: 0.04em;
-      color: var(--coral);
-      transition: color var(--dur-base) var(--ease);
-    }
-    .brand-svc__cta:hover { color: var(--pink); }
-    .brand-strip__bundle {
-      margin-top: var(--space-5);
-      text-align: center;
-      font-family: var(--font-mono);
-      font-size: 13px;
-      letter-spacing: 0.04em;
-      color: var(--muted-gray);
-    }
-    .brand-strip__bundle strong { color: var(--pink); font-weight: 400; }
-    @media (max-width: 600px) {
-      .brand-strip__items { grid-template-columns: 1fr; }
     }
 
     /* =====================================================
@@ -2895,17 +2760,17 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
           {
             "@type": "Question",
             "name": "¿Qué pasa si quiero cambiar mi menú o mis precios?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Tu plan de mantenimiento es una cuota fija que cubre los ajustes de contenido que tu negocio necesita, sin cobrarte por cada cambio. Nosotros lo mantenemos al día por ti: menú, precios, promos. Bajo uso justo: cubre la operación normal (menú, precios, fotos, textos, horarios), no rediseños completos ni cargas masivas, que se cotizan aparte como proyecto." }
+            "acceptedAnswer": { "@type": "Answer", "text": "Los cambios de datos no tienen límite y los hacemos nosotros: precios, disponibilidad, horarios, agregar o quitar un plato. Entran en tu plan de soporte. Los cambios de contenido (un texto nuevo, una foto nueva, una promoción, una categoría nueva de menú) son dos al mes. Una sección nueva, una página nueva o un rediseño se cotizan aparte." }
           },
           {
             "@type": "Question",
             "name": "¿El dominio y la página son míos?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Sí. Empiezas con un subdominio de Velkor (incluido en tu plan de mantenimiento, desde $60 + IVA/mes) y, cuando quieras, migramos a tu dominio propio (desde $120 + IVA/mes, con soporte prioritario incluido). La página es tuya en ambos casos." }
+            "acceptedAnswer": { "@type": "Answer", "text": "Sí. Empiezas con un subdominio de Velkor, incluido en tu plan de soporte, y cuando quieras configuramos tu dominio propio por $35 + IVA una sola vez. El dominio lo compras tú y queda a tu nombre. Si algún día decides irte, te llevas tu sitio exportado y tus perfiles ya están a tu nombre." }
           },
           {
             "@type": "Question",
-            "name": "¿Qué diferencia hay entre los niveles de mantenimiento?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Los tres niveles se diferencian en velocidad y dominio. Con el estándar, tus cambios entran en la ventana de fin de semana. Con el prioritario los hacemos en menos de 48 horas, cualquier día, y tú eliges cuándo. El nivel con dominio propio incluye el prioritario." }
+            "name": "¿Cuándo se aplican los cambios que pido?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Trabajamos en dos ventanas fijas, martes y jueves. Lo que pides antes del domingo a medianoche entra el martes; lo que pides antes del martes a medianoche entra el jueves. Al recibir tu solicitud te confirmamos la fecha. Si algo está roto, como el sitio caído o el formulario que no envía, eso no espera ventana: nos escribes por WhatsApp y lo vemos de una." }
           },
           {
             "@type": "Question",
@@ -2920,12 +2785,12 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
           {
             "@type": "Question",
             "name": "¿Qué incluye el precio y qué cuesta aparte?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Pagas un setup único de $600 + IVA por tu proyecto y un plan de mantenimiento fijo (desde $60 + IVA/mes) que cubre hosting, ajustes mensuales y tu dashboard. Precio cerrado, sin sorpresas." }
+            "acceptedAnswer": { "@type": "Answer", "text": "Pagas un setup único (Origin $350 + IVA, Base $600 + IVA, los dos juntos $950 + IVA) y un plan de soporte mensual que cubre hosting, tus cambios y el reporte. Se cotizan aparte: secciones o páginas nuevas, fotografía, el dominio propio y las herramientas de Expand e Infinite. Precio cerrado, sin sorpresas." }
           },
           {
             "@type": "Question",
             "name": "¿Y si después quiero vender online o más funciones?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Cuando tu Base esté rodando, activas Velkor Expand (POS, dashboard, cotizadores) o Velkor Infinite (e-commerce, CRM, chatbots con IA). Creces a tu ritmo, sin rehacer nada." }
+            "acceptedAnswer": { "@type": "Answer", "text": "Cuando tu Base esté rodando, subes a Expand y eliges tres herramientas de nueve, o a Infinite y eliges una de cada área. Lo que ya pagaste se descuenta del plan nuevo, así que subir después cuesta lo mismo que haberlo comprado de una. Algunas herramientas ya están listas y se entregan en dos semanas; otras se construyen a tu medida y toman seis." }
           }
         ]
       }
@@ -2945,14 +2810,14 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
         <img src="velkor-logo-light.webp" alt="Velkor" class="nav__logo-img" width="192" height="42" fetchpriority="high" />
       </a>
 
-      <ul class="nav__links" id="navLinks" role="menubar">
-        <li role="none"><a class="nav__link" data-link href="#demos" role="menuitem">Demos</a></li>
-        <li role="none"><a class="nav__link" data-link href="#servicios" role="menuitem">Servicios</a></li>
-        <li role="none"><a class="nav__link" data-link href="#paquetes" role="menuitem">Paquetes</a></li>
-        <li role="none"><a class="nav__link" data-link href="#nosotros" role="menuitem">Nosotros</a></li>
-        <li role="none"><a class="nav__link" data-link href="#faq" role="menuitem">FAQ</a></li>
-        <li role="none"><a class="nav__link" data-link href="#contacto" role="menuitem">Contacto</a></li>
-        <li role="none"><a class="btn btn--primary nav__cta" href="#contacto" role="menuitem">Comenzar</a></li>
+      <ul class="nav__links" id="navLinks">
+        <li><a class="nav__link" data-link href="#demos">Demos</a></li>
+        <li><a class="nav__link" data-link href="#servicios">Servicios</a></li>
+        <li><a class="nav__link" data-link href="#paquetes">Paquetes</a></li>
+        <li><a class="nav__link" data-link href="#nosotros">Nosotros</a></li>
+        <li><a class="nav__link" data-link href="#faq">FAQ</a></li>
+        <li><a class="nav__link" data-link href="#contacto">Contacto</a></li>
+        <li><a class="btn btn--primary nav__cta" href="#contacto">Comenzar</a></li>
       </ul>
 
       <button
@@ -3010,7 +2875,7 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
           <span class="hero__meta-label">días de entrega</span>
         </div>
         <div class="hero__meta-item">
-          <span class="hero__meta-num">$600 + IVA</span>
+          <span class="hero__meta-num">$350 + IVA</span>
           <span class="hero__meta-label">desde, sin sorpresas</span>
         </div>
         <div class="hero__meta-item">
@@ -3095,7 +2960,7 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
         <h2 id="demos-title">Mira cómo queda.</h2>
         <p class="lead">
           Tres cafeterías de muestra, tres personalidades distintas del mismo motor.
-          Son sitios reales — entra, navega e imagina el tuyo.
+          Son sitios reales: entra, navega e imagina el tuyo.
         </p>
       </div>
 
@@ -3156,30 +3021,69 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
       <div class="section-head reveal">        <span class="eyebrow">Servicios</span>
         <h2 id="servicios-title">Lo que construimos para ti.</h2>
         <p class="lead">
-          Empieza con <strong>Velkor Base</strong>: los cuatro esenciales para que te
-          encuentren y te elijan, listos en días. El resto de tu huella (doce capacidades
-          más) se activa cuando tu negocio lo pida.
+          Dos puntos de partida. <strong>Origin</strong> deja limpios los canales que ya
+          tienes, para que te vean. <strong>Base</strong> te da un sitio propio, para que
+          te encuentren. Puedes empezar por uno, por el otro o por los dos.
         </p>
       </div>
 
       <div class="service-matrix">
-        <!-- 🧭 PRESENCIA · te encuentran — los 4 de Velkor Base (Disponible) -->
+        <!-- ORIGIN · te ven — los canales que el negocio YA tiene, bien puestos -->
         <div class="service-group reveal">
           <header class="service-cat">
-            <span class="service-cat__name">Presencia</span>
-            <span class="service-cat__verb">te encuentran</span>
+            <span class="service-cat__name">Origin</span>
+            <span class="service-cat__verb">te ven</span>
           </header>
         <div class="service-tier service-tier--base reveal-stagger">
         <article class="service">
           <div class="service__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><line x1="14" y1="14" x2="14" y2="17"/><line x1="17" y1="14" x2="20" y2="14"/><line x1="14" y1="20" x2="20" y2="20"/><line x1="20" y1="14" x2="20" y2="17"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
           </div>
           <span class="service__status">Disponible</span>
-          <h3>Menú digital QR</h3>
-          <p>Tu menú accesible al instante con un código QR en cada mesa. Actualízalo cuando quieras, sin imprimir nada.</p>
-          <span class="service__tag">QR · Mobile-first</span>
+          <h3>Perfil de Google</h3>
+          <p>Lo que la gente ve cuando te busca: horarios, fotos, menú, atributos y preguntas. Completo y con los datos correctos.</p>
+          <span class="service__tag">Google · Visibilidad</span>
         </article>
 
+        <article class="service">
+          <div class="service__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.9 8.9 0 0 1-3.6-.75L3 21l1.85-4.9A8.3 8.3 0 0 1 4 11.5a8.4 8.4 0 0 1 8.5-8.4 8.4 8.4 0 0 1 8.5 8.4z"/></svg>
+          </div>
+          <span class="service__status">Disponible</span>
+          <h3>WhatsApp Business</h3>
+          <p>Tu catálogo, tus mensajes de bienvenida y ausencia, tus etiquetas y tu enlace directo. El canal por donde de verdad te escriben.</p>
+          <span class="service__tag">WhatsApp · Contacto</span>
+        </article>
+
+        <article class="service">
+          <div class="service__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><line x1="8.4" y1="10.7" x2="15.6" y2="6.3"/><line x1="8.4" y1="13.3" x2="15.6" y2="17.7"/></svg>
+          </div>
+          <span class="service__status">Disponible</span>
+          <h3>Facebook e Instagram</h3>
+          <p>Las dos cuentas enlazadas, con la misma información que Google y un botón que lleva a tu WhatsApp. Sin contradicciones entre canales.</p>
+          <span class="service__tag">Meta · Coherencia</span>
+        </article>
+
+        <article class="service">
+          <div class="service__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2.8 14.9 8.9 21.5 9.8 16.7 14.4 17.9 21 12 17.8 6.1 21 7.3 14.4 2.5 9.8 9.1 8.9"/></svg>
+          </div>
+          <span class="service__status">Disponible</span>
+          <h3>QR de reseñas</h3>
+          <p>Un código que lleva directo a Google, igual para todos tus clientes, más el guion para que tu equipo sepa cuándo y cómo pedirla.</p>
+          <span class="service__tag">Reseñas · Guion</span>
+        </article>
+      </div>
+        </div>
+
+        <!-- BASE · te encuentran — el sitio propio -->
+        <div class="service-group reveal">
+          <header class="service-cat">
+            <span class="service-cat__name">Base</span>
+            <span class="service-cat__verb">te encuentran</span>
+          </header>
+        <div class="service-tier service-tier--base reveal-stagger">
         <article class="service">
           <div class="service__icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><circle cx="6" cy="6.5" r="0.6" fill="currentColor"/><circle cx="8.5" cy="6.5" r="0.6" fill="currentColor"/></svg>
@@ -3192,12 +3096,22 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
 
         <article class="service">
           <div class="service__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><line x1="14" y1="14" x2="14" y2="17"/><line x1="17" y1="14" x2="20" y2="14"/><line x1="14" y1="20" x2="20" y2="20"/><line x1="20" y1="14" x2="20" y2="17"/></svg>
           </div>
           <span class="service__status">Disponible</span>
-          <h3>Configuración Google Maps</h3>
-          <p>Tu negocio en el mapa con los datos correctos: nombre, ubicación, horarios y fotos. Apareces donde la gente busca y te encuentra fácil.</p>
-          <span class="service__tag">Maps · Visibilidad</span>
+          <h3>Menú digital QR</h3>
+          <p>Tu menú accesible al instante con un código QR en cada mesa. Lo actualizamos cuando lo pidas, sin imprimir nada.</p>
+          <span class="service__tag">QR · Mobile-first</span>
+        </article>
+
+        <article class="service">
+          <div class="service__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.2 13.4a4.6 4.6 0 0 0 6.9.5l2.7-2.7a4.6 4.6 0 0 0-6.5-6.5l-1.5 1.5"/><path d="M13.8 10.6a4.6 4.6 0 0 0-6.9-.5l-2.7 2.7a4.6 4.6 0 0 0 6.5 6.5l1.5-1.5"/></svg>
+          </div>
+          <span class="service__status">Disponible</span>
+          <h3>Sitio en Google</h3>
+          <p>Tu sitio conectado a tu perfil y registrado en Google, con los mismos nombre, dirección y teléfono en todos lados. Es lo que hace que aparezca.</p>
+          <span class="service__tag">Search Console · Datos</span>
         </article>
 
         <article class="service">
@@ -3212,39 +3126,34 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
       </div>
         </div>
 
-        <!-- ROADMAP · 12 capacidades futuras como lista liviana (rediseño) -->
+        <!-- CRECIMIENTO · las 5 áreas de Expand e Infinite, por nombre.
+             A propósito NO se listan los módulos: el catálogo completo vive en la
+             propuesta comercial, que se arma por cliente. -->
         <div class="roadmap reveal">
           <header class="roadmap__head">
-            <span class="roadmap__label">próximamente</span>
-            <p class="roadmap__intro">Doce capacidades más que se activan cuando tu Base esté rodando. <strong>Creces a tu ritmo, sin rehacer nada.</strong></p>
+            <span class="roadmap__label">cuando crezcas</span>
+            <p class="roadmap__intro">Con tu Base rodando, creces por áreas y eliges solo lo que tu negocio necesita. <strong>No compras un paquete cerrado.</strong></p>
           </header>
           <div class="roadmap__grid">
             <div class="roadmap__col">
-              <h4>Reputación &amp; Difusión <span>te eligen</span></h4>
-              <ul>
-                <li>Reseñas y reputación</li>
-                <li>Campañas WhatsApp y Email</li>
-                <li>Marketplace WhatsApp y Facebook</li>
-                <li>Perfiles Pro · Google + WhatsApp</li>
-              </ul>
+              <h4>Ingreso <span>te pagan</span></h4>
+              <p>Cobrar en línea, cotizar y reservar sin ir y venir por mensajes.</p>
             </div>
             <div class="roadmap__col">
-              <h4>Cobro &amp; Ventas <span>te pagan</span></h4>
-              <ul>
-                <li>Cobro en línea / Pasarela</li>
-                <li>Cotizadores</li>
-                <li>E-commerce</li>
-                <li>Dashboard de ventas</li>
-              </ul>
+              <h4>Reputación <span>te eligen</span></h4>
+              <p>Reseñas, campañas y presencia donde tus clientes ya están.</p>
             </div>
             <div class="roadmap__col">
-              <h4>Operación &amp; Datos <span>te organizas</span></h4>
-              <ul>
-                <li>POS e inventarios</li>
-                <li>Análisis de afluencia</li>
-                <li>CRM</li>
-                <li>Chatbots con IA</li>
-              </ul>
+              <h4>Operación <span>te organizas</span></h4>
+              <p>Saber qué se vende, cuándo y a quién, sin llevar cuentas a mano.</p>
+            </div>
+            <div class="roadmap__col">
+              <h4>Escala <span>vendes más</span></h4>
+              <p>Tienda en línea, clientes que vuelven y cobros que se repiten solos.</p>
+            </div>
+            <div class="roadmap__col">
+              <h4>Autonomía <span>te automatiza</span></h4>
+              <p>Que el negocio responda y ordene su información sin que estés encima.</p>
             </div>
           </div>
         </div>
@@ -3283,7 +3192,7 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
               <th scope="row">Costo</th>
               <td data-label="Hacerlo solo">Tu tiempo</td>
               <td data-label="Agencia tradicional">Alto, por proyecto</td>
-              <td data-label="Velkor" class="compare__col-velkor">Desde $600 + IVA</td>
+              <td data-label="Velkor" class="compare__col-velkor">Desde $350 + IVA</td>
             </tr>
             <tr>
               <th scope="row">Tiempo de entrega</th>
@@ -3301,7 +3210,7 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
               <th scope="row">Soporte después</th>
               <td data-label="Hacerlo solo">Ninguno</td>
               <td data-label="Agencia tradicional">Por hora, aparte</td>
-              <td data-label="Velkor" class="compare__col-velkor">Plan mensual incluido</td>
+              <td data-label="Velkor" class="compare__col-velkor">Plan de soporte mensual</td>
             </tr>
             <tr>
               <th scope="row">Identidad de marca</th>
@@ -3322,7 +3231,7 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
   <section class="breath reveal" aria-label="Tu huella digital completa">
     <div class="breath__inner">
       <p class="breath__line">Tu huella digital completa. <span class="accent">En días, no en meses.</span></p>
-      <p class="breath__sub">menú qr · landing page · google maps + seo · capacitación</p>
+      <p class="breath__sub">perfil de google · whatsapp business · menú qr · landing page · seo · capacitación</p>
     </div>
   </section>
 
@@ -3336,28 +3245,49 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
         <h2 id="paquetes-title">Elige tu plan.</h2>
         <p class="lead lead--inverse">
           Precios claros, sin letras pequeñas. Pagas un setup único por tu proyecto y un
-          plan de mantenimiento fijo que lo mantiene vivo: hosting, ajustes y tus métricas.
+          plan de soporte fijo que lo mantiene vivo: hosting, cambios y tus métricas.
         </p>
       </div>
 
       <div class="price-grid reveal-stagger">
-        <!-- VELKOR BASE -->
-        <article class="price price--featured">
-          <span class="price__badge">Disponible ya</span>
-
-          <h3 class="price__name">Velkor Base</h3>
-          <p class="price__tagline">Te encuentran: tu huella digital completa, lista en días.</p>
+        <!-- VELKOR ORIGIN -->
+        <article class="price">
+          <h3 class="price__name">Velkor Origin</h3>
+          <p class="price__tagline">Te ven: los canales que ya tienes, bien puestos.</p>
 
           <div class="price__amount">
-            <span class="price__setup"><strong>$600</strong> + IVA · setup único</span>
-            <span class="price__monthly">+ mantenimiento desde <strong>$60</strong> + IVA / mes</span>
+            <span class="price__setup"><strong>$350</strong> + IVA · setup único</span>
+            <span class="price__monthly"><strong>$35</strong> + IVA / mes de soporte, opcional</span>
           </div>
 
           <ul class="price__features">
-            <li class="price__feature">Menú digital QR</li>
-            <li class="price__feature">Lo mantenemos al día por ti (menú, precios, promos)</li>
+            <li class="price__feature">Perfil de Google completo</li>
+            <li class="price__feature">WhatsApp Business con catálogo</li>
+            <li class="price__feature">Facebook e Instagram enlazados</li>
+            <li class="price__feature">QR de reseñas + guion para tu equipo</li>
+            <li class="price__feature">Comparativa antes y después + reporte a 30 días</li>
+          </ul>
+
+          <a class="btn btn--secondary btn--block" href="#contacto">Comenzar con Origin</a>
+        </article>
+
+        <!-- VELKOR BASE -->
+        <article class="price price--featured">
+          <span class="price__badge">Recomendado</span>
+
+          <h3 class="price__name">Velkor Base</h3>
+          <p class="price__tagline">Te encuentran: tu sitio propio, listo en días.</p>
+
+          <div class="price__amount">
+            <span class="price__setup"><strong>$600</strong> + IVA · setup único</span>
+            <span class="price__monthly"><strong>$90</strong> + IVA / mes de soporte</span>
+          </div>
+
+          <ul class="price__features">
             <li class="price__feature">Landing page profesional</li>
-            <li class="price__feature">Configuración Google Maps + SEO</li>
+            <li class="price__feature">Menú digital QR</li>
+            <li class="price__feature">Sitio en Google + SEO</li>
+            <li class="price__feature">Lo mantenemos al día por ti (menú, precios, promos)</li>
             <li class="price__feature">Capacitación incluida</li>
           </ul>
 
@@ -3369,81 +3299,86 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
         <!-- VELKOR EXPAND -->
         <article class="price">
           <h3 class="price__name">Velkor Expand</h3>
-          <p class="price__tagline">Te pagan: cobro en línea y mejor operación.</p>
+          <p class="price__tagline">Te pagan: Base más las herramientas que elijas.</p>
 
           <div class="price__amount">
-            <span class="price__setup"><strong>$1800</strong> + IVA · setup · bajo demanda</span>
-            <span class="price__monthly">se activa con Base rodando</span>
+            <span class="price__setup"><strong>$1,800</strong> + IVA · setup único</span>
+            <span class="price__monthly"><strong>$270</strong> + IVA / mes de soporte</span>
           </div>
 
           <ul class="price__features">
-            <li class="price__feature">Todo lo de Base + cobro en línea</li>
-            <li class="price__feature">Reseñas, campañas y Perfiles Pro</li>
-            <li class="price__feature">POS, dashboard de ventas y cotizadores</li>
-            <li class="price__feature">Marketplace WhatsApp y Facebook</li>
+            <li class="price__feature">Todo lo de Base</li>
+            <li class="price__feature">Eliges 3 herramientas de 9</li>
+            <li class="price__feature">Puedes llevar una de cada área o las tres de la que más te importe</li>
+            <li class="price__feature">Áreas: Ingreso · Reputación · Operación</li>
           </ul>
 
-          <a class="btn btn--secondary btn--block" href="#contacto">Avísame cuando esté</a>
+          <a class="btn btn--secondary btn--block" href="#contacto">Cotizar Expand</a>
         </article>
 
         <!-- VELKOR INFINITE -->
         <article class="price">
           <h3 class="price__name">Velkor Infinite</h3>
-          <p class="price__tagline">Te automatiza: el negocio completo, potenciado con IA.</p>
+          <p class="price__tagline">Te automatiza: el negocio corriendo sin que estés encima.</p>
 
           <div class="price__amount">
-            <span class="price__setup"><strong>$3000</strong> + IVA · setup · bajo demanda</span>
-            <span class="price__monthly">se activa con Base rodando</span>
+            <span class="price__setup"><strong>$3,400</strong> + IVA · setup único</span>
+            <span class="price__monthly"><strong>$500</strong> + IVA / mes de soporte</span>
           </div>
 
           <ul class="price__features">
             <li class="price__feature">Todo lo de Expand</li>
-            <li class="price__feature">E-commerce (carrito + checkout)</li>
-            <li class="price__feature">CRM y análisis de afluencia</li>
-            <li class="price__feature">Chatbots con IA</li>
+            <li class="price__feature">Eliges una herramienta de cada área</li>
+            <li class="price__feature">Áreas: Escala · Autonomía</li>
           </ul>
 
-          <a class="btn btn--secondary btn--block" href="#contacto">Avísame cuando esté</a>
+          <a class="btn btn--secondary btn--block" href="#contacto">Cotizar Infinite</a>
         </article>
       </div>
 
       <div class="maint reveal">
         <p class="maint__intro">
-          Cada proyecto se mantiene vivo con el <strong>plan de mantenimiento</strong>:
-          hosting, ajustes y un dashboard con tus resultados.
+          <strong>Origin y Base se combinan:</strong> los dos juntos son $950 + IVA de setup
+          y $110 + IVA al mes. Paga mes a mes sin plazo, o el año por el precio de diez meses.
         </p>
         <table class="maint__table">
-          <caption class="sr-only">Cuota mensual de mantenimiento por plan, según nivel de servicio</caption>
+          <caption class="sr-only">Soporte mensual y anual por plan</caption>
           <thead>
             <tr>
               <th scope="col"><span class="sr-only">Plan</span></th>
-              <th scope="col">Subdominio</th>
-              <th scope="col">+ Prioritario</th>
-              <th scope="col">Dominio propio</th>
+              <th scope="col">Al mes</th>
+              <th scope="col">Al año</th>
             </tr>
           </thead>
           <tbody>
             <tr>
+              <th scope="row">Origin</th>
+              <td>$35<span class="maint__per"> + IVA/mes</span></td>
+              <td>$350<span class="maint__per"> + IVA/año</span></td>
+            </tr>
+            <tr>
               <th scope="row">Base</th>
-              <td>$60<span class="maint__per"> + IVA/mes</span></td>
               <td>$90<span class="maint__per"> + IVA/mes</span></td>
-              <td>$120<span class="maint__per"> + IVA/mes</span></td>
+              <td>$900<span class="maint__per"> + IVA/año</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Origin + Base</th>
+              <td>$110<span class="maint__per"> + IVA/mes</span></td>
+              <td>$1,100<span class="maint__per"> + IVA/año</span></td>
             </tr>
             <tr>
               <th scope="row">Expand</th>
-              <td>$180<span class="maint__per"> + IVA/mes</span></td>
               <td>$270<span class="maint__per"> + IVA/mes</span></td>
-              <td>$360<span class="maint__per"> + IVA/mes</span></td>
+              <td>$2,700<span class="maint__per"> + IVA/año</span></td>
             </tr>
             <tr>
               <th scope="row">Infinite</th>
-              <td>$300<span class="maint__per"> + IVA/mes</span></td>
-              <td>$450<span class="maint__per"> + IVA/mes</span></td>
-              <td>$600<span class="maint__per"> + IVA/mes</span></td>
+              <td>$500<span class="maint__per"> + IVA/mes</span></td>
+              <td>$5,000<span class="maint__per"> + IVA/año</span></td>
             </tr>
           </tbody>
         </table>
-        <p class="maint__smart">[ ¿Necesitas algo distinto? <strong>Velkor Smart</strong>: armamos tu paquete ]</p>
+        <p class="maint__smart">[ ¿Necesitas algo distinto? <strong>Velkor Smart</strong> arma tu paquete con lo que ya tenemos · <strong>Velkor Forge</strong> construye lo que no existe ]</p>
       </div>
 
     </div>
@@ -3517,7 +3452,7 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
           <div class="step__body">
             <span class="step__coord" aria-hidden="true">[ fase 04 ]</span>
             <h3>Soporte continuo</h3>
-            <p>Te acompañamos con mejoras, métricas y respuestas rápidas. Tu plan de mantenimiento cubre todo lo importante.</p>
+            <p>Te acompañamos con mejoras, métricas y respuestas rápidas. Tu plan de soporte cubre todo lo importante.</p>
           </div>
         </div>
       </div>
@@ -3549,7 +3484,7 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
         <span class="case-zero__coord" aria-hidden="true">[ 0 , 0 ] — origen</span>
         <article class="case-zero__node">
           <div class="client__logo-wrap">
-            <img src="elunch-logo.png" alt="eLunch" class="client__logo" width="80" height="80" />
+            <img src="elunch-logo.png" alt="eLunch" class="client__logo" width="80" height="80" loading="lazy" />
           </div>
           <div class="client__meta">
             <span class="client__type">Restaurante</span>
@@ -3575,7 +3510,7 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
            mismo lenguaje que las cabeceras de Problema/Proceso). -->
       <div class="nosotros__top reveal">
         <div class="section-head">
-          <img src="velkor-logo-dark.webp" alt="Velkor" class="brand-mark--feature" width="288" height="64" />
+          <img src="velkor-logo-dark.webp" alt="Velkor" class="brand-mark--feature" width="288" height="64" loading="lazy" />
           <span class="eyebrow">Nosotros</span>
           <h2 id="nosotros-title">Somos el núcleo.</h2>
         </div>
@@ -3657,22 +3592,24 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
         <details class="faq-item">
           <summary class="faq-item__q">¿Qué pasa si quiero cambiar mi menú o mis precios?</summary>
           <div class="faq-item__a">
-            <p>Tu plan de mantenimiento es una cuota fija que cubre los ajustes de contenido que tu negocio necesita, sin cobrarte por cada cambio. Nosotros lo mantenemos al día por ti: menú, precios, promos.</p>
-            <p class="faq__fineprint">Bajo uso justo: cubre la operación normal de tu negocio (menú, precios, fotos, textos), no rediseños completos ni cargas masivas, que se cotizan aparte como proyecto.</p>
+            <p>Los cambios de datos no tienen límite y los hacemos nosotros: precios, disponibilidad, horarios, agregar o quitar un plato. Entran en tu plan de soporte.</p>
+            <p class="faq__fineprint">Los cambios de contenido (un texto nuevo, una foto nueva, una promoción, una categoría nueva de menú) son dos al mes. Una sección nueva, una página nueva o un rediseño se cotizan aparte.</p>
           </div>
         </details>
 
         <details class="faq-item">
           <summary class="faq-item__q">¿El dominio y la página son míos?</summary>
           <div class="faq-item__a">
-            <p>Sí. Empiezas con un subdominio de Velkor (incluido en tu plan de mantenimiento, desde $60 + IVA/mes) y, cuando quieras, migramos a tu dominio propio (desde $120 + IVA/mes, con soporte prioritario incluido). La página es tuya en ambos casos.</p>
+            <p>Sí. Empiezas con un subdominio de Velkor, incluido en tu plan de soporte, y cuando quieras configuramos tu dominio propio por $35 + IVA una sola vez. El dominio lo compras tú y queda a tu nombre.</p>
+            <p class="faq__fineprint">Si algún día decides irte, te llevas tu sitio exportado y tus perfiles ya están a tu nombre. No retenemos nada.</p>
           </div>
         </details>
 
         <details class="faq-item">
-          <summary class="faq-item__q">¿Qué diferencia hay entre los niveles de mantenimiento?</summary>
+          <summary class="faq-item__q">¿Cuándo se aplican los cambios que pido?</summary>
           <div class="faq-item__a">
-            <p>Los tres niveles se diferencian en velocidad y dominio. Con el estándar, tus cambios entran en la ventana de fin de semana. Con el prioritario los hacemos en menos de 48 horas, cualquier día, y tú eliges cuándo. El nivel con dominio propio (tu dirección tunegocio.com) incluye el prioritario.</p>
+            <p>Trabajamos en dos ventanas fijas, martes y jueves. Lo que pides antes del domingo a medianoche entra el martes; lo que pides antes del martes a medianoche entra el jueves. Al recibir tu solicitud te confirmamos la fecha.</p>
+            <p class="faq__fineprint">Si algo está roto (el sitio caído, el formulario que no envía), eso no espera ventana: nos escribes por WhatsApp y lo vemos de una.</p>
           </div>
         </details>
 
@@ -3693,21 +3630,23 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
         <details class="faq-item">
           <summary class="faq-item__q">¿Qué incluye el precio y qué cuesta aparte?</summary>
           <div class="faq-item__a">
-            <p>Pagas un setup único de $600 + IVA por tu proyecto y un plan de mantenimiento fijo (desde $60 + IVA/mes) que cubre hosting, ajustes mensuales y tu dashboard. Precio cerrado, sin sorpresas.</p>
+            <p>Pagas un setup único (Origin $350 + IVA, Base $600 + IVA, los dos juntos $950 + IVA) y un plan de soporte mensual que cubre hosting, tus cambios y el reporte. Precio cerrado, sin sorpresas.</p>
+            <p class="faq__fineprint">Se cotizan aparte: secciones o páginas nuevas, fotografía, el dominio propio y las herramientas de Expand e Infinite.</p>
           </div>
         </details>
 
         <details class="faq-item">
           <summary class="faq-item__q">¿Y si después quiero vender online o más funciones?</summary>
           <div class="faq-item__a">
-            <p>Cuando tu Base esté rodando, activas Velkor Expand (POS, dashboard, cotizadores) o Velkor Infinite (e-commerce, CRM, chatbots con IA). Creces a tu ritmo, sin rehacer nada.</p>
+            <p>Cuando tu Base esté rodando, subes a Expand y eliges tres herramientas de nueve, o a Infinite y eliges una de cada área. Lo que ya pagaste se descuenta del plan nuevo, así que subir después cuesta lo mismo que haberlo comprado de una.</p>
+            <p class="faq__fineprint">Algunas herramientas ya están listas y se entregan en dos semanas; otras se construyen a tu medida y toman seis. Te decimos cuál es cuál antes de firmar.</p>
           </div>
         </details>
 
         <details class="faq-item">
           <summary class="faq-item__q">¿Ofrecen fotografía profesional para mi negocio?</summary>
           <div class="faq-item__a">
-            <p>Sí. Tenemos paquetes de sesión fotográfica para tu local, platos y equipo: imágenes listas para tu menú digital, redes y Google Maps. Menciónalo al contactarnos y te cotizamos junto al proyecto.</p>
+            <p>Sí, como complemento: $150 + IVA el primer año, con imágenes listas para tu menú digital, tus redes y tu perfil de Google. La actualización del año siguiente son $50 + IVA.</p>
           </div>
         </details>
 
@@ -3738,7 +3677,7 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
           <div class="contact-info">
             <div class="contact-info__item">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-9 8.4 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7a8.5 8.5 0 0 1-.9-3.8 8.5 8.5 0 0 1 8.4-8.5 8.4 8.4 0 0 1 8.6 8.5z"/></svg>
-              <a href="https://wa.me/503XXXXXXXX?text=Hola%20Velkor%2C%20quiero%20poner%20mi%20negocio%20en%20internet" target="_blank" rel="noopener">+503 XXXX-XXXX</a>
+              <a href="https://wa.me/503XXXXXXXX?text=Hola%20Velkor%2C%20quiero%20poner%20mi%20negocio%20en%20internet" target="_blank" rel="noopener">+503 7656-2482</a>
             </div>
             <div class="contact-info__item">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg>
@@ -3871,7 +3810,7 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
     </div>
   </div>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  <script>
     (function () {
       'use strict';
 
@@ -4028,142 +3967,6 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
         });
       }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
       reveals.forEach(function (el) { revealObserver.observe(el); });
-
-      /* ===================================
-         HERO — transformación de matriz (la tesis de marca:
-         un plano de coordenadas deformándose bajo una matriz 2×2
-         que oscila; los vectores base î/ĵ son sus columnas)
-         =================================== */
-      (function heroMatrix() {
-        if (true) return; /* superseded by demo/anim.js (canvas reactivo al mouse) */
-        const canvas = document.getElementById('heroCanvas');
-        if (!canvas || !canvas.getContext) return;
-        const ctx = canvas.getContext('2d');
-        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        const CORAL = '201, 79, 56', PINK = '236, 226, 221';
-        let w = 0, h = 0, raf = null, running = false;
-        let ox = 0, oy = 0, unit = 44, R = 8;
-
-        function resize() {
-          const dpr = Math.min(window.devicePixelRatio || 1, 2);
-          const r = canvas.getBoundingClientRect();
-          w = r.width; h = r.height;
-          if (!w || !h) return;
-          canvas.width = Math.round(w * dpr);
-          canvas.height = Math.round(h * dpr);
-          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-          unit = Math.max(34, Math.min(w, h) / 11);
-          R = Math.ceil(Math.max(w, h) / unit) + 2;
-          ox = w * (w < 700 ? 0.62 : 0.76);
-          oy = h * (w < 700 ? 0.72 : 0.58);
-        }
-
-        // transforma el punto-matemático (x,y) por la matriz [[a,b],[c,d]] → px de pantalla
-        function tp(x, y, m) {
-          return [ox + (m.a * x + m.b * y) * unit, oy - (m.c * x + m.d * y) * unit];
-        }
-        // matriz que oscila suavemente alrededor de la identidad (nunca degenera)
-        function matrixAt(t) {
-          return {
-            a: 1 + 0.34 * Math.sin(t * 0.00017),
-            b: 0.46 * Math.sin(t * 0.00011 + 1.3),
-            c: 0.24 * Math.sin(t * 0.00015 + 0.6),
-            d: 1 + 0.28 * Math.sin(t * 0.00021 + 2.1)
-          };
-        }
-        function arrow(p, color, lw) {
-          const ex = p[0], ey = p[1], ang = Math.atan2(ey - oy, ex - ox), ah = 7;
-          ctx.strokeStyle = color; ctx.lineWidth = lw;
-          ctx.beginPath(); ctx.moveTo(ox, oy); ctx.lineTo(ex, ey); ctx.stroke();
-          ctx.beginPath();
-          ctx.moveTo(ex, ey); ctx.lineTo(ex - Math.cos(ang - 0.42) * ah, ey - Math.sin(ang - 0.42) * ah);
-          ctx.moveTo(ex, ey); ctx.lineTo(ex - Math.cos(ang + 0.42) * ah, ey - Math.sin(ang + 0.42) * ah);
-          ctx.stroke();
-        }
-
-        function render(t) {
-          ctx.clearRect(0, 0, w, h);
-          const m = matrixAt(t);
-          // 1. grid de referencia (identidad, sin transformar) — la deformación se LEE contra él
-          ctx.lineWidth = 1;
-          ctx.strokeStyle = 'rgba(' + PINK + ',0.11)';
-          ctx.beginPath();
-          for (let i = -R; i <= R; i++) {
-            ctx.moveTo(ox + i * unit, oy - R * unit); ctx.lineTo(ox + i * unit, oy + R * unit);
-            ctx.moveTo(ox - R * unit, oy - i * unit); ctx.lineTo(ox + R * unit, oy - i * unit);
-          }
-          ctx.stroke();
-          // 2. grid transformado por la matriz (líneas rectas: la transformación es lineal)
-          ctx.strokeStyle = 'rgba(' + CORAL + ',0.34)';
-          ctx.beginPath();
-          for (let i = -R; i <= R; i++) {
-            const v1 = tp(i, -R, m), v2 = tp(i, R, m);
-            ctx.moveTo(v1[0], v1[1]); ctx.lineTo(v2[0], v2[1]);
-            const hg1 = tp(-R, i, m), hg2 = tp(R, i, m);
-            ctx.moveTo(hg1[0], hg1[1]); ctx.lineTo(hg2[0], hg2[1]);
-          }
-          ctx.stroke();
-          // 3. puntos de la retícula transformada (cerca del origen)
-          ctx.fillStyle = 'rgba(' + CORAL + ',0.62)';
-          for (let i = -4; i <= 4; i++) {
-            for (let j = -4; j <= 4; j++) {
-              const p = tp(i, j, m);
-              ctx.beginPath(); ctx.arc(p[0], p[1], 1.4, 0, Math.PI * 2); ctx.fill();
-            }
-          }
-          // 3.5 paralelogramo generado por î y ĵ (el área = determinante): la tesis literal
-          const _i = tp(1, 0, m), _j = tp(0, 1, m), _ij = tp(1, 1, m);
-          ctx.beginPath();
-          ctx.moveTo(ox, oy); ctx.lineTo(_i[0], _i[1]); ctx.lineTo(_ij[0], _ij[1]); ctx.lineTo(_j[0], _j[1]); ctx.closePath();
-          ctx.fillStyle = 'rgba(' + CORAL + ',0.20)';
-          ctx.fill();
-          ctx.strokeStyle = 'rgba(' + CORAL + ',0.55)';
-          ctx.lineWidth = 1.2;
-          ctx.stroke();
-          // 4. vectores base (columnas de la matriz) con glow
-          ctx.save();
-          ctx.shadowColor = 'rgba(' + CORAL + ',0.55)'; ctx.shadowBlur = 9;
-          arrow(tp(1, 0, m), 'rgba(' + CORAL + ',0.95)', 2.4);   // î
-          ctx.shadowColor = 'rgba(' + PINK + ',0.4)';
-          arrow(tp(0, 1, m), 'rgba(' + PINK + ',0.72)', 1.9);    // ĵ
-          ctx.restore();
-          // 4.5 etiquetas de los vectores base (î/ĵ) en sus puntas — legibilidad de álgebra lineal
-          const _it = tp(1, 0, m), _jt = tp(0, 1, m);
-          ctx.font = '600 13px "Share Tech Mono", ui-monospace, monospace';
-          ctx.textBaseline = 'middle';
-          ctx.fillStyle = 'rgba(' + CORAL + ',0.95)';
-          ctx.fillText('î', _it[0] + 9, _it[1] - 2);
-          ctx.fillStyle = 'rgba(' + PINK + ',0.88)';
-          ctx.fillText('ĵ', _jt[0] + 9, _jt[1] - 2);
-          // 5. pivote en el origen (eco del círculo de la V-mark): punto + anillo
-          ctx.fillStyle = 'rgba(' + CORAL + ',0.9)';
-          ctx.beginPath(); ctx.arc(ox, oy, 3, 0, Math.PI * 2); ctx.fill();
-          ctx.strokeStyle = 'rgba(' + CORAL + ',0.8)'; ctx.lineWidth = 1.6;
-          ctx.beginPath(); ctx.arc(ox, oy, 6, 0, Math.PI * 2); ctx.stroke();
-        }
-
-        function frame(now) { render(now || 0); if (running) raf = window.requestAnimationFrame(frame); }
-        function start() { if (running || reduce) return; running = true; raf = window.requestAnimationFrame(frame); }
-        function stop() { running = false; if (raf) window.cancelAnimationFrame(raf); raf = null; }
-
-        resize();
-        if (reduce) {
-          render(3000);
-        } else {
-          start();
-          if ('IntersectionObserver' in window) {
-            new IntersectionObserver(function (es) {
-              es.forEach(function (e) { e.isIntersecting ? start() : stop(); });
-            }, { threshold: 0 }).observe(canvas);
-          }
-          document.addEventListener('visibilitychange', function () { document.hidden ? stop() : start(); });
-        }
-        let rt;
-        window.addEventListener('resize', function () {
-          clearTimeout(rt);
-          rt = setTimeout(function () { resize(); if (reduce) render(3000); }, 150);
-        }, { passive: true });
-      })();
 
       /* ===================================
          RIEL DE COORDENADAS — el punto sigue el scroll

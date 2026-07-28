@@ -1462,9 +1462,11 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
     }
     .price-grid {
       display: grid;
-      /* auto-fit: 4 planes en desktop, 2 en tablet, 1 en móvil, sin breakpoint extra */
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      /* dos planes vendibles + el combo abajo abarcando el ancho */
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: var(--space-5);
+      /* alineado al mismo eje izquierdo que el section-head y el riel de coordenadas */
+      max-width: 900px;
       position: relative;
       z-index: var(--z-content);
     }
@@ -1510,6 +1512,28 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
     }
     /* Base = el plan disponible → soft-green (estado "disponible/éxito"), no coral.
        Desambigua coral (CTA/acción) de verde (estado). Mismo verde que los chips "Disponible". */
+    /* El combo abarca las dos columnas y se acuesta: es un tercer camino,
+       no un plan más. Sin lista de features, porque ya están arriba. */
+    .price--combo {
+      grid-column: 1 / -1;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-5);
+      padding: var(--space-5) var(--space-6);
+    }
+    .price--combo .price__combo-head { flex: 1 1 240px; }
+    .price--combo .price__name { font-size: 1.25rem; }
+    .price--combo .price__tagline { margin-top: 4px; }
+    .price--combo .price__amount { margin: 0; padding: 0; border: 0; flex: 0 1 auto; }
+    @media (max-width: 560px) {
+      .price--combo { flex-direction: column; align-items: stretch; }
+      /* en columna, flex-basis pasa a ser alto: sin esto el head abre un hueco de 240px */
+      .price--combo .price__combo-head { flex: none; }
+      .price--combo .btn { width: 100%; }
+    }
+
     .price--featured {
       background: rgba(200, 230, 192, 0.06);
       border-color: rgba(200, 230, 192, 0.5);
@@ -1619,8 +1643,8 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
        no pasa AA). Coral solo en la esquina-corchete decorativa.
        ===================================================== */
     .maint {
-      margin: var(--space-7) auto 0;
-      max-width: 640px;
+      margin: var(--space-7) 0 0;
+      max-width: 900px;
       text-align: center;
     }
     .maint__intro {
@@ -1630,62 +1654,64 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
       text-wrap: pretty;
     }
     .maint__intro strong { color: var(--pink); font-weight: 600; }
-    .maint__table {
+    /* CRECIMIENTO — Expand e Infinite. Peso visual menor que las cards de
+       plan a propósito: se venden con plazo declarado, no se compran hoy. */
+    .grow {
       position: relative;
-      width: 100%;
-      margin-top: var(--space-5);
-      border-collapse: collapse;
-      font-size: 15px;
-    }
-    .maint__table th,
-    .maint__table td {
-      padding: var(--space-3) var(--space-4);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-    }
-    .maint__table tbody tr:last-child th,
-    .maint__table tbody tr:last-child td { border-bottom: 0; }
-    .maint__table thead th {
-      font-family: var(--font-mono);
-      font-weight: 400;
-      font-size: 11.5px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--muted-gray);
-      text-align: right;
-      border-bottom-color: rgba(255, 255, 255, 0.22);
-    }
-    .maint__table tbody th {
-      font-family: var(--font-heading);
-      font-weight: 400;
-      font-size: 1rem;
-      color: var(--white);
+      margin-top: var(--space-6);
+      padding-top: var(--space-6);
+      border-top: 1px solid rgba(255, 255, 255, 0.14);
       text-align: left;
     }
-    .maint__table td {
-      font-family: var(--font-mono);
-      font-variant-numeric: tabular-nums;
-      color: var(--pink);
-      text-align: right;
-      white-space: nowrap;
-    }
-    .maint__per { font-size: 11px; color: var(--muted-gray); margin-left: 2px; }
-    .maint__table::after {
-      content: '';
-      position: absolute;
-      right: 0;
-      bottom: 6px;
-      width: 9px;
-      height: 9px;
-      border-right: 1.5px solid rgba(201, 79, 56, 0.55);
-      border-bottom: 1.5px solid rgba(201, 79, 56, 0.55);
-      pointer-events: none;
-    }
-    .maint__note {
-      margin-top: var(--space-3);
+    .grow__label {
+      display: block;
       font-family: var(--font-mono);
       font-size: 11.5px;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
       color: var(--muted-gray);
+      margin-bottom: var(--space-5);
+      text-align: center;
+    }
+    .grow__label::before { content: '[ '; color: var(--coral); }
+    .grow__label::after  { content: ' ]'; color: var(--coral); }
+    .grow__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: var(--space-5);
+    }
+    .grow__item {
+      padding-left: var(--space-4);
+      border-left: 1px solid rgba(255, 255, 255, 0.14);
+    }
+    .grow__item h3 {
+      font-family: var(--font-heading);
+      font-weight: 400;
+      font-size: 1.05rem;
+      color: var(--white);
+      margin-bottom: 6px;
+    }
+    .grow__price {
+      font-family: var(--font-mono);
+      font-size: 13.5px;
+      font-variant-numeric: tabular-nums;
+      color: var(--muted-gray);
+      margin-bottom: var(--space-3);
+    }
+    .grow__price strong { color: var(--pink); font-weight: 400; font-size: 17px; }
+    .grow__item p:last-child {
+      font-size: 14.5px;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.72);
+      text-wrap: pretty;
+    }
+    .grow__plazo {
+      margin-top: var(--space-5);
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: var(--muted-gray);
+      text-align: center;
+      text-wrap: pretty;
     }
     .maint__smart {
       margin-top: var(--space-5);
@@ -1695,13 +1721,6 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
       color: var(--muted-gray);
     }
     .maint__smart strong { color: var(--pink); font-weight: 400; }
-    @media (max-width: 420px) {
-      .maint__table th,
-      .maint__table td { padding-left: var(--space-2); padding-right: var(--space-2); }
-      .maint__table { font-size: 14px; }
-      .maint__table td { white-space: normal; }
-      .maint__per { display: block; }
-    }
 
     /* =====================================================
        PROCESO
@@ -3296,88 +3315,45 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
           <p class="price__reassure">Precio cerrado, sin sorpresas · Acompañamiento el primer mes incluido</p>
         </article>
 
-        <!-- VELKOR EXPAND -->
-        <article class="price">
-          <h3 class="price__name">Velkor Expand</h3>
-          <p class="price__tagline">Te pagan: Base más las herramientas que elijas.</p>
-
-          <div class="price__amount">
-            <span class="price__setup"><strong>$1,800</strong> + IVA · setup único</span>
-            <span class="price__monthly"><strong>$270</strong> + IVA / mes de soporte</span>
+        <!-- LOS DOS JUNTOS · tercer camino, no un párrafo al pie -->
+        <article class="price price--combo">
+          <div class="price__combo-head">
+            <h3 class="price__name">Origin + Base</h3>
+            <p class="price__tagline">Los canales que ya tienes y tu sitio propio, en un solo proyecto.</p>
           </div>
-
-          <ul class="price__features">
-            <li class="price__feature">Todo lo de Base</li>
-            <li class="price__feature">Eliges 3 herramientas de 9</li>
-            <li class="price__feature">Puedes llevar una de cada área o las tres de la que más te importe</li>
-            <li class="price__feature">Áreas: Ingreso · Reputación · Operación</li>
-          </ul>
-
-          <a class="btn btn--secondary btn--block" href="#contacto">Cotizar Expand</a>
-        </article>
-
-        <!-- VELKOR INFINITE -->
-        <article class="price">
-          <h3 class="price__name">Velkor Infinite</h3>
-          <p class="price__tagline">Te automatiza: el negocio corriendo sin que estés encima.</p>
-
           <div class="price__amount">
-            <span class="price__setup"><strong>$3,400</strong> + IVA · setup único</span>
-            <span class="price__monthly"><strong>$500</strong> + IVA / mes de soporte</span>
+            <span class="price__setup"><strong>$950</strong> + IVA · setup único</span>
+            <span class="price__monthly"><strong>$110</strong> + IVA / mes de soporte</span>
           </div>
-
-          <ul class="price__features">
-            <li class="price__feature">Todo lo de Expand</li>
-            <li class="price__feature">Eliges una herramienta de cada área</li>
-            <li class="price__feature">Áreas: Escala · Autonomía</li>
-          </ul>
-
-          <a class="btn btn--secondary btn--block" href="#contacto">Cotizar Infinite</a>
+          <a class="btn btn--secondary" href="#contacto">Cotizar los dos</a>
         </article>
       </div>
 
       <div class="maint reveal">
         <p class="maint__intro">
-          <strong>Origin y Base se combinan:</strong> los dos juntos son $950 + IVA de setup
-          y $110 + IVA al mes. Paga mes a mes sin plazo, o el año por el precio de diez meses.
+          El soporte se paga <strong>mes a mes sin plazo</strong>, o el año por el precio de
+          diez meses. Cubre hosting, tus cambios y el reporte mensual.
         </p>
-        <table class="maint__table">
-          <caption class="sr-only">Soporte mensual y anual por plan</caption>
-          <thead>
-            <tr>
-              <th scope="col"><span class="sr-only">Plan</span></th>
-              <th scope="col">Al mes</th>
-              <th scope="col">Al año</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">Origin</th>
-              <td>$35<span class="maint__per"> + IVA/mes</span></td>
-              <td>$350<span class="maint__per"> + IVA/año</span></td>
-            </tr>
-            <tr>
-              <th scope="row">Base</th>
-              <td>$90<span class="maint__per"> + IVA/mes</span></td>
-              <td>$900<span class="maint__per"> + IVA/año</span></td>
-            </tr>
-            <tr>
-              <th scope="row">Origin + Base</th>
-              <td>$110<span class="maint__per"> + IVA/mes</span></td>
-              <td>$1,100<span class="maint__per"> + IVA/año</span></td>
-            </tr>
-            <tr>
-              <th scope="row">Expand</th>
-              <td>$270<span class="maint__per"> + IVA/mes</span></td>
-              <td>$2,700<span class="maint__per"> + IVA/año</span></td>
-            </tr>
-            <tr>
-              <th scope="row">Infinite</th>
-              <td>$500<span class="maint__per"> + IVA/mes</span></td>
-              <td>$5,000<span class="maint__per"> + IVA/año</span></td>
-            </tr>
-          </tbody>
-        </table>
+
+        <!-- CRECIMIENTO · Expand e Infinite: precio a la vista, peso visual menor
+             que los planes vendibles, y el plazo declarado ANTES de vender. -->
+        <div class="grow">
+          <span class="grow__label">cuando crezcas</span>
+          <div class="grow__grid">
+            <article class="grow__item">
+              <h3>Velkor Expand</h3>
+              <p class="grow__price"><strong>$1,800</strong> + IVA · soporte $270/mes</p>
+              <p>Eliges 3 herramientas de 9 para cobrar en línea, cotizar, reservar, cuidar tus reseñas y ordenar tu operación.</p>
+            </article>
+            <article class="grow__item">
+              <h3>Velkor Infinite</h3>
+              <p class="grow__price"><strong>$3,400</strong> + IVA · soporte $500/mes</p>
+              <p>Todo lo de Expand, más una herramienta de Escala y una de Autonomía: tienda en línea, clientes que vuelven, respuestas automáticas.</p>
+            </article>
+          </div>
+          <p class="grow__plazo">Las herramientas que ya están construidas se entregan en 2 semanas; las que se hacen a tu medida, en 6. Te decimos cuál es cuál antes de firmar.</p>
+        </div>
+
         <p class="maint__smart">[ ¿Necesitas algo distinto? <strong>Velkor Smart</strong> arma tu paquete con lo que ya tenemos · <strong>Velkor Forge</strong> construye lo que no existe ]</p>
       </div>
 

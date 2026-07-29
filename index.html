@@ -72,7 +72,9 @@ html.vk-cursor-on.vk-pointer-fine summary,
 html.vk-cursor-on.vk-pointer-fine label,
 html.vk-cursor-on.vk-pointer-fine [role="button"],
 html.vk-cursor-on.vk-pointer-fine .service,
-html.vk-cursor-on.vk-pointer-fine .price {
+html.vk-cursor-on.vk-pointer-fine .stage,
+html.vk-cursor-on.vk-pointer-fine .combo,
+html.vk-cursor-on.vk-pointer-fine .grow__item {
   cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg fill='none' stroke='%23C94F38' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 11V4h7'/%3E%3Cpath d='M21 4h7v7'/%3E%3Cpath d='M28 21v7h-7'/%3E%3Cpath d='M11 28H4v-7'/%3E%3C/g%3E%3Ccircle cx='16' cy='16' r='1.7' fill='%23C94F38'/%3E%3C/svg%3E") 16 16, pointer;
 }
 
@@ -204,11 +206,11 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
 /* =====================================================================
    4. HOVER — cards con inclinación 3D + destello coral; botones magnéticos
    ===================================================================== */
-.service, .price, .team-frame, .case-zero {
+.service, .team-frame, .case-zero {
   transform-style: preserve-3d;
 }
 /* Destello que sigue al cursor sobre las cards (variables --mx/--my en %) */
-.service::before, .price::after { z-index: 1; }
+.service::before { z-index: 1; }
 .vk-gleam {
   position: absolute; inset: 0;
   pointer-events: none;
@@ -219,7 +221,7 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
   transition: opacity 320ms ease;
   z-index: 2;
 }
-.service:hover .vk-gleam, .price:hover .vk-gleam { opacity: 1; }
+.service:hover .vk-gleam { opacity: 1; }
 
 /* Botones magnéticos: el JS aplica --tx/--ty; el lift de hover se compone aparte */
 .btn--primary, .nav__cta, .cta-close .btn--primary {
@@ -547,6 +549,7 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
 
       /* Motion */
       --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+      --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
       --ease-expo: cubic-bezier(0.16, 1, 0.3, 1); /* ease-out-expo: entradas más decididas (Lane A) */
       --dur-fast: 180ms;
       --dur-base: 320ms;
@@ -1443,66 +1446,155 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
        PAQUETES
        ===================================================== */
     .paquetes {
-      background: var(--deep-charcoal);
-      color: var(--white);
       position: relative;
       overflow: hidden;
+      background: var(--deep-charcoal);
+      color: var(--white);
+      font-family: var(--font-body);
+      padding: var(--space-9) 0;
     }
-    .paquetes::before {
+    /* grano */
+    .paquetes::after {
       content: '';
       position: absolute;
-      width: 600px;
-      height: 600px;
-      background: var(--coral);
-      filter: blur(160px);
-      opacity: 0.12;
-      top: 20%;
-      right: -200px;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+      opacity: 0.06;
       pointer-events: none;
     }
-    .price-grid {
-      display: grid;
-      /* Dos columnas EXPLICITAS, no auto-fit: el combo abarca 1 / -1 y le
-         impide a auto-fit colapsar la tercera pista, con lo que Origin y
-         Base se quedaban con dos de tres y sobraba medio ancho vacio. */
-      grid-template-columns: repeat(2, 1fr);
-      gap: var(--space-5);
+    /* grilla en deriva perpetua */
+    .paquetes__grid-bg {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(201, 79, 56, 0.11) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201, 79, 56, 0.11) 1px, transparent 1px);
+      background-size: 52px 52px, 52px 52px;
+      animation: vk-grid-drift 22s linear infinite;
+      -webkit-mask-image: radial-gradient(130% 100% at 50% 45%, #000 32%, transparent 88%);
+      mask-image: radial-gradient(130% 100% at 50% 45%, #000 32%, transparent 88%);
+      pointer-events: none;
+    }
+    @keyframes vk-grid-drift {
+      from { background-position: 0 0, 0 0; }
+      to   { background-position: 52px 52px, 52px 52px; }
+    }
+
+    .paquetes .container { position: relative; }
+
+    /* ---------------------------------------------------------------
+       FIDELIDAD con design_handoff_paquetes/paquetes.html.
+       El prototipo trae sus propias utilidades (h2, .eyebrow, .lead,
+       .btn) y las del sitio son mas fuertes, asi que al integrar la
+       seccion crecia 72px y el H2 salia a 68.8px en vez de 48px.
+       Estas reglas devuelven los valores diseñados SOLO dentro de
+       .paquetes: no se toca ningun estilo global del resto del sitio.
+       --------------------------------------------------------------- */
+    /* El sitio pone line-height 1.6 en el body y el prototipo no lo pone:
+       eso solo inflaba cada bloque de texto ~7px. Volver a normal aca deja
+       que los elementos con su propio line-height lo conserven, que es
+       exactamente lo que hacia el prototipo. */
+    .paquetes { line-height: normal; }
+
+    /* .bracket-frame lo usa el HTML del prototipo y el README daba por hecho
+       que el sitio ya lo declaraba, pero NO existia: los marcos de corchete
+       de los iconos quedaban invisibles. Se agrega con scope a la seccion. */
+    .paquetes .bracket-frame {
       position: relative;
-      z-index: var(--z-content);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 10px;
     }
-    @media (max-width: 760px) {
-      .price-grid { grid-template-columns: 1fr; gap: var(--space-4); }
-    }
-    /* Paneles tipo terminal sobre charcoal, con barra de magnitud (crece por plan)
-       y esquina de corchete — el lenguaje matriz/vector llega a la conversión */
-    .price {
-      background: rgba(255, 255, 255, 0.035);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: var(--radius-md);
-      padding: var(--space-7) var(--space-6);
-      color: rgba(255, 255, 255, 0.84);
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-4);
-      position: relative;
-      transition: transform var(--dur-base) var(--ease), box-shadow var(--dur-base) var(--ease),
-                  border-color var(--dur-base) var(--ease);
-    }
-    .price:hover { transform: translateY(-6px); border-color: rgba(255, 255, 255, 0.22); box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35); }
-    /* acento superior tipo pill, inset de las esquinas redondeadas, coloreado por rol */
-    .price::before {
+    .paquetes .bracket-frame::before,
+    .paquetes .bracket-frame::after {
       content: '';
       position: absolute;
       top: 0;
-      left: var(--radius-md);
-      right: var(--radius-md);
-      height: 3px;
-      background: var(--coral);
-      border-radius: 999px;
+      width: 8px;
+      height: 100%;
+      border: 1.6px solid currentColor;
     }
-    .price--featured::before { background: var(--soft-green); }
-    /* esquina de corchete inferior-derecha (sistema [ ]) */
-    .price::after {
+    .paquetes .bracket-frame::before { left: 0; border-right: 0; }
+    .paquetes .bracket-frame::after { right: 0; border-left: 0; }
+
+    .paquetes__head h2 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+    .paquetes__head .eyebrow {
+      display: block;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      color: var(--coral);
+      margin: 0 0 var(--space-3);
+      gap: normal;
+      align-items: normal;
+    }
+    /* el .eyebrow del sitio usa '[' pegado; el prototipo deja aire dentro */
+    .paquetes__head .eyebrow::before { content: '[ '; }
+    .paquetes__head .eyebrow::after  { content: ' ]'; }
+    .paquetes__head .lead {
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--muted-gray);
+      margin: 18px 0; /* el margen de <p> del prototipo, que el reset del sitio anula */
+    }
+    .paquetes .btn {
+      min-height: 48px;
+      padding: 0 var(--space-6);
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: normal;
+    }
+    /* el .btn--primary del sitio trae el resplandor coral en reposo; en el
+       prototipo el resplandor aparece solo al hover */
+    .paquetes .btn--primary { box-shadow: none; border: 1px solid transparent; }
+    .paquetes .btn--primary:hover { box-shadow: 0 10px 28px rgba(201, 79, 56, 0.34); }
+    /* el h3 global agrega tracking y line-height que el prototipo no tiene */
+    .paquetes .stage__name,
+    .paquetes .combo__name,
+    .paquetes .grow__name { letter-spacing: normal; line-height: normal; }
+    .paquetes .stage__amount { line-height: normal; }
+
+    /* --- encabezado --- */
+    .paquetes__head {
+      text-align: center;
+      max-width: 60ch;
+      margin: 0 auto var(--space-8);
+    }
+    .paquetes__head h2 { color: var(--white); }
+
+    /* --- retícula de etapas --- */
+    .stages {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-6) var(--space-5);
+      align-items: stretch;
+    }
+
+    /* --- tarjeta de etapa (base común) --- */
+    .stage {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+      border-radius: var(--radius-md);
+      padding: var(--space-8) var(--space-6) var(--space-7);
+      transition: transform 320ms var(--ease-out), border-color 320ms var(--ease-out), box-shadow 320ms var(--ease-out);
+    }
+    /* barra superior */
+    .stage::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 14px; right: 14px;
+      height: 3px;
+      border-radius: var(--radius-pill);
+    }
+    /* corchete inferior derecho */
+    .stage::after {
       content: '';
       position: absolute;
       right: 13px; bottom: 13px;
@@ -1510,37 +1602,160 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
       border-right: 1.6px solid rgba(201, 79, 56, 0.6);
       border-bottom: 1.6px solid rgba(201, 79, 56, 0.6);
     }
-    /* Base = el plan disponible → soft-green (estado "disponible/éxito"), no coral.
-       Desambigua coral (CTA/acción) de verde (estado). Mismo verde que los chips "Disponible". */
-    /* El combo abarca las dos columnas y se acuesta: es un tercer camino,
-       no un plan más. Sin lista de features, porque ya están arriba. */
-    .price--combo {
-      grid-column: 1 / -1;
-      flex-direction: row;
-      flex-wrap: wrap;
+    .stage__meta {
+      display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: var(--space-5);
-      padding: var(--space-5) var(--space-6);
+      gap: var(--space-3);
     }
-    .price--combo .price__combo-head { flex: 1 1 240px; }
-    .price--combo .price__name { font-size: 1.25rem; }
-    .price--combo .price__tagline { margin-top: 4px; }
-    .price--combo .price__amount { margin: 0; padding: 0; border: 0; flex: 0 1 auto; }
-    @media (max-width: 560px) {
-      .price--combo { flex-direction: column; align-items: stretch; }
-      /* en columna, flex-basis pasa a ser alto: sin esto el head abre un hueco de 240px */
-      .price--combo .price__combo-head { flex: none; }
-      .price--combo .btn { width: 100%; }
+    .stage__num {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      color: var(--muted-gray);
+    }
+    .stage__name {
+      font-family: var(--font-heading);
+      font-size: 1.8rem;
+      font-weight: 400;
+      color: var(--white);
+      margin: 0;
+    }
+    .stage__promise {
+      margin: 0;
+      font-size: 16.5px;
+      line-height: 1.6;
+      color: var(--pink);
+      text-wrap: pretty;
+    }
+    .stage__demo {
+      position: relative;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      aspect-ratio: 16 / 10;
+    }
+    .stage__demo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .stage__price {
+      margin: var(--space-2) 0;
+      padding: var(--space-4) 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      display: grid;
+      gap: var(--space-3);
+    }
+    .stage__setup {
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+    }
+    .stage__amount {
+      font-family: var(--font-mono);
+      font-size: 34px;
+      letter-spacing: 0.02em;
+      color: var(--white);
+      font-variant-numeric: tabular-nums;
+    }
+    .stage__iva {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      color: var(--muted-gray);
+    }
+    .stage__unit {
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--muted-gray);
+      margin-left: auto;
+    }
+    .stage__support {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      font-family: var(--font-mono);
+      font-size: 14px;
+      letter-spacing: 0.06em;
+      color: var(--muted-gray);
+    }
+    .stage__support strong {
+      color: var(--pink);
+      font-size: 15px;
+      font-weight: 400;
+    }
+    .stage__rule {
+      width: 1px;
+      height: 14px;
+      background: rgba(255, 255, 255, 0.18);
+    }
+    .stage__list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      flex: 1;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .stage__list li {
+      display: flex;
+      gap: var(--space-3);
+      font-size: 15.5px;
+      line-height: 1.55;
+      color: rgba(255, 255, 255, 0.82);
+    }
+    .stage__list svg {
+      flex-shrink: 0;
+      margin-top: 3px;
+      color: var(--coral);
+    }
+    .stage .btn { margin-top: var(--space-4); }
+    .stage__fine {
+      margin: var(--space-3) 0 0;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      letter-spacing: 0.02em;
+      color: rgba(255, 255, 255, 0.62);
     }
 
-    .price--featured {
+    /* --- etapa 01: Origin (coral, la más tenue) --- */
+    .stage--origin {
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(201, 79, 56, 0.5);
+      box-shadow: 0 18px 48px rgba(201, 79, 56, 0.07);
+    }
+    .stage--origin::before { background: var(--coral); }
+    .stage--origin:hover {
+      transform: translateY(-6px);
+      border-color: rgba(201, 79, 56, 0.6);
+      box-shadow: 0 24px 60px rgba(201, 79, 56, 0.13);
+    }
+
+    /* --- etapa 02: Base (verde disponible, la más brillante) --- */
+    .stage--base {
       background: rgba(200, 230, 192, 0.06);
-      border-color: rgba(200, 230, 192, 0.5);
+      border: 1px solid rgba(200, 230, 192, 0.5);
       box-shadow: 0 0 0 1px rgba(200, 230, 192, 0.2), 0 24px 64px rgba(200, 230, 192, 0.13);
     }
-    .price--featured:hover { border-color: rgba(200, 230, 192, 0.78); }
-    .price__badge {
+    .stage--base::before { background: var(--soft-green); }
+    .stage--base:hover {
+      transform: translateY(-6px);
+      border-color: rgba(200, 230, 192, 0.78);
+      box-shadow: 0 0 0 1px rgba(200, 230, 192, 0.28), 0 28px 70px rgba(200, 230, 192, 0.16);
+    }
+    .stage--base .stage__price {
+      border-top-color: rgba(200, 230, 192, 0.22);
+      border-bottom-color: rgba(200, 230, 192, 0.22);
+    }
+    .stage--base .stage__amount { font-size: 42px; }
+    .stage--base .stage__rule { background: rgba(200, 230, 192, 0.28); }
+    .stage__badge {
       position: absolute;
       top: -14px;
       left: 50%;
@@ -1554,107 +1769,108 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
       border-radius: var(--radius-pill);
       text-transform: uppercase;
       box-shadow: 0 6px 18px rgba(200, 230, 192, 0.22);
-    }
-    .price__name {
-      font-family: var(--font-heading);
-      font-size: 1.8rem;
-      color: var(--white);
-      margin-bottom: 0;
-    }
-    .price__tagline {
-      font-size: 14px;
-      color: rgba(255, 255, 255, 0.6);
-    }
-    .price__amount {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      margin: var(--space-3) 0 var(--space-2);
-      padding: var(--space-4) 0;
-      border-top: 1px solid rgba(255, 255, 255, 0.12);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-    }
-    .price__setup, .price__monthly {
-      font-family: var(--font-mono);
-      font-size: 14px;
-      color: rgba(255, 255, 255, 0.72);
-      font-variant-numeric: tabular-nums;
-      display: flex;
-      align-items: baseline;
-      gap: var(--space-2);
-    }
-    .price__setup strong, .price__monthly strong {
-      font-family: var(--font-mono);
-      font-weight: 400;
-      color: var(--coral);
-      font-variant-numeric: tabular-nums;
-      font-size: 28px;
-    }
-    .price__monthly strong { font-size: 22px; }
-    .price__features {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-3);
-      flex: 1;
-    }
-    .price__feature {
-      display: flex;
-      gap: var(--space-3);
-      font-size: 14.5px;
-      line-height: 1.5;
-      color: rgba(255, 255, 255, 0.82);
-    }
-    .price__feature::before {
-      content: '';
-      flex-shrink: 0;
-      width: 18px;
-      height: 18px;
-      margin-top: 2px;
-      background: var(--coral);
-      border-radius: 50%;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
-      background-size: 12px;
-      background-position: center;
-      background-repeat: no-repeat;
-    }
-    .price .btn { margin-top: var(--space-4); }
-    /* Reductor de riesgo bajo el CTA de Base: tranquiliza junto al precio */
-    .price__reassure {
-      margin-top: var(--space-3);
-      text-align: center;
-      font-family: var(--font-mono);
-      font-size: 12px;
-      letter-spacing: 0.02em;
-      color: rgba(255, 255, 255, 0.55);
-    }
-    /* paneles ahora oscuros → el secondary blanco por defecto ya contrasta */
-    .price .btn--secondary {
-      color: var(--white);
-      border-color: rgba(255, 255, 255, 0.36);
-    }
-    .price .btn--secondary:hover {
-      border-color: var(--white);
-      background: rgba(255, 255, 255, 0.06);
+      white-space: nowrap;
     }
 
-    /* =====================================================
-       SOPORTE — mini comparativo bajo las cards de planes (sobre charcoal).
-       Números en pink (rol "soporte"; coral a este tamaño sobre charcoal
-       no pasa AA). Coral solo en la esquina-corchete decorativa.
-       ===================================================== */
-    .maint {
-      margin: var(--space-7) 0 0;
-      text-align: center;
+    /* --- la suma: Origin + Base --- */
+    .combo {
+      position: relative;
+      grid-column: 1 / -1;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-5);
+      background: rgba(201, 79, 56, 0.09);
+      border: 1px solid var(--coral);
+      border-radius: var(--radius-md);
+      padding: var(--space-6);
+      box-shadow: 0 18px 52px rgba(201, 79, 56, 0.1);
+      transition: transform 320ms var(--ease-out), box-shadow 320ms var(--ease-out);
     }
-    .maint__intro {
-      font-size: 15px;
-      line-height: 1.7;
-      color: rgba(255, 255, 255, 0.74);
+    .combo::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 14px; right: 14px;
+      height: 3px;
+      background: var(--coral);
+      border-radius: var(--radius-pill);
+    }
+    .combo::after {
+      content: '';
+      position: absolute;
+      right: 13px; bottom: 13px;
+      width: 12px; height: 12px;
+      border-right: 1.6px solid rgba(236, 226, 221, 0.6);
+      border-bottom: 1.6px solid rgba(236, 226, 221, 0.6);
+    }
+    .combo:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 64px rgba(201, 79, 56, 0.16);
+    }
+    /* conectores desde cada tarjeta: JS calcula alto y posición */
+    .combo__tie {
+      position: absolute;
+      width: 1.5px;
+      background: linear-gradient(180deg, rgba(201, 79, 56, 0) 0%, var(--coral) 100%);
+      display: none;
+    }
+    .combo__head { flex: 1 1 280px; }
+    .combo__title {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+    }
+    .combo__labels {
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+    }
+    .combo__eq {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      color: var(--pink);
+    }
+    .combo__name {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--white);
+      margin: 0;
+    }
+    .combo__promise {
+      margin: 6px 0 0;
+      font-size: 16.5px;
+      line-height: 1.6;
+      color: var(--pink);
+      max-width: 46ch;
       text-wrap: pretty;
     }
-    .maint__intro strong { color: var(--pink); font-weight: 600; }
-    /* CRECIMIENTO — Expand e Infinite. Peso visual menor que las cards de
-       plan a propósito: se venden con plazo declarado, no se compran hoy. */
+    .combo__price { display: grid; gap: var(--space-2); flex: 0 1 auto; }
+    .combo__setup { display: flex; align-items: baseline; gap: var(--space-2); }
+    .combo__amount {
+      font-family: var(--font-mono);
+      font-size: 46px;
+      letter-spacing: 0.02em;
+      color: var(--coral);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* --- nota de soporte --- */
+    .paquetes__support-note {
+      margin: 0 auto;
+      font-size: 16.5px;
+      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.78);
+      max-width: 76ch;
+      text-wrap: pretty;
+    }
+    .paquetes__support-note strong { color: var(--pink); font-weight: 600; }
+    .paquetes__tail { margin-top: var(--space-7); text-align: center; }
+
+    /* --- el siguiente paso: Expand e Infinite --- */
     .grow {
       position: relative;
       margin-top: var(--space-6);
@@ -1662,101 +1878,176 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
       border-top: 1px solid rgba(255, 255, 255, 0.14);
       text-align: left;
     }
-    .grow__label {
+    .grow__eyebrow {
       display: block;
+      text-align: center;
       font-family: var(--font-mono);
       font-size: 11.5px;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--muted-gray);
       margin-bottom: var(--space-5);
-      text-align: center;
     }
-    .grow__label::before { content: '[ '; color: var(--coral); }
-    .grow__label::after  { content: ' ]'; color: var(--coral); }
-    .grow__grid {
+    .grow__eyebrow::before { content: '[ '; color: var(--coral); }
+    .grow__eyebrow::after  { content: ' ]'; color: var(--coral); }
+    .grow__list {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: var(--space-5);
     }
-    /* Marco chico con esquinas de corchete, el mismo patrón de .service__icon.
-       Más liviano que una .price card a propósito: es promesa, no producto
-       en stock. Coral solo en las esquinas decorativas; el borde va en
-       blanco tenue para no competir con los CTA de arriba. */
     .grow__item {
       position: relative;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      padding: var(--space-5);
+      padding: var(--space-6) var(--space-5) var(--space-5);
+      background: rgba(255, 255, 255, 0.02);
       border: 1px solid rgba(255, 255, 255, 0.11);
       border-radius: var(--radius-sm);
-      transition: border-color var(--dur-base) var(--ease);
+      display: grid;
+      gap: var(--space-2);
+      transition: transform 320ms var(--ease-out), border-color 320ms var(--ease-out), background-color 320ms var(--ease-out);
     }
-    .grow__item:hover { border-color: rgba(255, 255, 255, 0.2); }
-    .grow__item::before,
+    .grow__item:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255, 255, 255, 0.22);
+      background-color: rgba(255, 255, 255, 0.04);
+    }
+    .grow__item::before {
+      content: '';
+      position: absolute;
+      top: -1px; left: -1px;
+      width: 12px; height: 12px;
+      border-left: 1.6px solid rgba(201, 79, 56, 0.6);
+      border-top: 1.6px solid rgba(201, 79, 56, 0.6);
+    }
     .grow__item::after {
       content: '';
       position: absolute;
-      width: 10px;
-      height: 10px;
-      border: 1.6px solid rgba(201, 79, 56, 0.55);
+      bottom: -1px; right: -1px;
+      width: 12px; height: 12px;
+      border-right: 1.6px solid rgba(201, 79, 56, 0.6);
+      border-bottom: 1.6px solid rgba(201, 79, 56, 0.6);
     }
-    .grow__item::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
-    .grow__item::after { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
+    /* barra superior punteada: "trazado, todavía no construido" */
+    .grow__dash {
+      position: absolute;
+      top: 0; left: 12px; right: 12px;
+      height: 2px;
+      background: repeating-linear-gradient(90deg, rgba(196, 184, 172, 0.55) 0 5px, transparent 5px 11px);
+      border-radius: var(--radius-pill);
+    }
+    .grow__meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+    }
+    .grow__labels { display: flex; align-items: baseline; gap: var(--space-3); }
+    .grow__num {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      color: var(--muted-gray);
+    }
     .grow__verb {
       font-family: var(--font-mono);
       font-size: 11px;
       letter-spacing: 0.08em;
       color: var(--muted-gray);
     }
-    .grow__verb::before { content: '['; color: var(--coral); margin-right: 0.4em; }
-    .grow__verb::after  { content: ']'; color: var(--coral); margin-left: 0.4em; }
-    .grow__item h3 {
+    .grow__verb::before { content: '[ '; color: var(--coral); }
+    .grow__verb::after  { content: ' ]'; color: var(--coral); }
+    .grow__name {
       font-family: var(--font-heading);
+      font-size: 1.5rem;
       font-weight: 400;
-      font-size: 1.12rem;
       color: var(--white);
+      margin: var(--space-1) 0 0;
     }
     .grow__price {
+      margin: 0;
       font-family: var(--font-mono);
-      font-size: 13px;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.78);
       font-variant-numeric: tabular-nums;
-      color: var(--muted-gray);
-      margin-bottom: var(--space-2);
     }
-    .grow__price strong { color: var(--pink); font-weight: 400; font-size: 18px; }
+    .grow__price strong {
+      font-weight: 400;
+      font-size: 21px;
+      color: var(--pink);
+    }
     .grow__desc {
+      margin: var(--space-2) 0 0;
       font-size: 14.5px;
-      line-height: 1.6;
-      color: rgba(255, 255, 255, 0.72);
+      line-height: 1.65;
+      color: rgba(255, 255, 255, 0.68);
       text-wrap: pretty;
     }
-    /* margin-top:auto pega las áreas al pie, así los dos marcos cierran parejo */
     .grow__areas {
-      margin-top: auto;
-      padding-top: var(--space-4);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: var(--space-2) 0 0;
+      padding: 0;
+      list-style: none;
+    }
+    .grow__areas li {
       font-family: var(--font-mono);
       font-size: 12px;
-      letter-spacing: 0.06em;
-      color: var(--muted-gray);
-    }
-    .grow__plazo {
-      margin-top: var(--space-5);
-      font-size: 13.5px;
-      line-height: 1.6;
-      color: var(--muted-gray);
-      text-align: center;
-      text-wrap: pretty;
-    }
-    .maint__smart {
-      margin-top: var(--space-5);
-      font-family: var(--font-mono);
-      font-size: 13px;
       letter-spacing: 0.08em;
       color: var(--muted-gray);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: var(--radius-pill);
+      padding: 3px 10px;
     }
-    .maint__smart strong { color: var(--pink); font-weight: 400; }
+    .grow__note {
+      margin: var(--space-5) auto 0;
+      text-align: center;
+      font-size: 15px;
+      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.66);
+      max-width: 76ch;
+      text-wrap: pretty;
+    }
+    .paquetes__custom {
+      margin: var(--space-6) auto 0;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      letter-spacing: 0.04em;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.66);
+      max-width: 80ch;
+    }
+    .paquetes__custom::before { content: '[ '; color: var(--coral); }
+    .paquetes__custom::after  { content: ' ]'; color: var(--coral); }
+    .paquetes__custom strong { color: var(--pink); font-weight: 400; }
+
+    /* --- entrada (IntersectionObserver añade .is-in) --- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 540ms var(--ease-expo), transform 540ms var(--ease-expo);
+    }
+    .reveal.is-in { opacity: 1; transform: none; }
+    .reveal--d1 { transition-delay: 60ms; }
+
+    /* --- móvil: 375px primero --- */
+    @media (max-width: 760px) {
+      .paquetes { padding: var(--space-8) 0; }
+      .stages { grid-template-columns: 1fr; gap: var(--space-4); }
+      .combo__tie { display: none !important; }
+    }
+    @media (max-width: 560px) {
+      .combo { flex-direction: column; align-items: stretch; }
+      .combo__head { flex: none; }
+      .combo .btn { width: 100%; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .paquetes__grid-bg { animation: none; }
+      .reveal { opacity: 1; transform: none; transition: none; }
+      .stage, .combo, .grow__item { transition: none; }
+      .stage:hover, .combo:hover, .grow__item:hover { transform: none; }
+    }
+
 
     /* =====================================================
        PROCESO
@@ -2570,6 +2861,14 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
       opacity: 1;
       transform: translateY(0);
     }
+    /* El handoff conserva su entrada exacta y participa del observer global. */
+    .paquetes .reveal {
+      transform: translateY(14px);
+      transition: opacity 540ms var(--ease-expo), transform 540ms var(--ease-expo);
+    }
+    .paquetes .reveal.is-in,
+    .paquetes .reveal.is-visible { opacity: 1; transform: none; }
+    .paquetes .reveal--d1 { transition-delay: 60ms; }
     .reveal-stagger > * {
       opacity: 0;
       transform: translateY(20px);
@@ -3294,107 +3593,189 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
        PAQUETES
        ============================================ -->
   <section class="paquetes" id="paquetes" aria-labelledby="paquetes-title">
+    <div class="paquetes__grid-bg" aria-hidden="true"></div>
+
     <div class="container">
-      <div class="section-head section-head--inverse reveal">
-        <span class="eyebrow">Paquetes</span>
+
+      <div class="paquetes__head reveal">
+        <span class="eyebrow">paquetes</span>
         <h2 id="paquetes-title">Elige tu plan.</h2>
-        <p class="lead lead--inverse">
-          Precios claros, sin letras pequeñas. Pagas un setup único por tu proyecto y un
-          plan de soporte fijo que lo mantiene vivo: hosting, cambios y tus métricas.
-        </p>
+        <p class="lead lead--inverse">Precios claros, sin letras pequeñas. Pagas un setup único por tu proyecto y un plan de soporte fijo que lo mantiene vivo: hosting, cambios y tus métricas.</p>
       </div>
 
-      <div class="price-grid reveal-stagger">
-        <!-- VELKOR ORIGIN -->
-        <article class="price">
-          <h3 class="price__name">Velkor Origin</h3>
-          <p class="price__tagline">Te ven: los canales que ya tienes, bien puestos.</p>
+      <div class="stages reveal reveal--d1">
 
-          <div class="price__amount">
-            <span class="price__setup"><strong>$350</strong> + IVA · setup único</span>
-            <span class="price__monthly"><strong>$35</strong> + IVA / mes de soporte, opcional</span>
+        <!-- ETAPA 01 -->
+        <article class="stage stage--origin" data-stage="origin">
+          <div class="stage__meta">
+            <span class="stage__num">ETAPA 01</span>
+            <span class="bracket-frame" style="color: var(--coral)">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </span>
+          </div>
+          <h3 class="stage__name">Velkor Origin</h3>
+          <p class="stage__promise">Te ven: los canales que ya tienes, bien puestos.</p>
+
+          <div class="stage__demo">
+            <img src="demo-origin.webp" alt="Perfil de Google de un cliente de Velkor" loading="lazy" width="640" height="400">
           </div>
 
-          <ul class="price__features">
-            <li class="price__feature">Perfil de Google completo</li>
-            <li class="price__feature">WhatsApp Business con catálogo</li>
-            <li class="price__feature">Facebook e Instagram enlazados</li>
-            <li class="price__feature">QR de reseñas + guion para tu equipo</li>
-            <li class="price__feature">Comparativa antes y después + reporte a 30 días</li>
+          <div class="stage__price">
+            <div class="stage__setup">
+              <span class="stage__amount" data-count="350">$350</span>
+              <span class="stage__iva">+ IVA</span>
+              <span class="stage__unit">setup único</span>
+            </div>
+            <div class="stage__support">
+              <strong>$35 + IVA/mes</strong>
+              <span class="stage__rule" aria-hidden="true"></span>
+              <span>soporte, opcional</span>
+            </div>
+          </div>
+
+          <ul class="stage__list">
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>Perfil de Google completo</span></li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>WhatsApp Business con catálogo</span></li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>Facebook e Instagram enlazados</span></li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>QR de reseñas + guion para tu equipo</span></li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>Comparativa antes y después + reporte a 30 días</span></li>
           </ul>
 
-          <a class="btn btn--secondary btn--block" href="#contacto">Comenzar con Origin</a>
+          <a class="btn btn--secondary btn--block" href="#contacto"><span>Comenzar con Origin</span></a>
         </article>
 
-        <!-- VELKOR BASE -->
-        <article class="price price--featured">
-          <span class="price__badge">Recomendado</span>
+        <!-- ETAPA 02 -->
+        <article class="stage stage--base" data-stage="base">
+          <span class="stage__badge">Recomendado</span>
+          <div class="stage__meta">
+            <span class="stage__num">ETAPA 02</span>
+            <span class="bracket-frame" style="color: var(--coral)">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path><path d="M8 11h6M11 8v6"></path></svg>
+            </span>
+          </div>
+          <h3 class="stage__name">Velkor Base</h3>
+          <p class="stage__promise">Te encuentran: tu sitio propio, listo en días.</p>
 
-          <h3 class="price__name">Velkor Base</h3>
-          <p class="price__tagline">Te encuentran: tu sitio propio, listo en días.</p>
-
-          <div class="price__amount">
-            <span class="price__setup"><strong>$600</strong> + IVA · setup único</span>
-            <span class="price__monthly"><strong>$90</strong> + IVA / mes de soporte</span>
+          <div class="stage__demo">
+            <img src="demo-manana.webp" alt="Sitio de Mañana Coffee construido por Velkor" loading="lazy" width="640" height="400">
           </div>
 
-          <ul class="price__features">
-            <li class="price__feature">Landing page profesional</li>
-            <li class="price__feature">Menú digital QR</li>
-            <li class="price__feature">Sitio en Google + SEO</li>
-            <li class="price__feature">Lo mantenemos al día por ti (menú, precios, promos)</li>
-            <li class="price__feature">Capacitación incluida</li>
+          <div class="stage__price">
+            <div class="stage__setup">
+              <span class="stage__amount" data-count="600">$600</span>
+              <span class="stage__iva">+ IVA</span>
+              <span class="stage__unit">setup único</span>
+            </div>
+            <div class="stage__support">
+              <strong>$90 + IVA/mes</strong>
+              <span class="stage__rule" aria-hidden="true"></span>
+              <span>soporte</span>
+            </div>
+          </div>
+
+          <ul class="stage__list">
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>Landing page profesional</span></li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>Menú digital QR</span></li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>Sitio en Google + SEO</span></li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>Lo mantenemos al día por ti (menú, precios, promos)</span></li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>Capacitación incluida</span></li>
           </ul>
 
-          <a class="btn btn--primary btn--block" href="#contacto">Comenzar con Velkor Base</a>
-          <!-- PENDIENTE RATIFICACIÓN VPC/BMC: risk-reversal conservador (sin devolución de dinero) -->
-          <p class="price__reassure">Precio cerrado, sin sorpresas · Acompañamiento el primer mes incluido</p>
+          <a class="btn btn--primary btn--block" href="#contacto"><span>Comenzar con Velkor Base</span></a>
+          <p class="stage__fine">Precio cerrado, sin sorpresas · Acompañamiento el primer mes incluido</p>
         </article>
 
-        <!-- LOS DOS JUNTOS · tercer camino, no un párrafo al pie -->
-        <article class="price price--combo">
-          <div class="price__combo-head">
-            <h3 class="price__name">Origin + Base</h3>
-            <p class="price__tagline">Los canales que ya tienes y tu sitio propio, en un solo proyecto.</p>
+        <!-- LA SUMA -->
+        <article class="combo" data-stage="combo">
+          <span class="combo__tie" data-tie="left" aria-hidden="true"></span>
+          <span class="combo__tie" data-tie="right" aria-hidden="true"></span>
+
+          <div class="combo__head">
+            <div class="combo__title">
+              <span class="bracket-frame" style="color: var(--coral)">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V6"></path><path d="M4 20h14"></path><path d="M4 20 19 6"></path><path d="M13 6h6v6"></path></svg>
+              </span>
+              <div class="combo__labels">
+                <span class="combo__eq">01 + 02</span>
+                <h3 class="combo__name">Origin + Base</h3>
+              </div>
+            </div>
+            <p class="combo__promise">Los canales que ya tienes y tu sitio propio, en un solo proyecto.</p>
           </div>
-          <div class="price__amount">
-            <span class="price__setup"><strong>$950</strong> + IVA · setup único</span>
-            <span class="price__monthly"><strong>$110</strong> + IVA / mes de soporte</span>
+
+          <div class="combo__price">
+            <div class="combo__setup">
+              <span class="combo__amount" data-count="950">$950</span>
+              <span class="stage__iva">+ IVA</span>
+              <span class="stage__unit" style="margin-left: 0">setup único</span>
+            </div>
+            <div class="stage__support">
+              <strong>$110 + IVA/mes</strong>
+              <span class="stage__rule" aria-hidden="true"></span>
+              <span>soporte</span>
+            </div>
           </div>
-          <a class="btn btn--secondary" href="#contacto">Cotizar los dos</a>
+
+          <a class="btn btn--secondary" href="#contacto"><span>Cotizar los dos</span></a>
         </article>
+
       </div>
 
-      <div class="maint reveal">
-        <p class="maint__intro">
-          El soporte se paga <strong>mes a mes sin plazo</strong>, o el año por el precio de
-          diez meses. Cubre hosting, tus cambios y el reporte mensual.
-        </p>
+      <div class="paquetes__tail reveal">
+        <p class="paquetes__support-note">El soporte se paga <strong>mes a mes sin plazo</strong>, o el año por el precio de diez meses. Cubre hosting, tus cambios y el reporte mensual.</p>
 
-        <!-- CRECIMIENTO · Expand e Infinite: precio a la vista, peso visual menor
-             que los planes vendibles, y el plazo declarado ANTES de vender. -->
         <div class="grow">
-          <span class="grow__label">el siguiente paso</span>
-          <div class="grow__grid">
+          <span class="grow__eyebrow">el siguiente paso</span>
+
+          <div class="grow__list">
+
             <article class="grow__item">
-              <span class="grow__verb">te pagan</span>
-              <h3>Velkor Expand</h3>
+              <span class="grow__dash" aria-hidden="true"></span>
+              <div class="grow__meta">
+                <div class="grow__labels">
+                  <span class="grow__num">03</span>
+                  <span class="grow__verb">te pagan</span>
+                </div>
+                <span class="bracket-frame" style="color: var(--muted-gray)">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"></path><path d="M15 7h6v6"></path></svg>
+                </span>
+              </div>
+              <h3 class="grow__name">Velkor Expand</h3>
               <p class="grow__price"><strong>$1,800</strong> + IVA · soporte $270 + IVA/mes</p>
               <p class="grow__desc">Todo lo de Base y eliges 3 herramientas de 9: cobrar en línea, cotizar, reservar, cuidar tus reseñas, saber qué se vende.</p>
-              <p class="grow__areas">Ingreso · Reputación · Operación</p>
+              <ul class="grow__areas">
+                <li>Ingreso</li>
+                <li>Reputación</li>
+                <li>Operación</li>
+              </ul>
             </article>
+
             <article class="grow__item">
-              <span class="grow__verb">te automatiza</span>
-              <h3>Velkor Infinite</h3>
+              <span class="grow__dash" aria-hidden="true"></span>
+              <div class="grow__meta">
+                <div class="grow__labels">
+                  <span class="grow__num">04</span>
+                  <span class="grow__verb">te automatiza</span>
+                </div>
+                <span class="bracket-frame" style="color: var(--muted-gray)">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.7-6"></path><path d="M20 4v5h-5"></path><path d="M12 8v4l3 2"></path></svg>
+                </span>
+              </div>
+              <h3 class="grow__name">Velkor Infinite</h3>
               <p class="grow__price"><strong>$3,400</strong> + IVA · soporte $500 + IVA/mes</p>
               <p class="grow__desc">Todo lo de Expand y una herramienta de cada área nueva: tienda en línea, clientes que vuelven, respuestas automáticas.</p>
-              <p class="grow__areas">Escala · Autonomía</p>
+              <ul class="grow__areas">
+                <li>Escala</li>
+                <li>Autonomía</li>
+              </ul>
             </article>
+
           </div>
-          <p class="grow__plazo">Las herramientas que ya están construidas se entregan en 2 semanas; las que se hacen a tu medida, en 6. Te decimos cuál es cuál antes de firmar.</p>
+
+          <p class="grow__note">Las herramientas que ya están construidas se entregan en 2 semanas; las que se hacen a tu medida, en 6. Te decimos cuál es cuál antes de firmar.</p>
         </div>
 
-        <p class="maint__smart">[ ¿Necesitas algo distinto? <strong>Velkor Smart</strong> arma tu paquete con lo que ya tenemos · <strong>Velkor Forge</strong> construye el proyecto que tengas en mente ]</p>
+        <p class="paquetes__custom">¿Necesitas algo distinto? <strong>Velkor Smart</strong> arma tu paquete con lo que ya tenemos · <strong>Velkor Forge</strong> construye el proyecto que tengas en mente</p>
       </div>
 
     </div>
@@ -4241,7 +4622,7 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
       var t = e.target;
       var chrome = !!(t.closest && t.closest('[data-omelette-chrome], .vk-tweaks'));
       html.classList.toggle('vk-on-chrome', chrome);
-      var hot = !chrome && !!(t.closest && t.closest('a, button, [role="button"], .service, .price, summary, .faq-item, label'));
+      var hot = !chrome && !!(t.closest && t.closest('a, button, [role="button"], .service, .stage, .combo, .grow__item, summary, .faq-item, label'));
       var text = !chrome && !!(t.closest && t.closest('input, textarea, select, p, h1, h2, h3, .lead'));
       html.classList.toggle('vk-hot', hot);
       html.classList.toggle('vk-text', text && !hot);
@@ -4494,7 +4875,7 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
      --------------------------------------------------------------- */
   (function cardTilt() {
     if (reduce || !finePointer) return;
-    var cards = document.querySelectorAll('.service, .price');
+    var cards = document.querySelectorAll('.service');
     cards.forEach(function (card) {
       var gleam = document.createElement('div'); gleam.className = 'vk-gleam'; gleam.setAttribute('aria-hidden', 'true');
       card.appendChild(gleam);
@@ -4550,7 +4931,6 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
     }
     add('.section-head--inverse', 0.05);
     add('.brand-mark--feature', -0.05);
-    add('.paquetes .price--featured', -0.04);
 
     var ticking = false;
     function update() {
@@ -4574,6 +4954,86 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
   })();
 })();
 
+  </script>
+  <script>
+  (function () {
+    var section = document.querySelector('.paquetes');
+    if (!section) { return; }
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* --- entrada --- */
+    var reveals = section.querySelectorAll('.reveal');
+    if (reduce || !('IntersectionObserver' in window)) {
+      reveals.forEach(function (el) { el.classList.add('is-in'); });
+    } else {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); }
+        });
+      }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+      reveals.forEach(function (el) { io.observe(el); });
+    }
+
+    /* --- conteo de precios: arranca en 55% y aterriza en el valor del HTML --- */
+    if (!reduce && 'IntersectionObserver' in window) {
+      var ioCount = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (!en.isIntersecting) { return; }
+          ioCount.unobserve(en.target);
+          var el = en.target;
+          var target = Number(el.dataset.count);
+          var final = el.textContent;
+          var start = performance.now();
+          var dur = 900;
+          (function step(now) {
+            var p = Math.min(1, (now - start) / dur);
+            var eased = 1 - Math.pow(1 - p, 3);
+            el.textContent = p < 1
+              ? '$' + Math.round(target * (0.55 + 0.45 * eased)).toLocaleString('en-US')
+              : final;
+            if (p < 1) { requestAnimationFrame(step); }
+          })(start);
+        });
+      }, { threshold: 0.5 });
+      section.querySelectorAll('[data-count]').forEach(function (el) { ioCount.observe(el); });
+    }
+
+    /* --- conectores: del borde inferior de cada tarjeta al borde superior del combo --- */
+    var combo = section.querySelector('.combo');
+    var cards = {
+      left: section.querySelector('[data-stage="origin"]'),
+      right: section.querySelector('[data-stage="base"]')
+    };
+    var ties = {
+      left: section.querySelector('[data-tie="left"]'),
+      right: section.querySelector('[data-tie="right"]')
+    };
+    function placeTies() {
+      if (!combo) { return; }
+      var narrow = window.matchMedia('(max-width: 760px)').matches;
+      ['left', 'right'].forEach(function (side) {
+        var tie = ties[side];
+        var card = cards[side];
+        if (!tie || !card) { return; }
+        if (narrow) { tie.style.display = 'none'; return; }
+        var cr = combo.getBoundingClientRect();
+        var kr = card.getBoundingClientRect();
+        var h = Math.round(cr.top - kr.bottom);
+        if (h < 8) { tie.style.display = 'none'; return; }
+        tie.style.display = 'block';
+        tie.style.height = h + 'px';
+        tie.style.top = (-h) + 'px';
+        tie.style.left = Math.round(kr.left + kr.width / 2 - cr.left) + 'px';
+      });
+    }
+    placeTies();
+    window.addEventListener('resize', placeTies);
+    if ('ResizeObserver' in window) {
+      var ro = new ResizeObserver(placeTies);
+      [cards.left, cards.right, combo].forEach(function (el) { if (el) { ro.observe(el); } });
+    }
+    window.setTimeout(placeTies, 600);
+  })();
   </script>
 </body>
 </html>

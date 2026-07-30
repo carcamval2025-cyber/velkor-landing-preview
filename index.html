@@ -549,7 +549,7 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
 
       /* Motion */
       --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
-      --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+      --ease-out: var(--ease); /* alias: el prototipo de Paquetes lo nombra asi */
       --ease-expo: cubic-bezier(0.16, 1, 0.3, 1); /* ease-out-expo: entradas más decididas (Lane A) */
       --dur-fast: 180ms;
       --dur-base: 320ms;
@@ -4393,7 +4393,7 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
          =================================== */
       (function countUp() {
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-        const els = document.querySelectorAll('.hero__meta-num, .price__setup strong, .price__monthly strong');
+        const els = document.querySelectorAll('.hero__meta-num');
         if (!els.length || !('IntersectionObserver' in window)) return;
         function animate(el) {
           // [\d,]+ para que los miles ($1,800) no se corten en la coma

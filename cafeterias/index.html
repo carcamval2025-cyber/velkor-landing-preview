@@ -233,6 +233,28 @@
     .precio__nota { font-family: var(--font-mono); font-size: 13px; color: var(--muted-gray); margin-bottom: 30px; }
     .precio__nota b { color: var(--soft-green); font-weight: 400; }
 
+    /* Métricas — franja de los tres indicadores, marco de corchetes [ ] por indicador */
+    .metricas { background: var(--pink); padding: 64px 0; }
+    .metricas__grid { display: grid; gap: 32px; }
+    .metric { position: relative; padding: 24px 16px; }
+    .metric::before,
+    .metric::after { content: ''; position: absolute; width: 14px; height: 14px; border: 1.6px solid var(--coral); }
+    .metric::before { top: 0; left: 0; border-right: 0; border-bottom: 0; }
+    .metric::after { bottom: 0; right: 0; border-left: 0; border-top: 0; }
+    .metric__num {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: clamp(1.9rem, 1.1rem + 3.4vw, 2.6rem);
+      line-height: 1.05;
+      color: var(--coral-dark); /* 4.76:1 sobre --pink */
+    }
+    /* sin opacity: el coral-dark con alfa sobre --pink cae a 3.42:1 (axe) */
+    .metric__pre { font-size: 0.4em; letter-spacing: 0.12em; }
+    .metric__label { margin-top: 12px; color: var(--charcoal); }
+    @media (min-width: 760px) {
+      .metricas__grid { grid-template-columns: repeat(3, 1fr); gap: 40px; }
+    }
+
     /* FAQ */
     .faq { background: var(--pearl-gray); }
     .faq__list { margin-top: 36px; max-width: 760px; }
@@ -464,6 +486,25 @@
       <p class="precio__nota">pago único · <b>soporte $90 + IVA/mes</b> · nosotros mantenemos tu menú al día</p>
       <p class="precio__nota">¿Tu perfil de Google, WhatsApp Business y tus redes también? <b>Velkor Origin</b> los deja completos por $350 + IVA, o $950 + IVA los dos planes juntos.</p>
       <a class="btn btn--primary" href="https://wa.me/503XXXXXXXX?text=Hola%2C%20tengo%20una%20cafeter%C3%ADa%20y%20quiero%20mi%20p%C3%A1gina%20web">Empieza por WhatsApp</a>
+    </div>
+  </section>
+
+  <section class="metricas" aria-label="Lo que garantizamos">
+    <div class="container">
+      <ul class="metricas__grid reveal-stagger" role="list">
+        <li class="metric">
+          <span class="metric__num">5 a 10 días</span>
+          <p class="metric__label">Hábiles, desde que nos das el material y los accesos.</p>
+        </li>
+        <li class="metric">
+          <span class="metric__num"><span class="metric__pre">desde</span> $350</span>
+          <p class="metric__label">Precio cerrado, más IVA. La mensualidad es opcional.</p>
+        </li>
+        <li class="metric">
+          <span class="metric__num">Cada mes</span>
+          <p class="metric__label">Reporte de resultados en palabras claras.</p>
+        </li>
+      </ul>
     </div>
   </section>
 

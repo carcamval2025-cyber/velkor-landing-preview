@@ -206,7 +206,7 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
 /* =====================================================================
    4. HOVER — cards con inclinación 3D + destello coral; botones magnéticos
    ===================================================================== */
-.service, .team-frame, .case-zero {
+.service, .team-frame, .case-zero, .stage, .combo {
   transform-style: preserve-3d;
 }
 /* Destello que sigue al cursor sobre las cards (variables --mx/--my en %) */
@@ -221,7 +221,9 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
   transition: opacity 320ms ease;
   z-index: 2;
 }
-.service:hover .vk-gleam { opacity: 1; }
+.service:hover .vk-gleam,
+.stage:hover .vk-gleam,
+.combo:hover .vk-gleam { opacity: 1; }
 
 /* Botones magnéticos: el JS aplica --tx/--ty; el lift de hover se compone aparte */
 .btn--primary, .nav__cta, .cta-close .btn--primary {
@@ -1718,10 +1720,11 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
     .stage__fine {
       margin: var(--space-3) 0 0;
       text-align: center;
-      font-family: var(--font-mono);
-      font-size: 13px;
-      letter-spacing: 0.02em;
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.5;
       color: rgba(255, 255, 255, 0.62);
+      text-wrap: pretty;
     }
 
     /* --- etapa 01: Origin (coral, la más tenue) --- */
@@ -2048,6 +2051,44 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
       .stage:hover, .combo:hover, .grow__item:hover { transform: none; }
     }
 
+
+    /* =====================================================
+       MÉTRICAS — franja de los tres indicadores de venta
+       Va después de Proceso: los 4 pasos son lo que hace creíbles
+       "7 días" y el reporte mensual, así que la franja los cobra ahí.
+       Marco de corchetes [ ] por indicador (mismo pseudo-elemento
+       que .pain__icon / .service__icon).
+       ===================================================== */
+    .metricas { background: var(--pink); padding: var(--space-8) 0; }
+    .metricas__grid { display: grid; gap: var(--space-6); }
+    .metric { position: relative; padding: var(--space-5) var(--space-4); }
+    .metric::before,
+    .metric::after {
+      content: '';
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border: 1.6px solid var(--coral);
+    }
+    .metric::before { top: 0; left: 0; border-right: 0; border-bottom: 0; }
+    .metric::after { bottom: 0; right: 0; border-left: 0; border-top: 0; }
+    .metric__num {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: clamp(1.9rem, 1.1rem + 3.4vw, 2.6rem);
+      line-height: 1.05;
+      color: var(--coral-dark); /* 4.76:1 sobre --pink */
+    }
+    /* El "desde" se diferencia por tamaño y tracking, no por opacidad:
+       bajarle alfa al coral-dark sobre --pink lo tira a 3.42:1 (axe: color-contrast) */
+    .metric__pre {
+      font-size: 0.4em;
+      letter-spacing: 0.12em;
+    }
+    .metric__label { margin: var(--space-3) 0 0; color: var(--charcoal); }
+    @media (min-width: 760px) {
+      .metricas__grid { grid-template-columns: repeat(3, 1fr); gap: var(--space-7); }
+    }
 
     /* =====================================================
        PROCESO
@@ -3139,7 +3180,7 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
           {
             "@type": "Question",
             "name": "¿Qué incluye el precio y qué cuesta aparte?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Pagas un setup único (Origin $350 + IVA, Base $600 + IVA, los dos juntos $950 + IVA) y un plan de soporte mensual que cubre hosting, tus cambios y el reporte. Se cotizan aparte: secciones o páginas nuevas, fotografía, el dominio propio y las herramientas de Expand e Infinite. Precio cerrado, sin sorpresas." }
+            "acceptedAnswer": { "@type": "Answer", "text": "Pagas un setup único (Origin $350 + IVA, Base $600 + IVA, los dos juntos $950 + IVA) y un plan de soporte mensual que cubre hosting, tus cambios y el reporte mensual. Se cotizan aparte: secciones o páginas nuevas, el trabajo de fotos, el dominio propio y las herramientas de Expand e Infinite. Precio cerrado, sin sorpresas." }
           },
           {
             "@type": "Question",
@@ -3171,7 +3212,7 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
         <li><a class="nav__link" data-link href="#nosotros">Nosotros</a></li>
         <li><a class="nav__link" data-link href="#faq">FAQ</a></li>
         <li><a class="nav__link" data-link href="#contacto">Contacto</a></li>
-        <li><a class="btn btn--primary nav__cta" href="#contacto">Comenzar</a></li>
+        <li><a class="btn btn--primary nav__cta" href="https://wa.me/503XXXXXXXX?text=Hola%20Velkor%2C%20quiero%20empezar.%20%C2%BFC%C3%B3mo%20funciona%3F" target="_blank" rel="noopener">Comenzar</a></li>
       </ul>
 
       <button
@@ -3216,7 +3257,7 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
       </p>
 
       <div class="hero__cta">
-        <a class="btn btn--primary" href="https://wa.me/503XXXXXXXX?text=Hola%20Velkor%2C%20quiero%20poner%20mi%20negocio%20en%20internet" target="_blank" rel="noopener">
+        <a class="btn btn--primary" href="https://wa.me/503XXXXXXXX?text=Hola%20Velkor%2C%20quiero%20contarte%20de%20mi%20negocio" target="_blank" rel="noopener">
           Cuéntanos de tu negocio
           <svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
         </a>
@@ -3638,10 +3679,11 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
             <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>WhatsApp Business con catálogo</span></li>
             <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>Facebook e Instagram enlazados</span></li>
             <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>QR de reseñas + guion para tu equipo</span></li>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>Comparativa antes y después + reporte a 30 días</span></li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>Comparativa antes y después + reporte único a los 30 días</span></li>
           </ul>
 
-          <a class="btn btn--secondary btn--block" href="#contacto"><span>Comenzar con Origin</span></a>
+          <a class="btn btn--secondary btn--block" href="https://wa.me/503XXXXXXXX?text=Hola%2C%20quiero%20empezar%20con%20Velkor%20Origin" target="_blank" rel="noopener"><span>Comenzar con Velkor Origin</span></a>
+          <p class="stage__fine">Te dejamos los canales listos y medimos a los 30 días</p>
         </article>
 
         <!-- ETAPA 02 -->
@@ -3681,8 +3723,8 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
             <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>Capacitación incluida</span></li>
           </ul>
 
-          <a class="btn btn--primary btn--block" href="#contacto"><span>Comenzar con Velkor Base</span></a>
-          <p class="stage__fine">Precio cerrado, sin sorpresas · Acompañamiento el primer mes incluido</p>
+          <a class="btn btn--primary btn--block" href="https://wa.me/503XXXXXXXX?text=Hola%2C%20quiero%20empezar%20con%20Velkor%20Base" target="_blank" rel="noopener"><span>Comenzar con Velkor Base</span></a>
+          <p class="stage__fine">Te capacitamos y te acompañamos el primer mes</p>
         </article>
 
         <!-- LA SUMA -->
@@ -3716,7 +3758,7 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
             </div>
           </div>
 
-          <a class="btn btn--secondary" href="#contacto"><span>Cotizar los dos</span></a>
+          <a class="btn btn--secondary" href="https://wa.me/503XXXXXXXX?text=Hola%2C%20quiero%20cotizar%20Origin%20y%20Base%20juntos" target="_blank" rel="noopener"><span>Cotizar los dos</span></a>
         </article>
 
       </div>
@@ -3854,6 +3896,29 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
         </div>
       </div>
       </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       MÉTRICAS — franja de indicadores (sin id: no va al navbar
+       ni al array `sections` del scroll-spy)
+       ============================================ -->
+  <section class="metricas" aria-label="Lo que garantizamos">
+    <div class="container">
+      <ul class="metricas__grid reveal-stagger" role="list">
+        <li class="metric">
+          <span class="metric__num">5 a 10 días</span>
+          <p class="metric__label">Hábiles, desde que nos das el material y los accesos.</p>
+        </li>
+        <li class="metric">
+          <span class="metric__num"><span class="metric__pre">desde</span> $350</span>
+          <p class="metric__label">Precio cerrado, más IVA. La mensualidad es opcional.</p>
+        </li>
+        <li class="metric">
+          <span class="metric__num">Cada mes</span>
+          <p class="metric__label">Reporte de resultados en palabras claras.</p>
+        </li>
+      </ul>
     </div>
   </section>
 
@@ -4027,8 +4092,8 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
         <details class="faq-item">
           <summary class="faq-item__q">¿Qué incluye el precio y qué cuesta aparte?</summary>
           <div class="faq-item__a">
-            <p>Pagas un setup único (Origin $350 + IVA, Base $600 + IVA, los dos juntos $950 + IVA) y un plan de soporte mensual que cubre hosting, tus cambios y el reporte. Precio cerrado, sin sorpresas.</p>
-            <p class="faq__fineprint">Se cotizan aparte: secciones o páginas nuevas, fotografía, el dominio propio y las herramientas de Expand e Infinite.</p>
+            <p>Pagas un setup único (Origin $350 + IVA, Base $600 + IVA, los dos juntos $950 + IVA) y un plan de soporte mensual que cubre hosting, tus cambios y el reporte mensual. Precio cerrado, sin sorpresas.</p>
+            <p class="faq__fineprint">Se cotizan aparte: secciones o páginas nuevas, el trabajo de fotos, el dominio propio y las herramientas de Expand e Infinite.</p>
           </div>
         </details>
 
@@ -4041,9 +4106,9 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
         </details>
 
         <details class="faq-item">
-          <summary class="faq-item__q">¿Ofrecen fotografía profesional para mi negocio?</summary>
+          <summary class="faq-item__q">¿Ofrecen fotografía para mi negocio?</summary>
           <div class="faq-item__a">
-            <p>Sí, como complemento: $150 + IVA el primer año, con imágenes listas para tu menú digital, tus redes y tu perfil de Google. La actualización del año siguiente son $50 + IVA.</p>
+            <p>Sí, las tomamos nosotros con celular y las mejoramos con IA hasta dejarlas listas para tu menú digital, tus redes y tu perfil de Google. No es una sesión de estudio con fotógrafo: $150 + IVA el primer año, $50 + IVA la actualización del año siguiente.</p>
           </div>
         </details>
 
@@ -4074,7 +4139,7 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
           <div class="contact-info">
             <div class="contact-info__item">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-9 8.4 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7a8.5 8.5 0 0 1-.9-3.8 8.5 8.5 0 0 1 8.4-8.5 8.4 8.4 0 0 1 8.6 8.5z"/></svg>
-              <a href="https://wa.me/503XXXXXXXX?text=Hola%20Velkor%2C%20quiero%20poner%20mi%20negocio%20en%20internet" target="_blank" rel="noopener">+503 XXXX-XXXX</a>
+              <a href="https://wa.me/503XXXXXXXX?text=Hola%20Velkor%2C%20te%20escribo%20desde%20tu%20sitio.%20Quiero%20m%C3%A1s%20informaci%C3%B3n" target="_blank" rel="noopener">+503 XXXX-XXXX</a>
             </div>
             <div class="contact-info__item">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg>
@@ -4147,7 +4212,7 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
             <p>
               ¡Listo! Recibimos tu mensaje. Te respondemos en menos de 24 horas.
               <br />
-              ¿Prefieres WhatsApp? <a id="waLink" href="https://wa.me/503XXXXXXXX?text=Hola%20Velkor%2C%20quiero%20poner%20mi%20negocio%20en%20internet" target="_blank" rel="noopener">Escríbenos directo</a>.
+              ¿Prefieres WhatsApp? <a id="waLink" href="https://wa.me/503XXXXXXXX?text=Hola%20Velkor%2C%20acabo%20de%20llenar%20el%20formulario%20de%20tu%20sitio" target="_blank" rel="noopener">Escríbenos directo</a>.
             </p>
           </div>
         </form>
@@ -4163,7 +4228,7 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
       <span class="eyebrow">Tu turno</span>
       <h2 id="cta-close-title">Pon tu negocio en internet.</h2>
       <p class="cta-close__sub">Sin complicarte, sin gastar de más. Escríbenos y te respondemos hoy.</p>
-      <a class="btn btn--primary" href="https://wa.me/503XXXXXXXX?text=Hola%20Velkor%2C%20quiero%20poner%20mi%20negocio%20en%20internet" target="_blank" rel="noopener">
+      <a class="btn btn--primary" href="https://wa.me/503XXXXXXXX?text=Hola%20Velkor%2C%20ya%20vi%20tu%20sitio%20y%20quiero%20poner%20mi%20negocio%20en%20internet" target="_blank" rel="noopener">
         Escríbenos hoy
         <svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
       </a>
@@ -4200,7 +4265,7 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
         <strong>¿Hablamos?</strong>
         <span>Cotización gratis · respondemos hoy</span>
       </span>
-      <a class="btn btn--primary" href="https://wa.me/503XXXXXXXX?text=Hola%20Velkor%2C%20quiero%20poner%20mi%20negocio%20en%20internet" target="_blank" rel="noopener">
+      <a class="btn btn--primary" href="https://wa.me/503XXXXXXXX?text=Hola%20Velkor%2C%20quiero%20una%20cotizaci%C3%B3n%20para%20mi%20negocio" target="_blank" rel="noopener">
         WhatsApp
         <svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
       </a>
@@ -4875,7 +4940,7 @@ html.vk-loaded .vk-scrollcue { opacity: 1; }
      --------------------------------------------------------------- */
   (function cardTilt() {
     if (reduce || !finePointer) return;
-    var cards = document.querySelectorAll('.service');
+    var cards = document.querySelectorAll('.service, .stage, .combo');
     cards.forEach(function (card) {
       var gleam = document.createElement('div'); gleam.className = 'vk-gleam'; gleam.setAttribute('aria-hidden', 'true');
       card.appendChild(gleam);
